@@ -32,6 +32,11 @@ export const facebookSettings = {
     },
     { id: 'fb-notification-toggle', label: 'Hide Notification Button', type: 'checkbox', default: true, rating: 2 },
   ],
+  Posts: [
+    { id: 'fb-reacts-toggle', label: 'Hide Reacts', type: 'checkbox', default: true, rating: 3 },
+    { id: 'fb-comments-toggle', label: 'Hide Comments', type: 'checkbox', default: true, rating: 3 },
+    { id: 'fb-shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
+  ],
   Home: [
     { id: 'fb-homeposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
     { id: 'fb-homeshortcuts-toggle', label: 'Hide Shortcuts', type: 'checkbox', default: true, rating: 3 },

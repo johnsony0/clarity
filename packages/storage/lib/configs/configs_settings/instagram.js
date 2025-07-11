@@ -27,6 +27,12 @@ export const instagramSettings = {
     { id: 'ig-notification-toggle', label: 'Hide Notification Button', type: 'checkbox', default: true, rating: 2 },
     { id: 'ig-profile-toggle', label: 'Hide Profile Button', type: 'checkbox', default: true, rating: 2 },
   ],
+  Posts: [
+    { id: 'ig-reacts-toggle', label: 'Hide Reacts', type: 'checkbox', default: true, rating: 3 },
+    { id: 'ig-comments-toggle', label: 'Hide Comments', type: 'checkbox', default: true, rating: 3 },
+    { id: 'ig-shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
+    { id: 'ig-saves-toggle', label: 'Hide Save', type: 'checkbox', default: true, rating: 3 },
+  ],
   Home: [
     { id: 'ig-posts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
     { id: 'ig-suggestedposts-toggle', label: 'Hide Suggested Posts', type: 'checkbox', default: true, rating: 4 },

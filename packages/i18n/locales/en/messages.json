@@ -5,7 +5,7 @@
   },
   "extensionName": {
     "description": "Extension name",
-    "message": "Open Source Productivity"
+    "message": "Clarity"
   },
   "toggleTheme": {
     "message": "Toggle theme"
@@ -15,11 +15,11 @@
   },
   "greeting": {
     "description": "Greeting message",
-    "message": "Hello, My name is $NAME$",
+    "message": "Thanks for downloading :)",
     "placeholders": {
       "name": {
         "content": "$1",
-        "example": "John Doe"
+        "example": "JY"
       }
     }
   },

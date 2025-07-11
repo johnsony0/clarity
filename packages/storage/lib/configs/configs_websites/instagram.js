@@ -59,18 +59,18 @@ export const instaConfigs = {
   onPost: {
     hideElements: {},
     hideElement: {
-      'comments-toggle': [
+      'ig-comments-toggle': [
         { selector: 'View all', type: 'text', parents: 2 },
         { selector: '[placeholder="Add a comment…"]', type: 'attribute', parents: 5 },
         { selector: '[aria-label="Comment"]', type: 'attribute', parents: 0 },
       ],
-      'reacts-toggle': [
+      'ig-reacts-toggle': [
         { selector: 'Liked by', type: 'text', parents: 4 },
         { selector: 'likes', type: 'text', parents: 4 },
         { selector: '[aria-label="Like"]', type: 'attribute', parents: 0 },
       ],
-      'shares-toggle': [{ selector: '[aria-label="Share"]', type: 'attribute', parents: 0 }],
-      'saves-toggle': [{ selector: '[aria-label="Save"]', type: 'attribute', parents: 0 }],
+      'ig-shares-toggle': [{ selector: '[aria-label="Share"]', type: 'attribute', parents: 0 }],
+      'ig-saves-toggle': [{ selector: '[aria-label="Save"]', type: 'attribute', parents: 0 }],
     },
   },
 };

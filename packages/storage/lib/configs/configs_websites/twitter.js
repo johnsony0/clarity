@@ -82,9 +82,9 @@ export const twitterConfigs = {
   onPost: {
     hideElements: {},
     hideElement: {
-      'comments-toggle': [{ selector: '[data-testid="reply"]', type: 'attribute', parents: 0 }],
-      'reacts-toggle': [{ selector: '[data-testid="like"]', type: 'attribute', parents: 0 }],
-      'shares-toggle': [
+      'x-comments-toggle': [{ selector: '[data-testid="reply"]', type: 'attribute', parents: 0 }],
+      'x-reacts-toggle': [{ selector: '[data-testid="like"]', type: 'attribute', parents: 0 }],
+      'x-shares-toggle': [
         { selector: '[data-testid="retweet"]', type: 'attribute', parents: 0 },
         { selector: '[aria-label="Share post"]', type: 'attribute', parents: 0 },
       ],
@@ -92,7 +92,7 @@ export const twitterConfigs = {
         { selector: '[aria-label*="View post analytics"]', type: 'attribute', parents: 0 },
         { selector: 'Views', type: 'text', parents: 3 },
       ],
-      'saves-toggle': [{ selector: '[data-testid="bookmark"]', type: 'attribute', parents: 0 }],
+      'x-saves-toggle': [{ selector: '[data-testid="bookmark"]', type: 'attribute', parents: 0 }],
     },
   },
 };

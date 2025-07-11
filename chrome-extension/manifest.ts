@@ -28,7 +28,8 @@ const manifest = {
     },
   },
   version: packageJson.version,
-  description: 'Live life with less distractions, focus on things that do matter.',
+  description:
+    'Remove distractions, promote less scrolling, and get more time in your day away from addicting algorithms to focus on things that matter more.',
   host_permissions: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
   permissions: ['storage'],
   options_page: 'options/index.html',

@@ -25,10 +25,6 @@ export const extensionSettings = {
     { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, rating: 2 },
     { id: 'limit-value', label: 'Limit Posts Amount', type: 'number', default: 600, min: 0, max: 1000, rating: 1 },
     { id: 'postings-toggle', label: 'Hide Post Creation Menu', type: 'checkbox', default: true, rating: 3 },
-    { id: 'reacts-toggle', label: 'Hide Reacts', type: 'checkbox', default: true, rating: 3 },
-    { id: 'comments-toggle', label: 'Hide Comments', type: 'checkbox', default: true, rating: 3 },
-    { id: 'shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
-    { id: 'saves-toggle', label: 'Hide Save', type: 'checkbox', default: true, rating: 3 },
   ],
   Content: [
     {

@@ -104,10 +104,10 @@ export const facebookConfigs = {
   },
   onPost: {
     hideElements: {
-      'comments-toggle': { selector: `[role="article"]`, type: 'attribute', parents: 2 },
+      'fb-comments-toggle': { selector: `[role="article"]`, type: 'attribute', parents: 2 },
     },
     hideElement: {
-      'comments-toggle': [
+      'fb-comments-toggle': [
         { selector: `[aria-label="Write a comment…"]`, type: 'attribute', parents: 12 },
         { selector: `[aria-label="Leave a comment"]`, type: 'attribute', parents: 0 },
         { selector: `[aria-label="Write an answer…"]`, type: 'attribute', parents: 12 },
@@ -119,7 +119,7 @@ export const facebookConfigs = {
         { selector: '[aria-label="See who reacted to this"]', type: 'attribute', parents: 1 },
         { selector: '[aria-label="Like"]', type: 'attribute', parents: 0 },
       ],
-      'shares-toggle': [
+      'fb-shares-toggle': [
         {
           selector:
             'x9f619 x1ja2u2z x78zum5 x2lah0s x1n2onr6 x1qughib x1qjc9v5 xozqiw3 x1q0g3np x1ws5yxj xw01apr x4cne27 xifccgj x123j3cw xs9asl8',

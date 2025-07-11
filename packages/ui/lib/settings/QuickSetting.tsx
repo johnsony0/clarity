@@ -9,8 +9,13 @@ import {
   youtubeSettings,
 } from '@extension/storage';
 
+type ToastState = {
+  message: string;
+  type: 'success' | 'warning' | 'error';
+} | null;
+
 interface QuickSettingsProps {
-  onSettingsChange: (showToast: string) => void;
+  onSettingsChange: (showToast: ToastState) => void;
   mode: number;
 }
 
@@ -87,10 +92,17 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
         // Save updated settings for the current platform
         chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
           if (chrome.runtime.lastError) {
-            onSettingsChange(`Failed to save settings, error: ${chrome.runtime.lastError.message}`);
+            onSettingsChange({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
           } else {
             console.log(`Settings updated for ${platform}:`, updatedSettings);
-            onSettingsChange('Settings updated successfully!');
+            {
+              mode
+                ? onSettingsChange({ message: 'Settings updated successfully!', type: 'success' })
+                : onSettingsChange({
+                    message: 'Settings updated successfully, reload site to see changes!',
+                    type: 'success',
+                  });
+            }
           }
         });
       });
@@ -126,10 +138,10 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
         // Save updated settings for the current platform
         chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
           if (chrome.runtime.lastError) {
-            onSettingsChange(`Failed to save settings, error: ${chrome.runtime.lastError.message}`);
+            onSettingsChange({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
           } else {
             console.log(`Settings updated for ${platform}:`, updatedSettings);
-            onSettingsChange('Settings updated successfully!');
+            onSettingsChange({ message: 'Settings updated successfully!', type: 'success' });
           }
         });
       });
@@ -186,7 +198,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
             max="5"
             value={sliderValue}
             onChange={handleSliderChange}
-            className="mt-1 block w-full"
+            className="mt-1 block w-full accent-blue-500"
           />
           <div className="flex justify-between text-sm text-gray-500 mt-1">
             <span>None</span>

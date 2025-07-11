@@ -17,6 +17,7 @@ Feel free to send us suggestions or questions via [email](theclarityextension@gm
   - [Examples](#examples)
   - [Features](#features) 
   - [Settings Explained](#settings-explained)
+  - [Errors](#errors)
 - [Devs](#devs)
   - [Setup and Structure](#setup-and-structure)
   - [Known Problems](#known-problems)
@@ -93,6 +94,10 @@ Feel free to send us suggestions or questions via [email](theclarityextension@gm
   - **Home** - Home page or for you page
   - **Pages** - Profiles of other people or channels
   - **Groups** - Exclusive to Facebook, for Facebook groups
+
+### Errors
+`This request exceeds the MAX_WRITE_OPERATIONS_PER_MINUTE quota.`
+- Due to too many write requests to Chrome settings, they allow 120 writes per minute. So wait a minute then refresh the page to resolve this issue.
 
 ---
 

@@ -12,11 +12,16 @@ import {
 } from '@extension/storage';
 import { Switch, Label, Field } from '@headlessui/react';
 
+type ToastState = {
+  message: string;
+  type: 'success' | 'warning' | 'error';
+} | null;
+
 export const Options: React.FC = () => {
   const [platform, setPlatform] = useState('quick-settings'); // Default to "Quick Settings"
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [darkMode, setDarkMode] = useState(false);
-  const [showToast, setShowToast] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState<ToastState>(null);
 
   useEffect(() => {
     chrome.storage.sync.get(['extension'], result => {
@@ -54,9 +59,9 @@ export const Options: React.FC = () => {
     // Save dark mode preference to chrome.storage.sync
     chrome.storage.sync.set({ darkMode }, () => {
       if (chrome.runtime.lastError) {
-        setShowToast(`Failed to save settings, error: ${chrome.runtime.lastError.message}`);
+        setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
       } else {
-        setShowToast('Dark/light successfully updated!');
+        setShowToast({ message: 'Settings loaded!', type: 'success' });
       }
     });
   }, [darkMode]);
@@ -86,10 +91,10 @@ export const Options: React.FC = () => {
     // Save updated settings to chrome.storage.sync
     chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
       if (chrome.runtime.lastError) {
-        setShowToast(`Failed to save settings, error: ${chrome.runtime.lastError.message}`);
+        setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
       } else {
         console.log('Setting updated', updatedSettings);
-        setShowToast('Settings updated successfully!');
+        setShowToast({ message: 'Settings updated successfully!', type: 'success' });
       }
     });
   };
@@ -137,7 +142,9 @@ export const Options: React.FC = () => {
         </div>
         {renderSettings()}
       </div>
-      {showToast && <Toast message={showToast} duration={3000} onClose={() => setShowToast(null)} />}
+      {showToast && (
+        <Toast message={showToast.message} type={showToast.type} duration={3000} onClose={() => setShowToast(null)} />
+      )}
     </div>
   );
 };

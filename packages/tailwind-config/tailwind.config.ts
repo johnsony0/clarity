@@ -2,7 +2,15 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./src/**/*.{ts,tsx}'],
-  safelist: ['text-gray-800', 'bg-gray-300', 'opacity-50', 'text-blue-600'],
+  safelist: [
+    'text-gray-800',
+    'bg-gray-300',
+    'opacity-50',
+    'text-blue-600',
+    'bg-yellow-500',
+    'bg-red-600',
+    'accent-blue-500',
+  ],
   theme: {
     extend: {
       colors: {

@@ -69,24 +69,28 @@ export const youtubeConfigs = {
     Extras: {
       url: '/watch',
       hideElement: {
-        'comments-toggle': [
+        'yt-comments-toggle': [
           { selector: 'comments', type: 'id', parents: 0 },
           { selector: 'chat-messages', type: 'id', parents: 0 },
         ],
-        'reacts-toggle': [
+        'yt-livechat-toggle': [
+          { selector: 'chatframe', type: 'id', parents: 2 },
+          { selector: 'teaser-carousel', type: 'id', parents: 0 },
+        ],
+        'yt-reacts-toggle': [
           {
             selector: '[class="ytSegmentedLikeDislikeButtonViewModelHost style-scope ytd-menu-renderer"]',
             type: 'attribute',
             parents: 0,
           },
         ],
-        'shares-toggle': {
+        'yt-shares-toggle': {
           selector:
             '[class="yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment"]',
           type: 'attribute',
           parents: 0,
         },
-        'saves-toggle': [{ selector: '[aria-label="Save to playlist"]', type: 'attribute', parents: 0 }],
+        'yt-saves-toggle': [{ selector: '[aria-label="Save to playlist"]', type: 'attribute', parents: 0 }],
         'yt-description-toggle': { selector: 'description-inner', type: 'id', parents: 1 },
         'yt-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
         'yt-clip-toggle': { selector: 'Clip', type: 'text', parents: 3 },

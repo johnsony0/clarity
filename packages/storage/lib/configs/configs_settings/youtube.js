@@ -16,6 +16,11 @@ export const youtubeSettings = {
   Posts: [
     { id: 'yt-description-toggle', label: 'Hide Descriptions', type: 'checkbox', default: false, rating: 4 },
     { id: 'yt-suggestions-toggle', label: 'Hide Suggestions', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-reacts-toggle', label: 'Hide Reacts', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-comments-toggle', label: 'Hide Comments', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-livechat-toggle', label: 'Hide Stream Chat', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-saves-toggle', label: 'Hide Save', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-download-toggle', label: 'Hide Download Button', type: 'checkbox', default: true, rating: 2 },
     { id: 'yt-clip-toggle', label: 'Hide Clip Button', type: 'checkbox', default: true, rating: 2 },
   ],

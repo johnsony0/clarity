@@ -25,7 +25,13 @@ export const twitterSettings = {
     { id: 'x-profile-toggle', label: 'Hide Profile Button', type: 'checkbox', default: true, rating: 2 },
     { id: 'x-menu-toggle', label: 'Hide Menu Button', type: 'checkbox', default: true, rating: 2 },
   ],
-  Posts: [{ id: 'x-stats-toggle', label: 'Hide Data', type: 'checkbox', default: true, rating: 3 }],
+  Posts: [
+    { id: 'x-stats-toggle', label: 'Hide Data', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-reacts-toggle', label: 'Hide Reacts', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-comments-toggle', label: 'Hide Comments', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-saves-toggle', label: 'Hide Save', type: 'checkbox', default: true, rating: 3 },
+  ],
   Home: [
     { id: 'x-homeposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
     { id: 'x-foryou-toggle', label: 'Hide For You Button', type: 'checkbox', default: true, rating: 3 },
