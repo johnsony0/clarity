@@ -1,3 +1,4 @@
+// get default settings from the provided settings object
 export const getDefaultSettings = (settings: any) => {
   const defaultSettings: Record<string, any> = {};
   Object.keys(settings).forEach(category => {

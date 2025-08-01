@@ -8,15 +8,11 @@ interface ToastProps {
   onClose: () => void;
 }
 
-export const Toast: React.FC<ToastProps> = ({
-  message,
-  type = 'success',
-  duration = 5000, //Default duration
-  onClose,
-}) => {
+// simple toast notification component to show at the bottom right of the screen
+export const Toast: React.FC<ToastProps> = ({ message, type = 'success', duration = 5000, onClose }) => {
   const [visible, setVisible] = useState(false);
 
-  const displayDuration = type === 'error' ? 10000 : duration; //Increase for errors
+  const displayDuration = type === 'error' ? 10000 : duration;
 
   useEffect(() => {
     setVisible(true);

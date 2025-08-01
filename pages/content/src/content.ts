@@ -286,6 +286,7 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
   }
 };
 
+// get text and message container
 const processPost = (platformConfig: PlatformConfig, settings: Settings, postContainer: HTMLElement) => {
   for (const [filterKey, filterData] of Object.entries(platformConfig.otherContainers)) {
     if (!settings[filterKey]) continue;
@@ -303,7 +304,7 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
       return;
     }
 
-    // DISCONNECT PREVIOUS OBSERVER IF IT EXISTS
+    // disconnect previous observer if it exists
     if (currentMainObserver) {
       currentMainObserver.disconnect();
       console.log('Disconnected previous main observer.');
@@ -326,18 +327,14 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
             }
           }
         });
-        // Handle removed nodes if necessary for cleanup
-        mutation.removedNodes.forEach(node => {
-          // You might need logic here to clean up injected elements
-          // if posts are truly removed from the DOM.
-        });
       });
     });
     observer.observe(mainContainer, { childList: true, subtree: true });
-    currentMainObserver = observer; // Store the new observer
+    currentMainObserver = observer;
   });
 };
 
+// handles URL changes and applies settings
 const handleURLChange = () => {
   const url = window.location.hostname;
   const currentUrl = window.location.pathname;
@@ -386,6 +383,7 @@ const handleURLChange = () => {
   });
 };
 
+// Initialize the observer and handle URL changes
 export const observe = () => {
   let lastURL = window.location.href;
 

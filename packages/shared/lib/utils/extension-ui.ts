@@ -1,5 +1,7 @@
 type Data = { [key: string]: number };
 
+// Creates a bar segment for the data visualization
+// Each segment represents a percentage value for a specific category
 export const createBarSegment = (barContainer: HTMLDivElement, name: string, value: number): void => {
   const segment = document.createElement('div');
   segment.style.width = `${value}%`;
@@ -13,6 +15,7 @@ export const createBarSegment = (barContainer: HTMLDivElement, name: string, val
   barContainer.appendChild(segment);
 };
 
+// Creates the actual data visualization
 export const createDataBars = (data: Data, targetElement: HTMLElement | null): void => {
   const dataDiv = document.createElement('div');
   const barContainer = document.createElement('div');
@@ -43,6 +46,7 @@ export const createDataBars = (data: Data, targetElement: HTMLElement | null): v
   }
 };
 
+//dropdown button for toggling visibility of a post node
 export const createDropdown = (text: string, postNode: HTMLElement): void => {
   const toggleButton = document.createElement('button');
   const buttonNode = postNode.parentNode as HTMLElement;
@@ -96,6 +100,7 @@ export const createDropdown = (text: string, postNode: HTMLElement): void => {
   buttonNode.insertAdjacentElement('afterbegin', toggleButton);
 };
 
+// Creates a timeout overlay to disable access to site for a set duration
 export const createTimeout = (name: string, duration: number): void => {
   const overlay = document.createElement('div');
   overlay.style.position = 'fixed';
@@ -137,6 +142,7 @@ export const createTimeout = (name: string, duration: number): void => {
   }, 1000);
 };
 
+// Displays a message when the post limit is reached
 export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: number): void => {
   const messageContainer = document.createElement('div');
   messageContainer.style.position = 'fixed';

@@ -4,6 +4,7 @@ interface FindElementInput {
   parents?: number;
 }
 
+// hide all images and videos in a node
 export const hideVideosPhotos = (node: ParentNode): void => {
   const imgs = node.querySelectorAll('img');
   const videos = node.querySelectorAll('video');
@@ -22,6 +23,7 @@ export const hideVideosPhotos = (node: ParentNode): void => {
   });
 };
 
+// finds a single element in a node based on the input criteria
 export const findElement = (node: ParentNode, input: FindElementInput): HTMLElement | null => {
   let element: Element | null = null;
   if (input.type === 'attribute' || input.type === 'image') {
@@ -52,6 +54,7 @@ export const findElement = (node: ParentNode, input: FindElementInput): HTMLElem
   return currentElement as HTMLElement | null;
 };
 
+// finds multiple elements in a node based on the input criteria
 const findElements = (node: ParentNode, input: FindElementInput): HTMLElement[] | null => {
   let elements: Element[] = [];
   if (input.type === 'attribute') {
@@ -71,6 +74,7 @@ const findElements = (node: ParentNode, input: FindElementInput): HTMLElement[] 
   return returnElements.length > 0 ? returnElements : null;
 };
 
+// waits for an element to appear in the DOM based on the input criteria
 export function waitForElm(node: ParentNode | Document, input: FindElementInput): Promise<HTMLElement | null> {
   return new Promise(resolve => {
     const elm = findElement(node, input);
@@ -98,6 +102,7 @@ export function waitForElm(node: ParentNode | Document, input: FindElementInput)
   });
 }
 
+// hide an element if we find it in the DOM
 export const hideElement = (
   elementInput: FindElementInput | FindElementInput[],
   node?: ParentNode | Document,
@@ -112,6 +117,7 @@ export const hideElement = (
   });
 };
 
+// hide multiple elements if we find them in the DOM
 export const hideElements = (
   elementInput: FindElementInput | FindElementInput[],
   node?: ParentNode | Document,
@@ -127,6 +133,7 @@ export const hideElements = (
   });
 };
 
+// delete an element if we find it in the DOM
 export const deleteElement = (
   elementInput: FindElementInput | FindElementInput[],
   node?: ParentNode | Document,

@@ -19,6 +19,7 @@ interface QuickSettingsProps {
   mode: number;
 }
 
+// QuickSettings page to adjust settings with a slider and toggle buttons
 export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, mode }) => {
   const [sliderValue, setSliderValue] = useState(3);
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({

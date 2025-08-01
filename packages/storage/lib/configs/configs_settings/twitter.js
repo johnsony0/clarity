@@ -38,6 +38,7 @@ export const twitterSettings = {
     { id: 'x-following-toggle', label: 'Hide Following Button', type: 'checkbox', default: false, rating: 5 },
     { id: 'x-trending-toggle', label: 'Hide Trending', type: 'checkbox', default: true, rating: 3 },
     { id: 'x-recc-toggle', label: 'Hide Recommended', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-premium-toggle', label: 'Hide Premium', type: 'checkbox', default: true, rating: 3 },
   ],
   Pages: [
     { id: 'x-pagesposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },

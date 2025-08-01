@@ -26,16 +26,27 @@ export const youtubeConfigs = {
           { selector: '[role="search"]', type: 'attribute', parents: 0 },
           { selector: '[aria-label="Search with your voice"]', type: 'attribute', parents: 0 },
         ],
-        'yt-explore-toggle': { selector: 'Explore', type: 'text', parents: 2 },
         'yt-notification-toggle': { selector: '[aria-label="Notifications"]', type: 'attribute', parents: 2 },
-        'yt-profile-toggle': [{ selector: '[aria-label="You"]', type: 'attribute', parents: 1 }],
-        'yt-home-toggle': [{ selector: '[aria-label="Home"]', type: 'attribute', parents: 1 }],
-        'yt-shorts-toggle': [{ selector: '[aria-label="Shorts"]', type: 'attribute', parents: 1 }],
-        'yt-subscriptions-toggle': [{ selector: '[aria-label="Subscriptions"]', type: 'attribute', parents: 1 }],
-        'yt-menu-toggle': [
-          { selector: '[aria-label="Guide"]', type: 'attribute', parents: 1 },
-          { selector: 'sections', type: 'id', parents: 0 },
+        'yt-home-toggle': [
+          { selector: '[aria-label="Home"]', type: 'attribute', parents: 0 },
+          { selector: '[title="Home"]', type: 'attribute', parents: 0 },
         ],
+        'yt-shorts-toggle': [
+          { selector: '[aria-label="Shorts"]', type: 'attribute', parents: 0 },
+          { selector: '[title="Shorts"]', type: 'attribute', parents: 0 },
+        ],
+        'yt-subscriptions-toggle': [
+          { selector: '[aria-label="Subscriptions"]', type: 'attribute', parents: 0 },
+          { selector: '[title="Subscriptions"]', type: 'attribute', parents: 1 },
+          { selector: '[title="All subscriptions"]', type: 'attribute', parents: 3 },
+          { selector: '[title="Show more"]', type: 'attribute', parents: 4 },
+        ],
+        'yt-profile-toggle': [
+          { selector: '[aria-label="You"]', type: 'attribute', parents: 0 },
+          { selector: '[title="You"]', type: 'attribute', parents: 3 },
+        ],
+        'yt-explore-toggle': { selector: 'Explore', type: 'text', parents: 2 },
+        'yt-morefrom-toggle': { selector: 'More from YouTube', type: 'text', parents: 2 },
       },
     },
     Home: {
@@ -95,6 +106,11 @@ export const youtubeConfigs = {
         'yt-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
         'yt-clip-toggle': { selector: 'Clip', type: 'text', parents: 3 },
         'yt-suggestions-toggle': { selector: 'player-ads', type: 'id', parents: 1 },
+        'yt-mixes-toggle': {
+          selector: '[title="Mixes are playlists YouTube makes for you"]',
+          type: 'attribute',
+          parents: 8,
+        },
       },
     },
   },

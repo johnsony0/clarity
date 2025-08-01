@@ -11,6 +11,7 @@ type ConvertTextToVectorResult = number[] | null;
 let biasModel: ort.InferenceSession;
 let topicModel: ort.InferenceSession;
 
+// Initializes the ONNX models for bias and topic detection
 export const initModel = async () => {
   ort.env.wasm.wasmPaths = chrome.runtime.getURL('');
 
@@ -21,6 +22,7 @@ export const initModel = async () => {
   topicModel = await ort.InferenceSession.create(TOPIC_MODEL_PATH);
 };
 
+// Checks if the text contains any political keywords if so we run the bias model
 export const checkText = (text: string): CheckTextResult => {
   if (text.trim().length === 0) {
     return 1;
@@ -40,6 +42,7 @@ export const checkText = (text: string): CheckTextResult => {
   return 1;
 };
 
+// Runs the topic model on the provided text, array of topic scores
 export const runTopicModel = async (text: string): Promise<RunModelResult> => {
   const vectorized_text = await convertTextToVector(text);
   if (vectorized_text === null) {
@@ -57,6 +60,7 @@ export const runTopicModel = async (text: string): Promise<RunModelResult> => {
   }
 };
 
+// Runs the bias model on the provided text, returns an array of bias scores for left, center, and right
 export const runBiasModel = async (text: string): Promise<RunModelResult> => {
   const vectorized_text = await convertTextToVector(text);
   if (vectorized_text === null) {
@@ -74,6 +78,7 @@ export const runBiasModel = async (text: string): Promise<RunModelResult> => {
   }
 };
 
+// Converts the text to a vector representation using a pre-trained tokenizer
 export const convertTextToVector = async (text: string): Promise<ConvertTextToVectorResult> => {
   text = text.replace(/https?:\/\/\S+/g, '');
   text = text.replace(/<[^>]+>/g, '');
@@ -91,6 +96,7 @@ export const convertTextToVector = async (text: string): Promise<ConvertTextToVe
   }
 };
 
+// List of political keywords to check against the text
 const keywords = [
   'election',
   'vote',

@@ -8,6 +8,7 @@ interface SettingInputProps {
   mode: number;
 }
 
+// SettingInput component to render different types of settings inputs currently supports checkbox, number, array, and select types
 export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, mode }) => {
   const [arrayValue, setArrayValue] = useState<string>('');
   const [arrayItems, setArrayItems] = useState<string[]>(setting.value || []);
@@ -37,7 +38,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
     if (arrayValue.trim()) {
       const newItems = [...arrayItems, arrayValue.trim()];
       setArrayItems(newItems);
-      onChange(setting.id, newItems); // Update parent settings
+      onChange(setting.id, newItems);
       setArrayValue('');
     }
   };
@@ -45,7 +46,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
   const handleArrayRemove = (item: string) => {
     const newItems = arrayItems.filter(i => i !== item);
     setArrayItems(newItems);
-    onChange(setting.id, newItems); // Update parent settings
+    onChange(setting.id, newItems);
   };
 
   switch (setting.type) {
@@ -69,6 +70,9 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
             </Switch>
             <Label className="ml-4 text-sm text-heading">{setting.label}</Label>
           </div>
+          {
+            //bandaid fix for small text
+          }
           {setting.label === 'Grayscale' && (
             <h6>
               Known error when using Facebook Messenger overlay with Grayscale. Known error with timeout not showing on

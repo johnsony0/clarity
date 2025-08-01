@@ -6,6 +6,7 @@ interface PlatformSelectorProps {
   mode: number;
 }
 
+// PlatformSelector component to select the platform for settings
 export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformChange, mode }) => {
   const gotoSettings = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.openOptionsPage) {

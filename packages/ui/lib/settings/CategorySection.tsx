@@ -9,6 +9,7 @@ interface CategorySectionProps {
   mode: number;
 }
 
+// CategorySection component to display settings grouped by category
 export const CategorySection: React.FC<CategorySectionProps> = ({
   category,
   settings,

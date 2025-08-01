@@ -24,7 +24,12 @@ export const facebookConfigs = {
     General: {
       url: '_',
       hideElement: {
-        'fb-messengeroverlay-toggle': { selector: '[aria-label="New message"]', type: 'attribute', parents: 5 },
+        'fb-messengeroverlay-toggle': {
+          selector:
+            'x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1l31dnx x1c9tyrk xeusxvb x1pahc9y x1ertn4p x1qeybcx x3nfvp2 xsdox4t xl56j7k x1n2onr6 x1useyqa x19xcq9t',
+          type: 'class',
+          parents: 5,
+        },
         'fb-stories-toggle': { selector: '[aria-label="Stories"]', type: 'attribute', parents: 0 },
         'postings-toggle': [
           { selector: '[aria-label="Create a post"]', type: 'attribute', parents: 1 },
@@ -115,7 +120,7 @@ export const facebookConfigs = {
         { selector: 'View more comments', type: 'text', parents: 4 },
         { selector: 'View more answers', type: 'text', parents: 4 },
       ],
-      'reacts-toggle': [
+      'fb-reacts-toggle': [
         { selector: '[aria-label="See who reacted to this"]', type: 'attribute', parents: 1 },
         { selector: '[aria-label="Like"]', type: 'attribute', parents: 0 },
       ],

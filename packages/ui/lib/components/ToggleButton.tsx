@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 
 type ToggleButtonProps = ComponentPropsWithoutRef<'button'>;
 
+// basic toggle button component with theme support
 export const ToggleButton = ({ className, children, ...props }: ToggleButtonProps) => {
   const theme = useStorage(exampleThemeStorage);
 

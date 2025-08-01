@@ -37,10 +37,7 @@ export const twitterConfigs = {
         ],
         'x-jobs-toggle': { selector: '[aria-label="Jobs"]', type: 'attribute', parents: 0 },
         'x-communities-toggle': { selector: '[aria-label="Communities"]', type: 'attribute', parents: 0 },
-        'x-premium-toggle': [
-          { selector: '[aria-label="Premium"]', type: 'attribute', parents: 0 },
-          { selector: '[aria-label="Subscribe to Premium"]', type: 'attribute', parents: 2 },
-        ],
+        'x-premium-toggle': { selector: 'Subscribe to Premium', type: 'text', parents: 7 },
         'x-business-toggle': { selector: '[aria-label="Business"]', type: 'attribute', parents: 0 },
         'x-profile-toggle': { selector: '[aria-label="Profile"]', type: 'attribute', parents: 0 },
         'x-menu-toggle': { selector: '[aria-label="More menu items"]', type: 'attribute', parents: 0 },
@@ -56,6 +53,7 @@ export const twitterConfigs = {
         'x-following-toggle': { selector: 'Following', type: 'text', parents: 4 },
         'x-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
         'x-recc-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
+        'x-premium-toggle': { selector: '[aria-label="Premium"]', type: 'attribute', parents: 1 },
       },
     },
     Pages: {

@@ -2,7 +2,7 @@
 
 ![Header](documentation/assets/marquee-promo-tile.png)
 
-An extension for chromium based browsers (e.g. Chrome, Edge, Opera, or Brave) which aims to remove distractions, promote less scrolling, encourage better use of social media and get more time in your day away from the addicting algorithms. Less distractions, more clarity!
+An extension for chromium based browsers (e.g. Chrome, Edge, Opera, or Brave) which aims to Remove distractions, promote less scrolling, and get more time in your day away from social media to focus on things that matter more. Less distractions, more clarity!
 
 I encourage anyone to contribute (:
 
@@ -17,7 +17,7 @@ Feel free to send us suggestions or questions via [email](theclarityextension@gm
   - [Examples](#examples)
   - [Features](#features) 
   - [Settings Explained](#settings-explained)
-  - [Errors](#errors)
+  - [Common Problems](#common-problems)
 - [Devs](#devs)
   - [Setup and Structure](#setup-and-structure)
   - [Known Problems](#known-problems)
@@ -78,7 +78,7 @@ Feel free to send us suggestions or questions via [email](theclarityextension@gm
 - **Quick Settings**
   - **Slider** - Adjust how strict the extension is, with 1 being the loosest, and 5 being extremely strict. The more strict, the more functionality is removed.
   - **Toggles** - Some common settings that are important like search and messages are toggleable for easy access.
-- **Extension** (For general settings that effect every page)
+- **Shared** (For general settings that effect every page)
   - **Timeout** - A timer whenever you open extension settings. Made to deter the user from just increasing post limits or decreasing strictness frequently.
   - **Disable Navigation** - Removes all redirects on the page
   - **Gresyscale** - Turns the page black & white
@@ -95,7 +95,7 @@ Feel free to send us suggestions or questions via [email](theclarityextension@gm
   - **Pages** - Profiles of other people or channels
   - **Groups** - Exclusive to Facebook, for Facebook groups
 
-### Errors
+### Common Problems
 `This request exceeds the MAX_WRITE_OPERATIONS_PER_MINUTE quota.`
 - Due to too many write requests to Chrome settings, they allow 120 writes per minute. So wait a minute then refresh the page to resolve this issue.
 

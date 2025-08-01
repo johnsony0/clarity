@@ -29,7 +29,7 @@ const manifest = {
   },
   version: packageJson.version,
   description:
-    'Remove distractions, promote less scrolling, and get more time in your day away from addicting algorithms to focus on things that matter more.',
+    'Remove distractions, promote less scrolling, and enjoy more time away from social media to focus on things that matter more.',
   host_permissions: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
   permissions: ['storage'],
   options_page: 'options/index.html',

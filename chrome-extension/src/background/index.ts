@@ -101,7 +101,7 @@ chrome.runtime.onInstalled.addListener(async details => {
               } else if (setting.type === 'number') {
                 if (setting.id === 'limit-value') {
                   // Specific ID logic
-                  currentPlatformSettings[setting.id] = (setting.default as number) - 100 * value;
+                  currentPlatformSettings[setting.id] = (setting.default as number) - 200 * (value - 1);
                 } else {
                   // General number logic
                   if (value > 3) {
