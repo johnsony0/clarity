@@ -1,12 +1,12 @@
 import type React from 'react';
 import { useState, useEffect } from 'react';
 
-interface ToastProps {
+type ToastProps = {
   message: string;
   type?: 'success' | 'warning' | 'error';
   duration?: number;
   onClose: () => void;
-}
+};
 
 // simple toast notification component to show at the bottom right of the screen
 export const Toast: React.FC<ToastProps> = ({ message, type = 'success', duration = 5000, onClose }) => {

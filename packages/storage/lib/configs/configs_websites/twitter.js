@@ -43,6 +43,7 @@ export const twitterConfigs = {
         'x-menu-toggle': { selector: '[aria-label="More menu items"]', type: 'attribute', parents: 0 },
         'x-list-toggle': { selector: '[aria-label="Lists"]', type: 'attribute', parents: 0 },
         'x-bookmark-toggle': { selector: '[aria-label="Bookmarks"]', type: 'attribute', parents: 0 },
+        'x-premium-toggle': { selector: '[aria-label="Premium"]', type: 'attribute', parents: 1 },
       },
     },
     Home: {
@@ -53,7 +54,7 @@ export const twitterConfigs = {
         'x-following-toggle': { selector: 'Following', type: 'text', parents: 4 },
         'x-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
         'x-recc-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
-        'x-premium-toggle': { selector: '[aria-label="Premium"]', type: 'attribute', parents: 1 },
+        'x-news-toggle': { selector: 'Today’s News', type: 'text', parents: 4 },
       },
     },
     Pages: {

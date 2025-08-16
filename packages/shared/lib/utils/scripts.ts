@@ -1,8 +1,8 @@
-interface FindElementInput {
+type FindElementInput = {
   type: string;
   selector: string;
   parents?: number;
-}
+};
 
 // hide all images and videos in a node
 export const hideVideosPhotos = (node: ParentNode): void => {

@@ -1,7 +1,6 @@
 import {
   runBiasModel,
   runTopicModel,
-  initModel,
   checkText,
   createDataBars,
   createTimeout,
@@ -15,54 +14,7 @@ import {
   findElement,
 } from '@extension/shared';
 
-import { facebookConfigs, twitterConfigs, youtubeConfigs } from '@extension/storage';
-
-// Define types for settings and configs
-interface FindElementInput {
-  type: string;
-  selector: string;
-  parents?: number;
-}
-type Settings = { [key: string]: any };
-type PlatformConfig = {
-  mainContainer: FindElementInput;
-  postContainer: FindElementInput;
-  messageContainer: FindElementInput;
-  otherContainers: { [key: string]: FindElementInput[] };
-  others: {
-    exempt: string;
-    createTimeout: {
-      selector: string;
-      text: string;
-    };
-  };
-  onOpen: {
-    General: {
-      url: string;
-      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
-    };
-    Navigation: {
-      url: string;
-      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
-    };
-    Home: {
-      url: string;
-      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
-    };
-    Pages: {
-      url: string;
-      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
-    };
-    Extras: {
-      url: string;
-      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
-    };
-  };
-  onPost: {
-    hideElement: { [key: string]: FindElementInput | FindElementInput[] };
-    hideElements: { [key: string]: FindElementInput | FindElementInput[] };
-  };
-};
+import type { PlatformConfig, Settings } from '@extension/shared';
 
 let currentMainObserver: MutationObserver | null = null;
 
@@ -187,7 +139,7 @@ const filterPost = async (
   }
 };
 
-const filterPage = (configs: PlatformConfig, settings: Settings) => {
+export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   // Limit scroll if enabled
   if (settings['scroll-limit']) {
     // artifical default scroll_limit given
@@ -297,23 +249,21 @@ const processPost = (platformConfig: PlatformConfig, settings: Settings, postCon
   filterPost(platformConfig, settings, postContainer, messageContainer, text);
 };
 
-const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+export const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+  //disconnect previous observer if it exists
+  if (currentMainObserver) {
+    currentMainObserver.disconnect();
+    console.log('Disconnected previous main observer.');
+  }
+  //problem is when we navigate to a new page, the document doesn't reload
   waitForElm(document, platformConfig.mainContainer).then(mainContainer => {
     if (!mainContainer) {
       console.warn('Main container not found for this platform.');
       return;
     }
-
-    // disconnect previous observer if it exists
-    if (currentMainObserver) {
-      currentMainObserver.disconnect();
-      console.log('Disconnected previous main observer.');
-    }
-
     // Process initial posts after mainContainer is found
     const initialPosts = document.querySelectorAll(platformConfig.postContainer.selector);
     initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
-
     // Observe for new posts
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
@@ -332,84 +282,4 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
     observer.observe(mainContainer, { childList: true, subtree: true });
     currentMainObserver = observer;
   });
-};
-
-// handles URL changes and applies settings
-const handleURLChange = () => {
-  const url = window.location.hostname;
-  const currentUrl = window.location.pathname;
-  chrome.storage.sync.get(null, settings => {
-    let temp = {};
-    temp = { ...temp, ...settings['extension'] };
-    temp = { ...temp, ...settings['quick-settings'] };
-    temp = { ...temp, ...settings['toggleStates'] };
-
-    // Hide or manage elements based on settings and URL
-    if (url.includes('facebook.com') && settings['extension']['facebook-toggle']) {
-      temp = { ...temp, ...settings['facebook'] };
-      console.log('Observing Facebook posts...', temp);
-      const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
-      if (!exemptPages.includes(currentUrl)) {
-        filterPage(facebookConfigs, temp);
-        setupObserver(facebookConfigs, temp);
-      }
-      /*} else if (url.includes('instagram.com') && settings['extension']['instagram-toggle']) {
-      temp = { ...temp, ...settings['instagram'] };
-      console.log('Observing Instagram posts...', temp);
-      const exemptPages = settings['instagram'][instaConfigs.others.exempt] || [];
-      if (!exemptPages.includes(currentUrl)) {
-        filterPage(instaConfigs, temp);
-        setupObserver(instaConfigs, temp);
-      } */
-    } else if (url.includes('x.com') && settings['extension']['twitter-toggle']) {
-      temp = { ...temp, ...settings['twitter'] };
-      console.log('Observing Twitter posts...', temp);
-      const exemptPages = settings['twitter'][twitterConfigs.others.exempt] || [];
-      if (!exemptPages.includes(currentUrl)) {
-        filterPage(twitterConfigs, temp);
-        setupObserver(twitterConfigs, temp);
-      }
-    } else if (url.includes('youtube.com') && settings['extension']['youtube-toggle']) {
-      temp = { ...temp, ...settings['youtube'] };
-      console.log('Observing Youtube videos...', temp);
-      const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
-      if (!exemptPages.includes(currentUrl)) {
-        filterPage(youtubeConfigs, temp);
-        setupObserver(youtubeConfigs, temp);
-      }
-    } else {
-      console.log('This script does not apply to this site.');
-    }
-  });
-};
-
-// Initialize the observer and handle URL changes
-export const observe = () => {
-  let lastURL = window.location.href;
-
-  const observer = new MutationObserver(() => {
-    const currentURL = window.location.href;
-    if (currentURL !== lastURL) {
-      console.log(`[MutationObserver] URL changed from ${lastURL} to ${currentURL}`);
-      lastURL = currentURL;
-      //refresh for facebook to facebook and youtube to youtube. Bandaid solution for single page applications interfering with reloading of filters.
-      if (
-        (lastURL.includes('facebook.com') && currentURL.includes('facebook.com')) ||
-        (lastURL.includes('youtube.com') && currentURL.includes('youtube.com'))
-      ) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 50);
-      }
-      handleURLChange();
-    }
-  });
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-  //model only runs on facebook or x/twitter
-  if (window.location.hostname.includes('x.com') || window.location.hostname.includes('facebook.com')) {
-    initModel();
-  }
-
-  handleURLChange();
 };

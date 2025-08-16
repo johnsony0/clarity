@@ -7,16 +7,13 @@ import {
   twitterSettings,
   youtubeSettings,
 } from '@extension/storage';
-import { getDefaultSettings } from '@extension/shared';
 
 interface SettingCategory {
-  [key: string]: Array<any>; // Looser: any array
-  // Or more specific: [key: string]: Array<SettingDefinition>;
-  // where SettingDefinition is a union type of your different setting objects
+  [key: string]: Array<any>;
 }
 
 interface PlatformSettings {
-  [key: string]: SettingCategory; // This is the index signature for platform keys
+  [key: string]: SettingCategory;
 }
 
 exampleThemeStorage.get().then(theme => {
@@ -24,14 +21,14 @@ exampleThemeStorage.get().then(theme => {
 });
 
 const allPlatformSettingsConfig: PlatformSettings = {
-  // Renamed to avoid confusion with actual stored settings
-  extension: extensionSettings, // Your extensionSettings from previous example
+  extension: extensionSettings,
   facebook: facebookSettings,
   instagram: instagramSettings,
   twitter: twitterSettings,
   youtube: youtubeSettings,
 };
 
+//Gemini wrote this and it just works 🤷 ill figure this out another day
 chrome.runtime.onInstalled.addListener(async details => {
   // Made the listener async
 
@@ -78,15 +75,12 @@ chrome.runtime.onInstalled.addListener(async details => {
       // If 'platform' key doesn't exist in storage, result[platform] will be undefined.
       const storedPlatformData = await chrome.storage.sync.get(platform);
       let currentPlatformSettings: { [key: string]: any } = storedPlatformData[platform] || {}; // Initialize with existing or empty object
-
       // Iterate through the categories (e.g., 'General') defined for this platform
       const categories = allPlatformSettingsConfig[platform]; // e.g., extensionSettings.General
-
       // Flatten settings from all categories for the current platform
       const allSettingDefinitionsForPlatform = Object.values(categories).flat();
 
       for (const setting of allSettingDefinitionsForPlatform) {
-        // *** THE CRUCIAL FIX: ONLY APPLY DEFAULT IF THE SETTING IS NOT YET DEFINED ***
         if (typeof currentPlatformSettings[setting.id] === 'undefined') {
           // Check if setting has a rating and apply rating-based logic
           if (setting.rating !== undefined) {
@@ -129,5 +123,3 @@ chrome.runtime.onInstalled.addListener(async details => {
   }
   console.log('All settings update/initialization complete.');
 });
-
-console.log('Background loaded');

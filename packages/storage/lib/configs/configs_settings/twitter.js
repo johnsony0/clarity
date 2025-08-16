@@ -24,6 +24,7 @@ export const twitterSettings = {
     { id: 'x-business-toggle', label: 'Hide Business Button', type: 'checkbox', default: true, rating: 2 },
     { id: 'x-profile-toggle', label: 'Hide Profile Button', type: 'checkbox', default: true, rating: 2 },
     { id: 'x-menu-toggle', label: 'Hide Menu Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-premium-toggle', label: 'Hide Premium', type: 'checkbox', default: true, rating: 3 },
   ],
   Posts: [
     { id: 'x-stats-toggle', label: 'Hide Data', type: 'checkbox', default: true, rating: 3 },
@@ -38,7 +39,7 @@ export const twitterSettings = {
     { id: 'x-following-toggle', label: 'Hide Following Button', type: 'checkbox', default: false, rating: 5 },
     { id: 'x-trending-toggle', label: 'Hide Trending', type: 'checkbox', default: true, rating: 3 },
     { id: 'x-recc-toggle', label: 'Hide Recommended', type: 'checkbox', default: true, rating: 3 },
-    { id: 'x-premium-toggle', label: 'Hide Premium', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-news-toggle', label: 'Hide News', type: 'checkbox', default: true, rating: 3 },
   ],
   Pages: [
     { id: 'x-pagesposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },

@@ -95,6 +95,29 @@ export const Popup: React.FC = () => {
               <span>Settings</span>
             </span>
           </Tab>
+
+          <a
+            href={'https://johnsony0.github.io/clarity'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full px-3 py-1 text-sm/6 font-semibold text-font focus:outline focus:outline-secondary hover:bg-primary transition-all duration-200">
+            <span className="flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                />
+              </svg>
+              <span>Help</span>
+            </span>
+          </a>
         </TabList>
 
         <TabPanels className="flex-grow overflow-y-auto">

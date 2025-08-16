@@ -96,8 +96,7 @@ export const youtubeConfigs = {
           },
         ],
         'yt-shares-toggle': {
-          selector:
-            '[class="yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment"]',
+          selector: '[class="yt-spec-button-view-model style-scope ytd-menu-renderer"]',
           type: 'attribute',
           parents: 0,
         },

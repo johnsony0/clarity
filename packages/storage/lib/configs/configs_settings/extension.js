@@ -1,5 +1,11 @@
 export const extensionSettings = {
   //{ id: 'theme-toggle', label: 'Dark Mode', type: 'checkbox', default: false, tag: 'light mode' },
+  Platforms: [
+    { id: 'facebook-toggle', label: 'Enable Facebook', type: 'checkbox', default: true, rating: 1 },
+    //{ id: 'instagram-toggle', label: 'Enable Instagram', type: 'checkbox', default: true, rating: 1 },
+    { id: 'twitter-toggle', label: 'Enable Twitter', type: 'checkbox', default: true, rating: 1 },
+    { id: 'youtube-toggle', label: 'Enable Youtube', type: 'checkbox', default: true, rating: 1 },
+  ],
   General: [
     {
       id: 'ex-timeout',
@@ -14,12 +20,6 @@ export const extensionSettings = {
     { id: 'grayscale-toggle', label: 'Grayscale', type: 'checkbox', default: false, rating: 4 },
     { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, rating: 4 },
     { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, rating: 5 },
-  ],
-  Sites: [
-    { id: 'facebook-toggle', label: 'Enable Facebook', type: 'checkbox', default: true, rating: 1 },
-    //{ id: 'instagram-toggle', label: 'Enable Instagram', type: 'checkbox', default: true, rating: 1 },
-    { id: 'twitter-toggle', label: 'Enable Twitter', type: 'checkbox', default: true, rating: 1 },
-    { id: 'youtube-toggle', label: 'Enable Youtube', type: 'checkbox', default: true, rating: 1 },
   ],
   Posts: [
     { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, rating: 2 },
