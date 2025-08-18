@@ -26,7 +26,7 @@ export const facebookConfigs = {
       hideElement: {
         'fb-messengeroverlay-toggle': {
           selector:
-            'x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1l31dnx x1c9tyrk xeusxvb x1pahc9y x1ertn4p x1qeybcx x3nfvp2 xsdox4t xl56j7k x1n2onr6 x1useyqa x19xcq9t',
+            'x1i10hfl xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x6s0dn4 xjyslct x1l31dnx x1c9tyrk xeusxvb x1pahc9y x1ertn4p x1qeybcx x3nfvp2 xsdox4t xl56j7k x1n2onr6 x1useyqa x19xcq9t',
           type: 'class',
           parents: 5,
         },
@@ -42,7 +42,7 @@ export const facebookConfigs = {
       hideElement: {
         'fb-search-toggle': { selector: '[aria-label="Search Facebook"]', type: 'attribute', parents: 1 },
         'fb-profile-toggle': {
-          selector: `x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1lliihq`,
+          selector: `x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x2lah0s x3ct3a4 xdj266r x14z9mp xat24cr x1lziwak x2lwn1j xeuugli xexx8yu xyri2b x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x1q0g3np x87ps6o x1lku1pv x1a2a7pz xzsf02u x1rg5ohu`,
           type: 'class',
           parents: 0,
         },
@@ -53,9 +53,9 @@ export const facebookConfigs = {
         'fb-gaming-toggle': { selector: '[aria-label="Gaming"]', type: 'attribute', parents: 3 },
         'fb-menu-toggle': { selector: '[aria-label="Menu"]', type: 'attribute', parents: 3 },
         'fb-messages-toggle': {
-          selector: 'x6s0dn4 xtk6v10 x3nfvp2 x5yr21d xl56j7k xexx8yu x18d9i69 xaso8d8 x1gabggj xh8yej3',
-          type: 'class',
-          parents: 8,
+          selector: '[aria-label="Messenger"]',
+          type: 'attribute',
+          parents: 3,
         },
         'fb-notification-toggle': { selector: 'Number of unread notifications', type: 'text', parents: 4 },
       },

@@ -206,11 +206,20 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
     }
   }
 
+  const currentUrl = window.location.href;
+
+  //specific youtube page handling, if all 3 toggles are on, just delete the secondary so video is centered.
+  if (currentUrl.includes('youtube.com/watch')) {
+    if (settings['yt-livechat-toggle'] && settings['yt-suggestions-toggle'] && settings['yt-mixes-toggle']) {
+      hideElement({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
+    }
+  }
+
+  const currentPath = window.location.pathname;
   //page specific hides
-  const currentUrl = window.location.pathname;
   for (const [category, functions] of Object.entries(configs.onOpen || {})) {
     // if url is incorrect and not _ we skip
-    if (!currentUrl.startsWith(functions.url) && functions.url != '_') {
+    if (!currentPath.startsWith(functions.url) && functions.url != '_') {
       continue;
     }
     for (const [functionName, functionData] of Object.entries(functions)) {
