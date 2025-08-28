@@ -24,6 +24,7 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
   const [platform, setPlatform] = useState('quick-settings'); // Default to "Quick Settings"
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [darkMode, setDarkMode] = useState(false);
+  const [powerState, setPowerState] = useState(true);
   const [showToast, setShowToast] = useState<ToastState>(null);
 
   useEffect(() => {
@@ -39,6 +40,10 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
     // Load dark mode preference from chrome.storage.sync
     chrome.storage.sync.get(['darkMode'], result => {
       setDarkMode(result.darkMode ?? false); // Default to false if not set
+    });
+
+    chrome.storage.sync.get(['powerState'], result => {
+      setPowerState(result.powerState ?? true); // Default to true if not set
     });
 
     // Load platform-specific settings (skip for quick-settings)
@@ -63,11 +68,18 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
     chrome.storage.sync.set({ darkMode }, () => {
       if (chrome.runtime.lastError) {
         setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
-      } else {
-        setShowToast({ message: 'Settings loaded!', type: 'success' });
       }
     });
   }, [darkMode]);
+
+  useEffect(() => {
+    // Save power preference to chrome.storage.sync
+    chrome.storage.sync.set({ powerState }, () => {
+      if (chrome.runtime.lastError) {
+        setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
+      }
+    });
+  }, [powerState]);
 
   const getSettings = (platform: string) => {
     switch (platform) {
@@ -127,6 +139,31 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
         <div className="flex justify-between items-center mb-6">
           <PlatformSelector onPlatformChange={setPlatform} mode={mode} />
           <Field>
+            <div className="flex items-center mb-4">
+              <Switch
+                checked={powerState}
+                onChange={setPowerState}
+                className={`${
+                  powerState ? 'bg-secondary' : 'bg-gray-300'
+                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+                <span
+                  className={`${
+                    powerState ? 'translate-x-6' : 'translate-x-1'
+                  } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                />
+              </Switch>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+              </svg>
+            </div>
             <div className="flex items-center">
               <Switch
                 checked={darkMode}
@@ -152,26 +189,47 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
     </div>
   ) : mode === 1 ? (
     <div className="min-h-screen flex flex-col bg-bg text-font p-4">
-      <PlatformSelector onPlatformChange={setPlatform} mode={0} />
-      <div className="flex justify-between mb-1">
-        <Field>
-          <div className="flex items-center ">
-            <Switch
-              checked={darkMode}
-              onChange={setDarkMode}
+      <Field className="flex justify-between items-center w-full">
+        <div className="flex items-center">
+          <Switch
+            checked={darkMode}
+            onChange={setDarkMode}
+            className={`${
+              darkMode ? 'bg-secondary' : 'bg-gray-300'
+            } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+            <span
               className={`${
-                darkMode ? 'bg-secondary' : 'bg-gray-300'
-              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
-              <span
-                className={`${
-                  darkMode ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-              />
-            </Switch>
-            <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
-          </div>
-        </Field>
-      </div>
+                darkMode ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+            />
+          </Switch>
+          <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
+        </div>
+        <div className="flex items-center">
+          <Switch
+            checked={powerState}
+            onChange={setPowerState}
+            className={`${
+              powerState ? 'bg-secondary' : 'bg-gray-300'
+            } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+            <span
+              className={`${
+                powerState ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+            />
+          </Switch>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+          </svg>
+        </div>
+      </Field>
+      <PlatformSelector onPlatformChange={setPlatform} mode={mode} />
       {renderSettings()}
       {showToast && (
         <Toast message={showToast.message} type={showToast.type} duration={3000} onClose={() => setShowToast(null)} />

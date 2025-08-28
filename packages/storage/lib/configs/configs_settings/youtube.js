@@ -22,8 +22,9 @@ export const youtubeSettings = {
     { id: 'yt-livechat-toggle', label: 'Hide Stream Chat', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-saves-toggle', label: 'Hide Save', type: 'checkbox', default: true, rating: 3 },
-    { id: 'yt-download-toggle', label: 'Hide Download Button', type: 'checkbox', default: true, rating: 2 },
-    { id: 'yt-clip-toggle', label: 'Hide Clip Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'yt-download-toggle', label: 'Hide Download Button', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-clip-toggle', label: 'Hide Clip Button', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-askai-toggle', label: 'Hide Ask AI Button', type: 'checkbox', default: true, rating: 3 },
   ],
   Home: [
     { id: 'yt-homeposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
@@ -33,12 +34,23 @@ export const youtubeSettings = {
     { id: 'yt-breakingnews-toggle', label: 'Hide Breaking News', type: 'checkbox', default: true, rating: 3 },
   ],
   Pages: [
-    { id: 'yt-pagesposts-toggle', label: 'Hide Home Tab', type: 'checkbox', default: false, rating: 5 },
+    { id: 'yt-pagesposts-toggle', label: 'Hide Home', type: 'checkbox', default: false, rating: 5 },
     { id: 'yt-videos-toggle', label: 'Hide Videos Tab', type: 'checkbox', default: true, rating: 4 },
     { id: 'yt-live-toggle', label: 'Hide Live Tab', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-playlists-toggle', label: 'Hide Playlists Tab', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-posts-toggle', label: 'Hide Posts Tab', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-store-toggle', label: 'Hide Store Tab', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-podcasts-toggle', label: 'Hide Podcasts Tab', type: 'checkbox', default: true, rating: 3 },
+  ],
+  Search: [
+    { id: 'yt-search-feed-toggle', label: 'Hide Search Feed', type: 'checkbox', default: false, rating: 5 },
+    { id: 'yt-search-filter-toggle', label: 'Hide Filter Option', type: 'checkbox', default: false, rating: 4 },
+    {
+      id: 'yt-search-secondary-toggle',
+      label: 'Hide Secondary Search Results',
+      type: 'checkbox',
+      default: true,
+      rating: 3,
+    },
   ],
 };

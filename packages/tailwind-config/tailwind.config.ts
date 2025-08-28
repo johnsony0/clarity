@@ -10,6 +10,7 @@ export default {
     'bg-yellow-500',
     'bg-red-600',
     'accent-blue-500',
+    'size-1',
   ],
   theme: {
     extend: {

@@ -55,23 +55,35 @@ export const findElement = (node: ParentNode, input: FindElementInput): HTMLElem
 };
 
 // finds multiple elements in a node based on the input criteria
-const findElements = (node: ParentNode, input: FindElementInput): HTMLElement[] | null => {
-  let elements: Element[] = [];
-  if (input.type === 'attribute') {
-    elements = Array.from(node.querySelectorAll(input.selector));
-  }
-  const returnElements: HTMLElement[] = elements
-    .map(element => {
-      let currentElement: ParentNode | Element | null = element;
-      for (let i = 0; i < (input.parents || 0); i++) {
-        if (currentElement && currentElement.parentNode) {
-          currentElement = currentElement.parentNode;
-        }
+export const findElements = (node: ParentNode, input: FindElementInput): Promise<HTMLElement[] | null> => {
+  return waitForElm(node, input)
+    .then(() => {
+      let elements: HTMLElement[] = [];
+      if (input.type === 'attribute') {
+        elements = Array.from(node.querySelectorAll(input.selector));
+      } else {
+        elements = Array.from(node.querySelectorAll(input.selector));
       }
-      return currentElement as HTMLElement | null;
+      const returnElements = elements
+        .map(element => {
+          let currentElement: ParentNode | Element | null = element;
+          for (let i = 0; i < (input.parents || 0); i++) {
+            if (currentElement && currentElement.parentNode) {
+              currentElement = currentElement.parentNode;
+            } else {
+              currentElement = null;
+              break;
+            }
+          }
+          return currentElement as HTMLElement | null;
+        })
+        .filter((element): element is HTMLElement => element !== null);
+      return returnElements.length > 0 ? returnElements : null;
     })
-    .filter((element): element is HTMLElement => element !== null);
-  return returnElements.length > 0 ? returnElements : null;
+    .catch(err => {
+      console.error('Error in findElements:', err);
+      return null;
+    });
 };
 
 // waits for an element to appear in the DOM based on the input criteria
@@ -124,11 +136,12 @@ export const hideElements = (
 ): void => {
   const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
   inputs.forEach(input => {
-    const elms = findElements(node || document, input);
-    elms?.forEach(elm => {
-      if (elm) {
-        (elm as HTMLElement).style.display = 'none';
-      }
+    findElements(node || document, input).then(elms => {
+      elms?.forEach(elm => {
+        if (elm) {
+          (elm as HTMLElement).style.display = 'none';
+        }
+      });
     });
   });
 };

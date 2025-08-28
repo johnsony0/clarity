@@ -73,4 +73,8 @@ export const facebookSettings = {
       tag: 'search',
     },
   ],
+  Search: [
+    { id: 'fb-search-posts-toggle', label: 'Hide Search Feed', type: 'checkbox', default: false, rating: 5 },
+    { id: 'fb-search-filter-toggle', label: 'Hide Filter', type: 'checkbox', default: true, rating: 3 },
+  ],
 };

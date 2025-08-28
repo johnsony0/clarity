@@ -264,26 +264,28 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
     currentMainObserver.disconnect();
     console.log('Disconnected previous main observer.');
   }
-  //problem is when we navigate to a new page, the document doesn't reload
   waitForElm(document, platformConfig.mainContainer).then(mainContainer => {
     if (!mainContainer) {
       console.warn('Main container not found for this platform.');
       return;
     }
     // Process initial posts after mainContainer is found
-    const initialPosts = document.querySelectorAll(platformConfig.postContainer.selector);
-    initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+    platformConfig.postContainer.forEach(containerSelector => {
+      const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
+      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+    });
     // Observe for new posts
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
           if (node instanceof Element) {
-            const postContainer = findElement(node, platformConfig.postContainer);
-            // Ensure it's a new, unprocessed post within the observed tree
-            if (postContainer && !postContainer.dataset.processed) {
-              postContainer.dataset.processed = 'true';
-              processPost(platformConfig, settings, postContainer);
-            }
+            platformConfig.postContainer.forEach(containerSelector => {
+              const postContainer = findElement(node, containerSelector);
+              if (postContainer && !postContainer.dataset.processed) {
+                postContainer.dataset.processed = 'true';
+                processPost(platformConfig, settings, postContainer);
+              }
+            });
           }
         });
       });

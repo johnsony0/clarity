@@ -35,6 +35,7 @@ chrome.runtime.onInstalled.addListener(async details => {
   // --- 1. Initial Installation Setup ---
   if (details.reason === 'install') {
     const initSettings = {
+      power: true,
       darkMode: false,
       slider: 3,
       toggleStates: {
@@ -43,10 +44,8 @@ chrome.runtime.onInstalled.addListener(async details => {
         ai: false,
       },
     };
-    await chrome.storage.sync.set(initSettings); // Use await
+    await chrome.storage.sync.set(initSettings);
     console.log('Default initial settings set.');
-    // For a fresh install, we can then proceed to apply the detailed defaults
-    // based on the newly set slider and toggleStates.
   }
 
   // --- 2. Load Global State (slider, toggleStates) ---

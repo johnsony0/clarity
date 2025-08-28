@@ -110,6 +110,11 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
               value={arrayValue}
               placeholder={setting.placeholder}
               onChange={e => setArrayValue(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  handleArrayAdd();
+                }
+              }}
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary sm:text-sm rounded-md shadow-sm bg-bg text-font"
             />
             <Button

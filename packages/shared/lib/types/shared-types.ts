@@ -11,7 +11,7 @@ type FindElementInput = {
 export type Settings = { [key: string]: any };
 export type PlatformConfig = {
   mainContainer: FindElementInput;
-  postContainer: FindElementInput;
+  postContainer: FindElementInput[];
   messageContainer: FindElementInput;
   otherContainers: { [key: string]: FindElementInput[] };
   others: {

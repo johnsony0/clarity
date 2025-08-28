@@ -15,7 +15,7 @@ export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformCh
   };
 
   return (
-    <div className={`${mode ? 'mb-8' : 'mb-1'}`}>
+    <div className={`${mode ? 'mb-4 mt-4' : 'mb-1'}`}>
       <label htmlFor="platform" className="block text-lg font-bold">
         Select Platform
       </label>

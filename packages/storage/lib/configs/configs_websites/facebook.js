@@ -1,10 +1,13 @@
 export const facebookConfigs = {
   mainContainer: { selector: '[role="main"]', type: 'attribute', parents: 0 },
-  postContainer: {
-    selector: 'x1n2onr6 x1ja2u2z x1jx94hy xw5cjc7 x1dmpuos x1vsv7so xau1kf4 x9f619 xh8yej3 x6ikm8r x10wlt62 xquyuld',
-    type: 'class',
-    parents: 0,
-  },
+  postContainer: [
+    {
+      selector:
+        '[class="x1n2onr6 x1ja2u2z x1jx94hy xw5cjc7 x1dmpuos x1vsv7so xau1kf4 x9f619 xh8yej3 x6ikm8r x10wlt62 xquyuld"]',
+      type: 'attribute',
+      parents: 0,
+    },
+  ],
   messageContainer: { selector: '[data-ad-preview="message"]', type: 'attribute', parents: 0 },
   otherContainers: {
     'fb-reels-toggle': [
@@ -89,6 +92,13 @@ export const facebookConfigs = {
         'fb-photos-toggle': { selector: 'See all photos', type: 'text', parents: 16 },
       },
     },
+    Search: {
+      url: '/search',
+      hideElement: {
+        'fb-search-posts-toggle': { selector: '[aria-label="Search results"]', type: 'attribute', parents: 0 },
+        'fb-search-filter-toggle': { selector: '[aria-label="Result filters"]', type: 'attribute', parents: 0 },
+      },
+    },
     Extras: {
       url: '/groups',
       hideElement: {
@@ -139,6 +149,11 @@ export const facebookConfigs = {
           parents: 0,
         },
         { selector: `Send`, type: 'text', parents: 5 },
+        {
+          selector: `[style="background-image:url('https://static.xx.fbcdn.net/rsrc.php/v4/yH/r/Eoi2rFThRn5.png');background-position:0 -21px;background-size:auto;width:20px;height:20px;background-repeat:no-repeat;display:inline-block"]`,
+          type: 'attribute',
+          parents: 3,
+        },
       ],
     },
   },

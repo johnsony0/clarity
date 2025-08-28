@@ -1,10 +1,20 @@
 export const youtubeConfigs = {
   mainContainer: { selector: 'contents', type: 'id', parents: 0 },
-  postContainer: { selector: '[class="style-scope ytd-rich-grid-renderer"]', type: 'attribute', parents: 0 },
+  postContainer: [
+    { selector: '[class="style-scope ytd-rich-grid-renderer"]', type: 'attribute', parents: 0 },
+    {
+      selector: '[class="ytGridShelfViewModelHost ytd-item-section-renderer ytGridShelfViewModelHostHasBottomButton"]',
+      type: 'attribute',
+      parents: 0,
+    },
+  ],
   messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
   otherContainers: {
     'yt-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 10 }],
-    'yt-shorts-toggle': [{ selector: 'Shorts', type: 'text', parents: 8 }],
+    'yt-shorts-toggle': [
+      { selector: 'Shorts', type: 'text', parents: 6 },
+      { selector: 'Recently uploaded Shorts', type: 'text', parents: 6 },
+    ],
     'yt-featured-toggle': [{ selector: '[id="chips"]', type: 'attribute', parents: 0 }],
     'yt-breakingnews-toggle': [{ selector: 'Breaking news', type: 'text', parents: 9 }],
   },
@@ -43,7 +53,7 @@ export const youtubeConfigs = {
         ],
         'yt-profile-toggle': [
           { selector: '[aria-label="You"]', type: 'attribute', parents: 0 },
-          { selector: '[title="You"]', type: 'attribute', parents: 3 },
+          { selector: '[href="/feed/you"]', type: 'attribute', parents: 3 },
         ],
         'yt-explore-toggle': { selector: 'Explore', type: 'text', parents: 2 },
         'yt-morefrom-toggle': { selector: 'More from YouTube', type: 'text', parents: 2 },
@@ -77,6 +87,16 @@ export const youtubeConfigs = {
         },
       },
     },
+    Search: {
+      url: '/results',
+      hideElement: {
+        'yt-search-feed-toggle': { selector: 'primary', type: 'id', parents: 0 },
+        'yt-search-filter-toggle': { selector: '[aria-label="Search filters"]', type: 'attribute', parents: 0 },
+      },
+      deleteElement: {
+        'yt-search-secondary-toggle': { selector: 'secondary', type: 'id', parents: 0 },
+      },
+    },
     Extras: {
       url: '/watch',
       hideElement: {
@@ -88,6 +108,22 @@ export const youtubeConfigs = {
           { selector: 'chatframe', type: 'id', parents: 2 },
           { selector: 'teaser-carousel', type: 'id', parents: 0 },
         ],
+        'yt-description-toggle': { selector: 'description-inner', type: 'id', parents: 1 },
+        'yt-suggestions-toggle': { selector: 'player-ads', type: 'id', parents: 1 },
+        'yt-mixes-toggle': {
+          selector: '[title="Mixes are playlists YouTube makes for you"]',
+          type: 'attribute',
+          parents: 8,
+        },
+      },
+      deleteElement: {
+        'yt-askai-toggle': {
+          selector: '[aria-label="Ask"]',
+          type: 'attribute',
+          parents: 2,
+        },
+        'yt-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
+        'yt-clip-toggle': { selector: 'Clip', type: 'text', parents: 3 },
         'yt-reacts-toggle': [
           {
             selector: '[class="ytSegmentedLikeDislikeButtonViewModelHost style-scope ytd-menu-renderer"]',
@@ -96,20 +132,11 @@ export const youtubeConfigs = {
           },
         ],
         'yt-shares-toggle': {
-          selector: '[class="yt-spec-button-view-model style-scope ytd-menu-renderer"]',
+          selector: '[title="Share"]',
           type: 'attribute',
-          parents: 0,
+          parents: 2,
         },
         'yt-saves-toggle': [{ selector: '[aria-label="Save to playlist"]', type: 'attribute', parents: 0 }],
-        'yt-description-toggle': { selector: 'description-inner', type: 'id', parents: 1 },
-        'yt-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
-        'yt-clip-toggle': { selector: 'Clip', type: 'text', parents: 3 },
-        'yt-suggestions-toggle': { selector: 'player-ads', type: 'id', parents: 1 },
-        'yt-mixes-toggle': {
-          selector: '[title="Mixes are playlists YouTube makes for you"]',
-          type: 'attribute',
-          parents: 8,
-        },
       },
     },
   },
