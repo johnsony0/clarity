@@ -21,14 +21,14 @@ export const twitterConfigs = {
     Navigation: {
       url: '_',
       hideElement: {
-        'x-home-toggle': { selector: '[aria-label="Home"]', type: 'attribute', parents: 0 },
-        'x-search-toggle': [
+        'x-nav-home-toggle': { selector: '[aria-label="Home"]', type: 'attribute', parents: 0 },
+        'x-nav-search-toggle': [
           { selector: '[aria-label="Search and explore"]', type: 'attribute', parents: 0 },
           { selector: '[role="search"]', type: 'attribute', parents: 0 },
         ],
-        'x-messages-toggle': { selector: '[aria-label="Direct Messages"]', type: 'attribute', parents: 0 },
-        'x-notification-toggle': { selector: '[aria-label="Notifications"]', type: 'attribute', parents: 0 },
-        'x-grok-toggle': [
+        'x-nav-messages-toggle': { selector: '[aria-label="Direct Messages"]', type: 'attribute', parents: 0 },
+        'x-nav-notification-toggle': { selector: '[aria-label="Notifications"]', type: 'attribute', parents: 0 },
+        'x-nav-grok-toggle': [
           { selector: '[aria-label="Grok"]', type: 'attribute', parents: 0 },
           {
             selector: 'css-175oi2r r-6koalj r-eqz5dr r-16y2uox r-1pi2tsx r-1loqt21 r-o7ynqc r-6416eg r-1ny4l3l',
@@ -36,45 +36,45 @@ export const twitterConfigs = {
             parents: 2,
           },
         ],
-        'x-jobs-toggle': { selector: '[aria-label="Jobs"]', type: 'attribute', parents: 0 },
-        'x-communities-toggle': { selector: '[aria-label="Communities"]', type: 'attribute', parents: 0 },
-        'x-premium-toggle': [
+        'x-nav-jobs-toggle': { selector: '[aria-label="Jobs"]', type: 'attribute', parents: 0 },
+        'x-nav-communities-toggle': { selector: '[aria-label="Communities"]', type: 'attribute', parents: 0 },
+        'x-nav-premium-toggle': [
           { selector: '[data-testid="super-upsell-UpsellCardRenderProperties"]', type: 'attribute', parents: 1 },
           { selector: '[aria-label="Premium"]', type: 'attribute', parents: 0 },
         ],
-        'x-business-toggle': { selector: '[aria-label="Business"]', type: 'attribute', parents: 0 },
-        'x-profile-toggle': { selector: '[aria-label="Profile"]', type: 'attribute', parents: 0 },
-        'x-menu-toggle': { selector: '[aria-label="More menu items"]', type: 'attribute', parents: 0 },
-        'x-list-toggle': { selector: '[aria-label="Lists"]', type: 'attribute', parents: 0 },
-        'x-bookmark-toggle': { selector: '[aria-label="Bookmarks"]', type: 'attribute', parents: 0 },
-        'x-verifiedorgs-toggle': { selector: '[aria-label="Verified Orgs"]', type: 'attribute', parents: 0 },
+        'x-nav-business-toggle': { selector: '[aria-label="Business"]', type: 'attribute', parents: 0 },
+        'x-nav-profile-toggle': { selector: '[aria-label="Profile"]', type: 'attribute', parents: 0 },
+        'x-nav-menu-toggle': { selector: '[aria-label="More menu items"]', type: 'attribute', parents: 0 },
+        'x-nav-list-toggle': { selector: '[aria-label="Lists"]', type: 'attribute', parents: 0 },
+        'x-nav-bookmark-toggle': { selector: '[aria-label="Bookmarks"]', type: 'attribute', parents: 0 },
+        'x-nav-verifiedorgs-toggle': { selector: '[aria-label="Verified Orgs"]', type: 'attribute', parents: 0 },
       },
     },
     Home: {
       url: '/home',
       hideElement: {
-        'x-homeposts-toggle': { selector: '[role="region"]', type: 'attribute', parents: 0 },
-        'x-foryou-toggle': { selector: 'For you', type: 'text', parents: 4 },
-        'x-following-toggle': { selector: 'Following', type: 'text', parents: 4 },
-        'x-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
-        'x-recc-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
-        'x-news-toggle': { selector: 'Today’s News', type: 'text', parents: 4 },
+        'x-home-posts-toggle': { selector: '[role="region"]', type: 'attribute', parents: 0 },
+        'x-home-foryou-toggle': { selector: 'For you', type: 'text', parents: 4 },
+        'x-home-following-toggle': { selector: 'Following', type: 'text', parents: 4 },
+        'x-home-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
+        'x-home-recc-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
+        'x-home-news-toggle': { selector: 'Today’s News', type: 'text', parents: 4 },
       },
     },
     Pages: {
       url: '/',
       hideElement: {
-        'x-pagesposts-toggle': [
+        'x-pages-posts-toggle': [
           { selector: '[role="region"]', type: 'attribute', parents: 0 },
           { selector: 'Posts', type: 'text', parents: 4 },
         ],
-        'x-articles-toggle': { selector: 'Articles', type: 'text', parents: 4 },
-        'x-replies-toggle': { selector: 'Replies', type: 'text', parents: 4 },
-        'x-highlights-toggle': { selector: 'Highlights', type: 'text', parents: 4 },
-        'x-media-toggle': { selector: 'Media', type: 'text', parents: 4 },
-        'x-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
-        'x-suggestions-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
-        'x-affiliates-toggle': { selector: 'Affiliates', type: 'text', parents: 4 },
+        'x-pages-articles-toggle': { selector: 'Articles', type: 'text', parents: 4 },
+        'x-pages-replies-toggle': { selector: 'Replies', type: 'text', parents: 4 },
+        'x-pages-highlights-toggle': { selector: 'Highlights', type: 'text', parents: 4 },
+        'x-pages-media-toggle': { selector: 'Media', type: 'text', parents: 4 },
+        'x-pages-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
+        'x-pages-suggestions-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
+        'x-pages-affiliates-toggle': { selector: 'Affiliates', type: 'text', parents: 4 },
       },
     },
     Explore: {
@@ -135,17 +135,17 @@ export const twitterConfigs = {
   onPost: {
     hideElements: {},
     hideElement: {
-      'x-comments-toggle': [{ selector: '[data-testid="reply"]', type: 'attribute', parents: 0 }, { selector: '' }],
-      'x-reacts-toggle': [{ selector: '[data-testid="like"]', type: 'attribute', parents: 0 }],
-      'x-shares-toggle': [
+      'x-posts-comments-toggle': { selector: '[data-testid="reply"]', type: 'attribute', parents: 0 },
+      'x-posts-reacts-toggle': [{ selector: '[data-testid="like"]', type: 'attribute', parents: 0 }],
+      'x-posts-shares-toggle': [
         { selector: '[data-testid="retweet"]', type: 'attribute', parents: 0 },
         { selector: '[aria-label="Share post"]', type: 'attribute', parents: 0 },
       ],
-      'x-stats-toggle': [
+      'x-posts-stats-toggle': [
         { selector: '[aria-label*="View post analytics"]', type: 'attribute', parents: 0 },
         { selector: 'Views', type: 'text', parents: 3 },
       ],
-      'x-saves-toggle': [{ selector: '[data-testid="bookmark"]', type: 'attribute', parents: 0 }],
+      'x-posts-saves-toggle': [{ selector: '[data-testid="bookmark"]', type: 'attribute', parents: 0 }],
       'x-posts-explain-toggle': { selector: `[aria-label="Grok actions"]`, type: 'attribute', parents: 0 },
     },
   },
