@@ -251,6 +251,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
 const processPost = (platformConfig: PlatformConfig, settings: Settings, postContainer: HTMLElement) => {
   for (const [filterKey, filterData] of Object.entries(platformConfig.otherContainers)) {
     if (!settings[filterKey]) continue;
+    console.log(filterData, postContainer);
     hideElement(filterData, postContainer);
   }
   const messageContainer = findElement(postContainer, platformConfig.messageContainer);
@@ -283,6 +284,7 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
               const postContainer = findElement(node, containerSelector);
               if (postContainer && !postContainer.dataset.processed) {
                 postContainer.dataset.processed = 'true';
+                console.log(postContainer);
                 processPost(platformConfig, settings, postContainer);
               }
             });

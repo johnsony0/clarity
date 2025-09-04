@@ -16,10 +16,10 @@ export const extensionSettings = {
       max: 300,
       rating: 4,
     },
-    { id: 'scroll-limit', label: 'Limit Scrolling', type: 'checkbox', default: true, rating: 3 },
-    { id: 'grayscale-toggle', label: 'Grayscale', type: 'checkbox', default: false, rating: 4 },
-    { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, rating: 4 },
-    { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, rating: 5 },
+    { id: 'scroll-limit', label: 'Limit Scrolling', type: 'checkbox', default: true, rating: 4 },
+    { id: 'grayscale-toggle', label: 'Grayscale', type: 'checkbox', default: false, rating: 5 },
+    { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, rating: 6 },
+    { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, rating: 6 },
   ],
   Posts: [
     { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, rating: 2 },
@@ -61,7 +61,7 @@ export const extensionSettings = {
       type: 'checkbox',
       default: false,
       tag: 'topic', //rename to ai once fixed
-      rating: 5,
+      rating: 7,
     },
     {
       id: 'topic-filter-visibility',

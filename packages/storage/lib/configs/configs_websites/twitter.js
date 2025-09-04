@@ -1,8 +1,46 @@
 export const twitterConfigs = {
   mainContainer: { selector: '[aria-label="Home timeline"]', type: 'attribute', parents: 0 },
-  postContainer: [{ selector: 'article', type: 'attribute', parents: 0 }],
+  postContainer: [
+    { selector: 'article', type: 'attribute', parents: 0 },
+    { selector: '[class="css-175oi2r r-1adg3ll r-1ny4l3l"]', type: 'attribute', parents: 1 },
+  ],
   messageContainer: { selector: '[data-testid="tweetText"]', type: 'attribute', parents: 0 },
-  otherContainers: {},
+  otherContainers: {
+    'x-followsuggestions-toggle': [
+      {
+        selector:
+          '[class="css-175oi2r r-sdzlij r-1phboty r-rs99b7 r-lrvibr r-15ysp7h r-4wgw6l r-3pj75a r-1loqt21 r-o7ynqc r-6416eg r-1ny4l3l"]',
+        type: 'attribute',
+        parents: 8,
+      },
+      { selector: 'People', type: 'text', parents: 6 },
+      { selector: 'View all', type: 'text', parents: 5 },
+      { selector: 'Who to follow', type: 'text', parents: 6 },
+      { selector: 'Show more', type: 'text', parents: 5 },
+    ],
+    'x-search-communities-toggle': [
+      { selector: 'Explore Communities', type: 'text', parents: 6 },
+      { selector: '[aria-label="Timeline: Carousel"]', type: 'attribute', parents: 4 },
+      { selector: 'Discover more', type: 'text', parents: 5 },
+    ],
+    'x-explore-news-toggle': [
+      { selector: `Today's News`, type: 'text', parents: 4 },
+      { selector: '[class="css-175oi2r r-o7ynqc r-6416eg r-1ny4l3l r-1loqt21"]', type: 'attribute', parents: 3 },
+      {
+        selector:
+          '[class="css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-1udbk01 r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-1inkyih r-rjixqe r-b88u0q r-15zivkp"]',
+        type: 'attribute',
+        parents: 3,
+      },
+    ],
+    'x-explore-trending-toggle': [
+      {
+        selector: '[class="css-175oi2r r-6koalj r-1mmae3n r-3pj75a r-o7ynqc r-6416eg r-1ny4l3l r-1loqt21"]',
+        type: 'attribute',
+        parents: 3,
+      },
+    ],
+  },
   others: {
     exempt: 'x-pages-exempt',
     createTimeout: { selector: 'x-timeout', text: 'X/Twitter' },
@@ -72,7 +110,7 @@ export const twitterConfigs = {
         'x-pages-replies-toggle': { selector: 'Replies', type: 'text', parents: 4 },
         'x-pages-highlights-toggle': { selector: 'Highlights', type: 'text', parents: 4 },
         'x-pages-media-toggle': { selector: 'Media', type: 'text', parents: 4 },
-        'x-pages-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
+        'x-home-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
         'x-pages-suggestions-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
         'x-pages-affiliates-toggle': { selector: 'Affiliates', type: 'text', parents: 4 },
       },
@@ -82,28 +120,13 @@ export const twitterConfigs = {
       hideElement: {
         'x-explore-feed-toggle': { selector: '[aria-label="Timeline: Explore"]', type: 'attribute', parents: 0 },
         'x-explore-foryou-toggle': { selector: 'For You', type: 'text', parents: 4 },
-        'x-explore-news-toggle': [
-          { selector: `Today's News`, type: 'text', parents: 4 },
-          { selector: `Today’s News`, type: 'text', parents: 4 },
-          { selector: `News`, type: 'text', parents: 4 },
-          { selector: '[class="css-175oi2r r-o7ynqc r-6416eg r-1ny4l3l r-1loqt21"]', type: 'attribute', parents: 3 },
-        ],
-        'x-explore-trending-toggle': { selector: 'Trending', type: 'text', parents: 4 },
         'x-explore-sports-toggle': { selector: 'Sports', type: 'text', parents: 4 },
         'x-explore-entertainment-toggle': { selector: 'Entertainment', type: 'text', parents: 4 },
-      },
-      hideElements: {
-        'x-explore-news-toggle': {
-          selector:
-            '[class="css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-1udbk01 r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-1inkyih r-rjixqe r-b88u0q r-15zivkp"]',
-          type: 'attribute',
-          parents: 3,
-        },
-        'x-explore-trending-toggle': {
-          selector: '[class="css-175oi2r r-6koalj r-1mmae3n r-3pj75a r-o7ynqc r-6416eg r-1ny4l3l r-1loqt21"]',
-          type: 'attribute',
-          parents: 3,
-        },
+        'x-explore-news-toggle': [
+          { selector: `Today’s News`, type: 'text', parents: 4 },
+          { selector: `News`, type: 'text', parents: 4 },
+        ],
+        'x-explore-trending-toggle': { selector: 'Trending', type: 'text', parents: 4 },
       },
     },
     Search: {
@@ -135,7 +158,10 @@ export const twitterConfigs = {
   onPost: {
     hideElements: {},
     hideElement: {
-      'x-posts-comments-toggle': { selector: '[data-testid="reply"]', type: 'attribute', parents: 0 },
+      'x-posts-comments-toggle': [
+        { selector: '[data-testid="reply"]', type: 'attribute', parents: 0 },
+        //{ selector: '[class="css-175oi2r r-18u37iz r-1q142lx"]', type: 'attribute', parents: 10 }
+      ],
       'x-posts-reacts-toggle': [{ selector: '[data-testid="like"]', type: 'attribute', parents: 0 }],
       'x-posts-shares-toggle': [
         { selector: '[data-testid="retweet"]', type: 'attribute', parents: 0 },

@@ -130,7 +130,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
         const platformSettings = allPlatformSettings[platform];
         Object.keys(platformSettings).forEach(category => {
           platformSettings[category].forEach((setting: any) => {
-            if (setting.tag === tag) {
+            if (setting.tag === tag && setting.type === 'checkbox') {
               updatedSettings[setting.id] = toggleStates[tag]; // Update only the relevant setting
             }
           });
@@ -196,7 +196,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
             id="slider"
             type="range"
             min="1"
-            max="5"
+            max="7"
             value={sliderValue}
             onChange={handleSliderChange}
             className="mt-1 block w-full accent-blue-500"

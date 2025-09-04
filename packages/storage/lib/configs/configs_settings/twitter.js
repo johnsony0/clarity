@@ -2,6 +2,7 @@ export const twitterSettings = {
   General: [
     { id: 'x-timeout', label: 'X Timeout (seconds)', type: 'number', default: 0, min: 0, max: 300, rating: 4 },
     { id: 'x-pages-exempt', label: 'Pages Exempt', type: 'array', default: [], placeholder: 'e.g. /NatGeo' },
+    { id: 'x-followsuggestions-toggle', label: 'Follow Suggestions', type: 'checkbox', default: true, rating: 3 },
   ],
   Navigation: [
     { id: 'x-nav-home-toggle', label: 'Hide Home Button', type: 'checkbox', default: true, rating: 2 },
@@ -74,5 +75,12 @@ export const twitterSettings = {
     { id: 'x-search-lists-toggle', label: 'Hide Lists', type: 'checkbox', default: true, rating: 3 },
     { id: 'x-search-news-toggle', label: 'Hide News', type: 'checkbox', default: true, rating: 3 },
     { id: 'x-search-filter-toggle', label: 'Hide Filter', type: 'checkbox', default: true, rating: 3 },
+    {
+      id: 'x-search-communities-toggle',
+      label: 'Hide Explore Communities',
+      type: 'checkbox',
+      default: true,
+      rating: 3,
+    },
   ],
 };
