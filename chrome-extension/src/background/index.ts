@@ -6,6 +6,7 @@ import {
   instagramSettings,
   twitterSettings,
   youtubeSettings,
+  tagMap,
 } from '@extension/storage';
 
 interface SettingCategory {
@@ -37,7 +38,7 @@ chrome.runtime.onInstalled.addListener(async details => {
     const initSettings = {
       power: true,
       darkMode: false,
-      slider: 3,
+      slider: 4,
       toggleStates: {
         bias: false,
         messages: false,
@@ -81,8 +82,8 @@ chrome.runtime.onInstalled.addListener(async details => {
 
       for (const setting of allSettingDefinitionsForPlatform) {
         if (typeof currentPlatformSettings[setting.id] === 'undefined') {
-          // Check if setting has a rating and apply rating-based logic
-          if (setting.rating !== undefined) {
+          // Check if setting has a tag and apply tag-based logic
+          if (setting.tag !== undefined) {
             // Ensure `toggleStates[setting.tag]` is a boolean, default to false if undefined
             // This ensures the condition evaluates correctly even if setting.tag or toggleStates is missing
             const isToggleActive = toggleStates && toggleStates[setting.tag] ? true : false;
@@ -90,23 +91,30 @@ chrome.runtime.onInstalled.addListener(async details => {
             if (!isToggleActive) {
               // Apply if not specifically toggled off
               if (setting.type === 'checkbox') {
-                currentPlatformSettings[setting.id] = setting.rating <= value;
+                if (setting.tag in tagMap) {
+                  currentPlatformSettings[setting.id] = tagMap[setting.tag as keyof typeof tagMap] <= value;
+                } else console.warn(`Non-existent tag:${setting.tag}`);
               } else if (setting.type === 'number') {
                 if (setting.id === 'limit-value') {
-                  // Specific ID logic
-                  currentPlatformSettings[setting.id] = (setting.default as number) - 200 * (value - 1);
-                } else {
-                  // General number logic
-                  if (value > 3) {
-                    currentPlatformSettings[setting.id] = 15 * (value - 3);
+                  currentPlatformSettings[setting.id] = setting.default - 100 * value;
+                } else if (setting.tag === 'timeout') {
+                  if (value === 5) {
+                    currentPlatformSettings[setting.id] = 5;
+                  } else if (value === 6) {
+                    currentPlatformSettings[setting.id] = 15;
+                  } else if (value === 7) {
+                    currentPlatformSettings[setting.id] = 30;
                   } else {
                     currentPlatformSettings[setting.id] = 0;
                   }
+                } else {
+                  //this is the model thresholds
+                  currentPlatformSettings[setting.id] = 50;
                 }
               }
             }
           } else {
-            // If setting has no rating but has a 'default' property, apply it if missing
+            // If setting has no tag but has a 'default' property, apply it if missing
             if (typeof setting.default !== 'undefined') {
               currentPlatformSettings[setting.id] = setting.default;
             }

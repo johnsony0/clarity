@@ -16,8 +16,6 @@ import {
 
 import type { PlatformConfig, Settings } from '@extension/shared';
 
-let currentMainObserver: MutationObserver | null = null;
-
 const filterPost = async (
   platformConfig: PlatformConfig,
   settings: Settings,
@@ -248,51 +246,12 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
 };
 
 // get text and message container
-const processPost = (platformConfig: PlatformConfig, settings: Settings, postContainer: HTMLElement) => {
+export const processPost = (platformConfig: PlatformConfig, settings: Settings, postContainer: HTMLElement) => {
   for (const [filterKey, filterData] of Object.entries(platformConfig.otherContainers)) {
     if (!settings[filterKey]) continue;
-    console.log(filterData, postContainer);
     hideElement(filterData, postContainer);
   }
   const messageContainer = findElement(postContainer, platformConfig.messageContainer);
   const text = messageContainer ? messageContainer.innerText : '';
   filterPost(platformConfig, settings, postContainer, messageContainer, text);
-};
-
-export const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
-  //disconnect previous observer if it exists
-  if (currentMainObserver) {
-    currentMainObserver.disconnect();
-    console.log('Disconnected previous main observer.');
-  }
-  waitForElm(document, platformConfig.mainContainer).then(mainContainer => {
-    if (!mainContainer) {
-      console.warn('Main container not found for this platform.');
-      return;
-    }
-    // Process initial posts after mainContainer is found
-    platformConfig.postContainer.forEach(containerSelector => {
-      const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
-      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
-    });
-    // Observe for new posts
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        mutation.addedNodes.forEach(node => {
-          if (node instanceof Element) {
-            platformConfig.postContainer.forEach(containerSelector => {
-              const postContainer = findElement(node, containerSelector);
-              if (postContainer && !postContainer.dataset.processed) {
-                postContainer.dataset.processed = 'true';
-                console.log(postContainer);
-                processPost(platformConfig, settings, postContainer);
-              }
-            });
-          }
-        });
-      });
-    });
-    observer.observe(mainContainer, { childList: true, subtree: true });
-    currentMainObserver = observer;
-  });
 };

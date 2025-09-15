@@ -1,10 +1,9 @@
 export const extensionSettings = {
   //{ id: 'theme-toggle', label: 'Dark Mode', type: 'checkbox', default: false, tag: 'light mode' },
   Platforms: [
-    { id: 'facebook-toggle', label: 'Enable Facebook', type: 'checkbox', default: true, rating: 1 },
-    //{ id: 'instagram-toggle', label: 'Enable Instagram', type: 'checkbox', default: true, rating: 1 },
-    { id: 'twitter-toggle', label: 'Enable Twitter', type: 'checkbox', default: true, rating: 1 },
-    { id: 'youtube-toggle', label: 'Enable Youtube', type: 'checkbox', default: true, rating: 1 },
+    { id: 'facebook-toggle', label: 'Enable Facebook', type: 'checkbox', default: true, tag: 'on/off' },
+    { id: 'twitter-toggle', label: 'Enable Twitter', type: 'checkbox', default: true, tag: 'on/off' },
+    { id: 'youtube-toggle', label: 'Enable Youtube', type: 'checkbox', default: true, tag: 'on/off' },
   ],
   General: [
     {
@@ -14,17 +13,17 @@ export const extensionSettings = {
       default: 0,
       min: 0,
       max: 300,
-      rating: 4,
+      tag: 'timeout',
     },
-    { id: 'scroll-limit', label: 'Limit Scrolling', type: 'checkbox', default: true, rating: 4 },
-    { id: 'grayscale-toggle', label: 'Grayscale', type: 'checkbox', default: false, rating: 5 },
-    { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, rating: 6 },
-    { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, rating: 6 },
+    { id: 'scroll-limit', label: 'Limit Scrolling', type: 'checkbox', default: true, tag: 'scroll' },
+    { id: 'grayscale-toggle', label: 'Grayscale', type: 'checkbox', default: false, tag: 'grayscale' },
+    { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, tag: 'nav' },
+    { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, tag: 'image/video' },
   ],
   Posts: [
-    { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, rating: 2 },
-    { id: 'limit-value', label: 'Limit Posts Amount', type: 'number', default: 1000, min: 0, max: 1000, rating: 1 },
-    { id: 'postings-toggle', label: 'Hide Post Creation Menu', type: 'checkbox', default: true, rating: 3 },
+    { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, tag: 'limit' },
+    { id: 'limit-value', label: 'Limit Posts Amount', type: 'number', default: 1100, min: 0, max: 1000, tag: 'limit' },
+    { id: 'postings-toggle', label: 'Hide Post Creation Menu', type: 'checkbox', default: true, tag: 'posting' },
   ],
   Content: [
     {
@@ -36,11 +35,19 @@ export const extensionSettings = {
         { value: 'min', text: 'Minimize' },
         { value: 'hide', text: 'Hide' },
       ],
+      tag: 'content',
     },
-    { id: 'filtered-words', label: 'Word/Phrase Filter', type: 'array', default: [], placeholder: 'e.g. Breaking Bad' },
+    {
+      id: 'filtered-words',
+      label: 'Word/Phrase Filter',
+      type: 'array',
+      default: [],
+      placeholder: 'e.g. Breaking Bad',
+      tag: 'content',
+    },
   ],
   Bias: [
-    { id: 'enable-bias', label: 'Enable Bias Classification', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
+    { id: 'enable-bias', label: 'Enable Bias Classification', type: 'checkbox', default: true, tag: 'ai' },
     {
       id: 'bias-filter-visibility',
       label: 'Bias Filter Visibility',
@@ -52,7 +59,7 @@ export const extensionSettings = {
         { value: 'hide', text: 'Hide' },
       ],
     },
-    { id: 'bias-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95 },
+    { id: 'bias-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95, tag: 'bias' },
   ],
   Topic: [
     {
@@ -61,25 +68,24 @@ export const extensionSettings = {
       type: 'checkbox',
       default: false,
       tag: 'topic', //rename to ai once fixed
-      rating: 7,
     },
     {
       id: 'topic-filter-visibility',
       label: 'Topic Filter Visibility',
       type: 'select',
       default: 'min',
-      tag: 'bias',
       options: [
         { value: 'min', text: 'Minimize' },
         { value: 'hide', text: 'Hide' },
       ],
+      tag: 'topic',
     },
-    { id: 'enable-tech', label: 'Hide Tech', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    { id: 'enable-sports', label: 'Hide Sports', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    { id: 'enable-politics', label: 'Hide Politics', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    { id: 'enable-gaming', label: 'Hide Gaming', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    { id: 'enable-food', label: 'Hide Food', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    { id: 'enable-business', label: 'Hide Business', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    { id: 'topic-threshold', label: 'Hide Threshold', type: 'number', default: 50, min: 5, max: 95 },
+    { id: 'enable-tech', label: 'Hide Tech', type: 'checkbox', default: true, tag: 'ai' },
+    { id: 'enable-sports', label: 'Hide Sports', type: 'checkbox', default: true, tag: 'ai' },
+    { id: 'enable-politics', label: 'Hide Politics', type: 'checkbox', default: true, tag: 'ai' },
+    { id: 'enable-gaming', label: 'Hide Gaming', type: 'checkbox', default: true, tag: 'ai' },
+    { id: 'enable-food', label: 'Hide Food', type: 'checkbox', default: true, tag: 'ai' },
+    { id: 'enable-business', label: 'Hide Business', type: 'checkbox', default: true, tag: 'ai' },
+    { id: 'topic-threshold', label: 'Hide Threshold', type: 'number', default: 50, min: 5, max: 95, tag: 'topic' },
   ],
 };

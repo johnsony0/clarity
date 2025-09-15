@@ -8,6 +8,7 @@ export const youtubeConfigs = {
       parents: 0,
     },
   ],
+  siteContainer: { selector: '[id="guide"]', type: 'attribute', parents: 0 },
   messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
   otherContainers: {
     'yt-home-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 10 }],
@@ -136,7 +137,7 @@ export const youtubeConfigs = {
           },
         ],
         'yt-posts-shares-toggle': {
-          selector: '[title="Share"]',
+          selector: '[aria-label="Share"]',
           type: 'attribute',
           parents: 2,
         },

@@ -1,14 +1,76 @@
 //import { sampleFunction } from '@src/sampleFunction';
 //import { TextExtractor } from '@src/contentScript';
-import { filterPage, setupObserver } from '@src/content';
+import { filterPage, processPost } from '@src/content';
 import { facebookConfigs, twitterConfigs, youtubeConfigs } from '@extension/storage';
-import { initModel } from '@extension/shared';
+import { initModel, findElement, waitForElm } from '@extension/shared';
+import type { PlatformConfig, Settings } from '@extension/shared';
 
 console.log('content script loaded');
 
 let lastURL = '';
 let lastPath = '';
 let lastHost = '';
+let currentMainObserver: MutationObserver | null = null;
+let currentContainer: Element | null = null;
+
+const setupObserver = async (platformConfig: PlatformConfig, settings: Settings) => {
+  if (currentMainObserver) {
+    currentMainObserver.disconnect();
+    console.log('Disconnected previous main observer.');
+  }
+  const waitForNewMainContainer = async (): Promise<Element | null> => {
+    let attempts = 0;
+    const maxAttempts = 30;
+    while (attempts < maxAttempts) {
+      const mainContainers = document.querySelectorAll(platformConfig.siteContainer.selector);
+      console.log(`Found ${mainContainers.length} potential main containers.`);
+      let newContainer: Element | null = null;
+      for (const container of Array.from(mainContainers)) {
+        if (container !== currentContainer) {
+          newContainer = container;
+          break;
+        }
+      }
+      if (newContainer) {
+        currentContainer = newContainer;
+        console.log('New main container found and assigned.');
+        return newContainer;
+      }
+      await new Promise(res => setTimeout(res, 1000));
+      attempts++;
+    }
+    console.warn('Max attempts reached, new main container not found.');
+    return null;
+  };
+
+  waitForNewMainContainer().then(mainContainer => {
+    if (!mainContainer) {
+      console.warn('Main container not found or did not change for this platform.');
+      return;
+    }
+    platformConfig.postContainer.forEach(containerSelector => {
+      const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
+      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+    });
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node instanceof Element) {
+            platformConfig.postContainer.forEach(containerSelector => {
+              const postContainer = findElement(node, containerSelector);
+              if (postContainer && !postContainer.dataset.processed) {
+                postContainer.dataset.processed = 'true';
+                processPost(platformConfig, settings, postContainer);
+              }
+            });
+          }
+        });
+      });
+    });
+    observer.observe(mainContainer, { childList: true, subtree: true });
+    currentMainObserver = observer;
+  });
+};
 
 const facebookListener = async (settings: any, currentHost: string, currentPath: string) => {
   let temp = {
@@ -19,13 +81,9 @@ const facebookListener = async (settings: any, currentHost: string, currentPath:
   };
   const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
-    if (currentPath != lastPath && currentHost == lastHost) {
-      window.location.reload();
-    }
-    lastPath = currentPath;
-    lastHost = currentHost;
+    await setupObserver(facebookConfigs, temp);
+    await new Promise(res => setTimeout(res, 200));
     filterPage(facebookConfigs, temp);
-    setupObserver(facebookConfigs, temp);
   }
 };
 
@@ -38,13 +96,9 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
   };
   const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
-    if (currentPath != lastPath && currentHost == lastHost) {
-      window.location.reload();
-    }
-    lastPath = currentPath;
-    lastHost = currentHost;
+    await setupObserver(youtubeConfigs, temp);
+    await new Promise(res => setTimeout(res, 200));
     filterPage(youtubeConfigs, temp);
-    setupObserver(youtubeConfigs, temp);
   }
 };
 
@@ -55,7 +109,6 @@ const handleURLChange = () => {
   const currentPath = currentURL.pathname + currentURL.search;
 
   chrome.storage.sync.get(null, settings => {
-    console.log(settings);
     //if power is on we run
     if (settings['powerState']) {
       // Hide or manage elements based on settings and URL
@@ -68,7 +121,6 @@ const handleURLChange = () => {
           ...settings['toggleStates'],
           ...settings['twitter'],
         };
-        console.log('Observing Twitter posts...', temp);
         const exemptPages = settings['twitter'][twitterConfigs.others.exempt] || [];
         if (!exemptPages.includes(currentPath)) {
           filterPage(twitterConfigs, temp);

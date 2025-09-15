@@ -4,6 +4,7 @@ export const twitterConfigs = {
     { selector: 'article', type: 'attribute', parents: 0 },
     { selector: '[class="css-175oi2r r-1adg3ll r-1ny4l3l"]', type: 'attribute', parents: 1 },
   ],
+  siteContainer: { selector: '[aria-label="Home timeline"]', type: 'attribute', parents: 0 },
   messageContainer: { selector: '[data-testid="tweetText"]', type: 'attribute', parents: 0 },
   otherContainers: {
     'x-followsuggestions-toggle': [

@@ -7,6 +7,7 @@ import {
   instagramSettings,
   twitterSettings,
   youtubeSettings,
+  tagMap,
 } from '@extension/storage';
 
 type ToastState = {
@@ -71,19 +72,28 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
         const platformSettings = allPlatformSettings[platform];
         Object.keys(platformSettings).forEach(category => {
           platformSettings[category].forEach((setting: any) => {
-            if (setting.rating !== undefined) {
+            if (setting.tag !== undefined) {
               if (!toggleStates[setting.tag]) {
                 if (setting.type === 'checkbox') {
-                  updatedSettings[setting.id] = setting.rating <= value;
+                  if (setting.tag in tagMap) {
+                    updatedSettings[setting.id] = tagMap[setting.tag as keyof typeof tagMap] <= value;
+                  } else console.warn(`Non-existent tag:${setting.tag}`);
                 } else if (setting.type === 'number') {
                   if (setting.id === 'limit-value') {
                     updatedSettings[setting.id] = setting.default - 100 * value;
-                  } else {
-                    if (value > 3) {
-                      updatedSettings[setting.id] = 15 * (value - 3);
+                  } else if (setting.tag === 'timeout') {
+                    if (value === 5) {
+                      updatedSettings[setting.id] = 5;
+                    } else if (value === 6) {
+                      updatedSettings[setting.id] = 15;
+                    } else if (value === 7) {
+                      updatedSettings[setting.id] = 30;
                     } else {
                       updatedSettings[setting.id] = 0;
                     }
+                  } else {
+                    //this is the model thresholds
+                    updatedSettings[setting.id] = 50;
                   }
                 }
               }
