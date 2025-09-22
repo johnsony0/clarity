@@ -2,7 +2,8 @@ export const facebookConfigs = {
   mainContainer: { selector: '[role="main"]', type: 'attribute', parents: 0 },
   postContainer: [
     {
-      selector: '[class="x1yztbdb x1n2onr6 xh8yej3 x1ja2u2z"]',
+      selector:
+        '[class="x1n2onr6 x1ja2u2z x1jx94hy xw5cjc7 x1dmpuos x1vsv7so xau1kf4 x9f619 xh8yej3 x6ikm8r x10wlt62 xquyuld"]',
       type: 'attribute',
       parents: 0,
     },

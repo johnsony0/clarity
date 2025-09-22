@@ -1,5 +1,5 @@
 export const youtubeConfigs = {
-  mainContainer: { selector: 'contents', type: 'id', parents: 0 },
+  mainContainer: { selector: `[id="contents"]`, type: 'attribute', parents: 0 },
   postContainer: [
     { selector: '[class="style-scope ytd-rich-grid-renderer"]', type: 'attribute', parents: 0 },
     {
@@ -8,7 +8,7 @@ export const youtubeConfigs = {
       parents: 0,
     },
   ],
-  siteContainer: { selector: '[id="guide"]', type: 'attribute', parents: 0 },
+  siteContainer: { selector: '[id="description-placeholder"]', type: 'attribute', parents: 0 },
   messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
   otherContainers: {
     'yt-home-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 10 }],
@@ -109,10 +109,6 @@ export const youtubeConfigs = {
           { selector: 'comments', type: 'id', parents: 0 },
           { selector: 'chat-messages', type: 'id', parents: 0 },
         ],
-        'yt-posts-livechat-toggle': [
-          { selector: 'chatframe', type: 'id', parents: 2 },
-          { selector: 'teaser-carousel', type: 'id', parents: 0 },
-        ],
         'yt-posts-description-toggle': { selector: 'description-inner', type: 'id', parents: 1 },
         'yt-posts-suggestions-toggle': { selector: 'player-ads', type: 'id', parents: 1 },
         'yt-posts-mixes-toggle': {
@@ -122,6 +118,11 @@ export const youtubeConfigs = {
         },
       },
       deleteElement: {
+        'yt-posts-livechat-toggle': [
+          { selector: 'chatframe', type: 'id', parents: 2 },
+          { selector: 'teaser-carousel', type: 'id', parents: 0 },
+          { selector: 'panels-full-bleed-container', type: 'id', parents: 0 },
+        ],
         'yt-posts-askai-toggle': {
           selector: '[aria-label="Ask"]',
           type: 'attribute',

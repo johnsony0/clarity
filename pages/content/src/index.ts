@@ -11,29 +11,34 @@ let lastURL = '';
 let lastPath = '';
 let lastHost = '';
 let currentMainObserver: MutationObserver | null = null;
-let currentContainer: Element | null = null;
+let currentMainContainer: Element | null = null;
+let currentSiteContainer: Element | null = null;
 
 const setupObserver = async (platformConfig: PlatformConfig, settings: Settings) => {
   if (currentMainObserver) {
     currentMainObserver.disconnect();
     console.log('Disconnected previous main observer.');
   }
-  const waitForNewMainContainer = async (): Promise<Element | null> => {
+
+  const waitForNewContainer = async (
+    currentContainer: Element | null,
+    selectorAttribute: string,
+  ): Promise<Element | null> => {
     let attempts = 0;
     const maxAttempts = 30;
     while (attempts < maxAttempts) {
-      const mainContainers = document.querySelectorAll(platformConfig.siteContainer.selector);
-      console.log(`Found ${mainContainers.length} potential main containers.`);
+      const containers = document.querySelectorAll(selectorAttribute);
+      console.log(`Found ${containers.length} potential containers.`, containers);
       let newContainer: Element | null = null;
-      for (const container of Array.from(mainContainers)) {
+      console.log('Current container:', currentContainer);
+      for (const container of Array.from(containers)) {
         if (container !== currentContainer) {
           newContainer = container;
           break;
         }
       }
       if (newContainer) {
-        currentContainer = newContainer;
-        console.log('New main container found and assigned.');
+        console.log('New container found and assigned.', newContainer);
         return newContainer;
       }
       await new Promise(res => setTimeout(res, 1000));
@@ -43,11 +48,19 @@ const setupObserver = async (platformConfig: PlatformConfig, settings: Settings)
     return null;
   };
 
-  waitForNewMainContainer().then(mainContainer => {
+  const newSiteContainer = await waitForNewContainer(currentSiteContainer, platformConfig.siteContainer.selector);
+  if (!newSiteContainer) {
+    console.warn('Site container not found, aborting observer setup.');
+    return;
+  }
+  currentSiteContainer = newSiteContainer;
+
+  waitForNewContainer(currentMainContainer, platformConfig.mainContainer.selector).then(mainContainer => {
     if (!mainContainer) {
       console.warn('Main container not found or did not change for this platform.');
       return;
     }
+    currentMainContainer = mainContainer;
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
       initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
@@ -58,8 +71,7 @@ const setupObserver = async (platformConfig: PlatformConfig, settings: Settings)
           if (node instanceof Element) {
             platformConfig.postContainer.forEach(containerSelector => {
               const postContainer = findElement(node, containerSelector);
-              if (postContainer && !postContainer.dataset.processed) {
-                postContainer.dataset.processed = 'true';
+              if (postContainer) {
                 processPost(platformConfig, settings, postContainer);
               }
             });

@@ -6,7 +6,6 @@ import {
   createTimeout,
   createDropdown,
   displayLimitReached,
-  waitForElm,
   hideElement,
   hideElements,
   deleteElement,
@@ -209,7 +208,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   //specific youtube page handling, if all 3 toggles are on, just delete the secondary so video is centered.
   if (currentUrl.includes('youtube.com/watch')) {
     if (settings['yt-livechat-toggle'] && settings['yt-suggestions-toggle'] && settings['yt-mixes-toggle']) {
-      hideElement({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
+      deleteElement({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
     }
   }
 
