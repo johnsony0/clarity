@@ -8,13 +8,49 @@ import type { PlatformConfig, Settings } from '@extension/shared';
 console.log('content script loaded');
 
 let lastURL = '';
-let lastPath = '';
-let lastHost = '';
 let currentMainObserver: MutationObserver | null = null;
 let currentMainContainer: Element | null = null;
 let currentSiteContainer: Element | null = null;
 
-const setupObserver = async (platformConfig: PlatformConfig, settings: Settings) => {
+export const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+  //disconnect previous observer if it exists
+  if (currentMainObserver) {
+    currentMainObserver.disconnect();
+    console.log('Disconnected previous main observer.');
+  }
+  waitForElm(document, platformConfig.mainContainer).then(mainContainer => {
+    if (!mainContainer) {
+      console.warn('Main container not found for this platform.');
+      return;
+    }
+    // Process initial posts after mainContainer is found
+    platformConfig.postContainer.forEach(containerSelector => {
+      const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
+      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+    });
+    // Observe for new posts
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node instanceof Element) {
+            platformConfig.postContainer.forEach(containerSelector => {
+              const postContainer = findElement(node, containerSelector);
+              if (postContainer && !postContainer.dataset.processed) {
+                postContainer.dataset.processed = 'true';
+                console.log(postContainer);
+                processPost(platformConfig, settings, postContainer);
+              }
+            });
+          }
+        });
+      });
+    });
+    observer.observe(mainContainer, { childList: true, subtree: true });
+    currentMainObserver = observer;
+  });
+};
+
+const setupFBObserver = async (platformConfig: PlatformConfig, settings: Settings) => {
   if (currentMainObserver) {
     currentMainObserver.disconnect();
     console.log('Disconnected previous main observer.');
@@ -25,7 +61,7 @@ const setupObserver = async (platformConfig: PlatformConfig, settings: Settings)
     selectorAttribute: string,
   ): Promise<Element | null> => {
     let attempts = 0;
-    const maxAttempts = 30;
+    const maxAttempts = 5;
     while (attempts < maxAttempts) {
       const containers = document.querySelectorAll(selectorAttribute);
       console.log(`Found ${containers.length} potential containers.`, containers);
@@ -41,11 +77,12 @@ const setupObserver = async (platformConfig: PlatformConfig, settings: Settings)
         console.log('New container found and assigned.', newContainer);
         return newContainer;
       }
+      console.log('No new container found, retrying...');
       await new Promise(res => setTimeout(res, 1000));
       attempts++;
     }
-    console.warn('Max attempts reached, new main container not found.');
-    return null;
+    console.warn('Max attempts reached, new main container not found, returning default.');
+    return currentContainer;
   };
 
   const newSiteContainer = await waitForNewContainer(currentSiteContainer, platformConfig.siteContainer.selector);
@@ -93,7 +130,7 @@ const facebookListener = async (settings: any, currentHost: string, currentPath:
   };
   const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
-    await setupObserver(facebookConfigs, temp);
+    await setupFBObserver(facebookConfigs, temp);
     await new Promise(res => setTimeout(res, 200));
     filterPage(facebookConfigs, temp);
   }
@@ -108,8 +145,8 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
   };
   const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
-    await setupObserver(youtubeConfigs, temp);
-    await new Promise(res => setTimeout(res, 200));
+    await new Promise(res => setTimeout(res, 1500));
+    setupObserver(youtubeConfigs, temp);
     filterPage(youtubeConfigs, temp);
   }
 };
@@ -148,8 +185,6 @@ const handleURLChange = () => {
 // Initialize the observer and handle URL changes
 const observe = () => {
   lastURL = window.location.href;
-  lastPath = window.location.pathname;
-
   const observer = new MutationObserver(() => {
     const currentURL = window.location.href;
     if (currentURL !== lastURL) {

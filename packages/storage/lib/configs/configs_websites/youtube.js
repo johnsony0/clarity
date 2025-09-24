@@ -8,13 +8,13 @@ export const youtubeConfigs = {
       parents: 0,
     },
   ],
-  siteContainer: { selector: '[id="description-placeholder"]', type: 'attribute', parents: 0 },
+  siteContainer: { selector: '[id="primary"]', type: 'attribute', parents: 0 },
   messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
   otherContainers: {
     'yt-home-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 10 }],
     'yt-shorts-toggle': [
-      { selector: 'Shorts', type: 'text', parents: 6 },
-      { selector: 'Recently uploaded Shorts', type: 'text', parents: 6 },
+      { selector: 'Shorts', type: 'text', parents: 7 },
+      { selector: 'Recently uploaded Shorts', type: 'text', parents: 7 },
     ],
     'yt-home-featured-toggle': [{ selector: '[id="chips"]', type: 'attribute', parents: 0 }],
     'yt-home-breakingnews-toggle': [{ selector: 'Breaking news', type: 'text', parents: 9 }],
@@ -117,7 +117,7 @@ export const youtubeConfigs = {
           parents: 8,
         },
       },
-      deleteElement: {
+      hideElements: {
         'yt-posts-livechat-toggle': [
           { selector: 'chatframe', type: 'id', parents: 2 },
           { selector: 'teaser-carousel', type: 'id', parents: 0 },
@@ -129,7 +129,7 @@ export const youtubeConfigs = {
           parents: 2,
         },
         'yt-posts-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
-        'yt-posts-clip-toggle': { selector: 'Clip', type: 'text', parents: 3 },
+        'yt-posts-clip-toggle': { selector: '[aria-label="Clip"]', type: 'attribute', parents: 0 },
         'yt-posts-reacts-toggle': [
           {
             selector: '[class="ytSegmentedLikeDislikeButtonViewModelHost style-scope ytd-menu-renderer"]',
