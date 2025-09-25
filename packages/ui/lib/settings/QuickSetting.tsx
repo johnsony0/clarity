@@ -10,10 +10,34 @@ import {
   tagMap,
 } from '@extension/storage';
 
+const quickSettingsMessage = [
+  { value: 1, label: '1', features: ['Hide biased posts. Add scroll limits'] },
+  { value: 2, label: '2', features: ['Hide short form content and main navigation'] },
+  {
+    value: 3,
+    label: '3',
+    features: ['Hide messages, searching, post menus, and post actions (comments, reacts, etc)'],
+  },
+  {
+    value: 4,
+    label: '4',
+    features: ['Hide elements on other profiles/pages, live chats, search filters. Adds a timeout'],
+  },
+  { value: 5, label: '5', features: ['Hide user profile button. Add grayscale'] },
+  { value: 6, label: '6', features: ['Hide images/videos. Navigation links no longer work'] },
+  { value: 7, label: '7', features: ['Hide the entire feed'] },
+];
+
 type ToastState = {
   message: string;
   type: 'success' | 'warning' | 'error';
 } | null;
+
+type quickSettingSelection = {
+  value: number;
+  label: string;
+  features: string[];
+};
 
 interface QuickSettingsProps {
   onSettingsChange: (showToast: ToastState) => void;
@@ -22,18 +46,20 @@ interface QuickSettingsProps {
 
 // QuickSettings page to adjust settings with a slider and toggle buttons
 export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, mode }) => {
-  const [sliderValue, setSliderValue] = useState(3);
+  const [slider, setSlider] = useState(quickSettingsMessage[3]);
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({
     ai: false,
     messages: false,
     search: false,
   });
 
-  // Load saved slider value and toggle states on initial load
   useEffect(() => {
     chrome.storage.sync.get(['sliderValue', 'toggleStates'], result => {
       if (result.sliderValue !== undefined) {
-        setSliderValue(result.sliderValue);
+        const initialSelection = quickSettingsMessage.find(item => item.value === result.sliderValue);
+        if (initialSelection) {
+          setSlider(initialSelection);
+        }
       }
       if (result.toggleStates !== undefined) {
         setToggleStates(result.toggleStates);
@@ -52,12 +78,24 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
     };
   };
 
+  const getFeaturesByValue = (value: number) => {
+    const allFeatures: { feature: string; isNew: boolean }[] = [];
+    const selectedIndex = quickSettingsMessage.findIndex(item => item.value === value);
+    // Iterate backwards from the selected index to 0
+    for (let i = selectedIndex; i >= 0; i--) {
+      const isNew = i === selectedIndex;
+      quickSettingsMessage[i].features.forEach(feature => {
+        allFeatures.push({ feature, isNew });
+      });
+    }
+    return allFeatures;
+  };
+
   // Handle slider change
-  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10);
-    setSliderValue(value);
-    updateSettingsBasedOnSlider(value);
-    chrome.storage.sync.set({ sliderValue: value });
+  const handleSliderChange = (selection: quickSettingSelection) => {
+    setSlider(selection);
+    updateSettingsBasedOnSlider(selection.value);
+    chrome.storage.sync.set({ sliderValue: selection.value });
   };
 
   const updateSettingsBasedOnSlider = (value: number) => {
@@ -66,8 +104,8 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
     // Loop through each platform's settings
     Object.keys(allPlatformSettings).forEach(platform => {
       chrome.storage.sync.get([platform], result => {
-        const existingSettings = result[platform] || {}; // Load existing settings
-        const updatedSettings = { ...existingSettings }; // Create a copy to modify
+        const existingSettings = result[platform] || {};
+        const updatedSettings = { ...existingSettings };
 
         const platformSettings = allPlatformSettings[platform];
         Object.keys(platformSettings).forEach(category => {
@@ -168,8 +206,6 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
   }
 
   const Choice: React.FC<ChoiceProps> = ({ tag, path, name, toggleStates, handleToggleTag }) => {
-    // Fix 1: Explicitly return JSX
-    // Fix 2: Use bracket notation for toggleStates[tag]
     return (
       <Button
         onClick={() => handleToggleTag(tag)}
@@ -196,25 +232,40 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
 
   return (
     <div className="mb-8">
-      <h2 className={`text-xl font-semibold text-heading ${mode ? 'mb-4' : 'mb-0'}`}>Quick Settings</h2>
+      <h2 className={`text-xl font-semibold text-heading mb-4`}>Quick Settings</h2>
       <div className="space-y-4">
-        <div>
-          <label htmlFor="slider" className="block text-sm font-medium text-heading">
-            Adjust Settings Rating
-          </label>
-          <input
-            id="slider"
-            type="range"
-            min="1"
-            max="7"
-            value={sliderValue}
-            onChange={handleSliderChange}
-            className="mt-1 block w-full accent-blue-500"
-          />
-          <div className="flex justify-between text-sm text-gray-500 mt-1">
-            <span>None</span>
-            <span className="flex-grow text-center">Current Value: {sliderValue}</span>
-            <span>Max</span>
+        <div className="max-w-2xl w-full">
+          <div className="flex justify-between space-x-1 mb-4">
+            {quickSettingsMessage.map(item => (
+              <div
+                key={item.value}
+                onClick={() => handleSliderChange(item)}
+                className={`
+                  flex-1 flex items-center justify-center p-3 rounded-lg text-center
+                  font-semibold text-sm transition-all duration-200 ease-in-out
+                  cursor-pointer border-2
+                  ${
+                    slider.value === item.value
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                      : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
+                  }
+                `}>
+                {item.label}
+              </div>
+            ))}
+          </div>
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+            <ul>
+              {getFeaturesByValue(slider.value).map((featureItem, index) => (
+                <li key={index} className="mb-1">
+                  {featureItem.isNew ? (
+                    <span className="font-bold">{featureItem.feature}</span>
+                  ) : (
+                    <span>{featureItem.feature}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <div
