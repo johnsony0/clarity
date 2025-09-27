@@ -234,7 +234,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
     <div className="mb-8">
       <h2 className={`text-xl font-semibold text-heading mb-4`}>Quick Settings</h2>
       <div className="space-y-4">
-        <div className="max-w-2xl w-full">
+        <div className="w-full">
           <div className="flex justify-between space-x-1 mb-4">
             {quickSettingsMessage.map(item => (
               <div

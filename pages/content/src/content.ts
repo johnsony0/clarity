@@ -207,7 +207,12 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
 
   //specific youtube page handling, if all 3 toggles are on, just delete the secondary so video is centered.
   if (currentUrl.includes('youtube.com/watch')) {
-    if (settings['yt-livechat-toggle'] && settings['yt-suggestions-toggle'] && settings['yt-mixes-toggle']) {
+    if (
+      settings['yt-posts-livechat-toggle'] &&
+      settings['yt-posts-suggestions-toggle'] &&
+      settings['yt-posts-mixes-toggle']
+    ) {
+      console.log('gets here');
       deleteElement({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
     }
   }

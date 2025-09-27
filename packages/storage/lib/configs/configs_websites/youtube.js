@@ -126,7 +126,7 @@ export const youtubeConfigs = {
         'yt-posts-askai-toggle': {
           selector: '[aria-label="Ask"]',
           type: 'attribute',
-          parents: 2,
+          parents: 0,
         },
         'yt-posts-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
         'yt-posts-clip-toggle': { selector: '[aria-label="Clip"]', type: 'attribute', parents: 0 },
@@ -140,7 +140,7 @@ export const youtubeConfigs = {
         'yt-posts-shares-toggle': {
           selector: '[aria-label="Share"]',
           type: 'attribute',
-          parents: 2,
+          parents: 0,
         },
         'yt-posts-saves-toggle': [{ selector: '[aria-label="Save to playlist"]', type: 'attribute', parents: 0 }],
       },

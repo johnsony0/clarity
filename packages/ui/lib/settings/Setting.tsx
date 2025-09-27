@@ -134,58 +134,65 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
 
   //renders the platform select, dark mode toggle, and settings
   return mode === 0 ? (
-    <div className="min-h-screen flex items-center justify-center bg-primary text-font">
-      <div className="w-[90%] lg:w-1/2 h-[90vh] bg-bg p-8 rounded-lg shadow-lg overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
-          <PlatformSelector onPlatformChange={setPlatform} mode={mode} />
-          <Field>
-            <div className="flex items-center mb-4">
-              <Switch
-                checked={powerState}
-                onChange={setPowerState}
-                className={`${
-                  powerState ? 'bg-secondary' : 'bg-gray-300'
-                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
-                <span
+    <div className="min-h-screen text-font">
+      <div
+        style={{
+          backgroundImage: `url(${chrome.runtime.getURL('optionsbackground.png')})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+        className="h-screen w-screen flex items-center justify-center ">
+        <div className="w-[90%] lg:w-1/2 h-[90vh] bg-bg p-8 rounded-lg shadow-lg overflow-y-auto">
+          <div className="flex justify-between items-center mb-6">
+            <PlatformSelector onPlatformChange={setPlatform} mode={mode} />
+            <Field>
+              <div className="flex items-center mb-4">
+                <Switch
+                  checked={powerState}
+                  onChange={setPowerState}
                   className={`${
-                    powerState ? 'translate-x-6' : 'translate-x-1'
-                  } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                />
-              </Switch>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="size-1">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
-              </svg>
-            </div>
-            <div className="flex items-center">
-              <Switch
-                checked={darkMode}
-                onChange={setDarkMode}
-                className={`${
-                  darkMode ? 'bg-secondary' : 'bg-gray-300'
-                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
-                <span
+                    powerState ? 'bg-secondary' : 'bg-gray-300'
+                  } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+                  <span
+                    className={`${
+                      powerState ? 'translate-x-6' : 'translate-x-1'
+                    } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                  />
+                </Switch>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+                </svg>
+              </div>
+              <div className="flex items-center">
+                <Switch
+                  checked={darkMode}
+                  onChange={setDarkMode}
                   className={`${
-                    darkMode ? 'translate-x-6' : 'translate-x-1'
-                  } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                />
-              </Switch>
-              <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
-            </div>
-          </Field>
+                    darkMode ? 'bg-secondary' : 'bg-gray-300'
+                  } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+                  <span
+                    className={`${
+                      darkMode ? 'translate-x-6' : 'translate-x-1'
+                    } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                  />
+                </Switch>
+                <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
+              </div>
+            </Field>
+          </div>
+          {renderSettings()}
         </div>
-        {renderSettings()}
+        {showToast && (
+          <Toast message={showToast.message} type={showToast.type} duration={3000} onClose={() => setShowToast(null)} />
+        )}
       </div>
-      {showToast && (
-        <Toast message={showToast.message} type={showToast.type} duration={3000} onClose={() => setShowToast(null)} />
-      )}
     </div>
   ) : mode === 1 ? (
     <div className="min-h-screen flex flex-col bg-bg text-font p-4">
