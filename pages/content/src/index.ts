@@ -13,10 +13,10 @@ let currentMainContainer: Element | null = null;
 let currentSiteContainer: Element | null = null;
 
 export const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+  //works regularly with twitter for now
   //disconnect previous observer if it exists
   if (currentMainObserver) {
     currentMainObserver.disconnect();
-    console.log('Disconnected previous main observer.');
   }
   waitForElm(document, platformConfig.mainContainer).then(mainContainer => {
     if (!mainContainer) {
@@ -37,7 +37,6 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
               const postContainer = findElement(node, containerSelector);
               if (postContainer && !postContainer.dataset.processed) {
                 postContainer.dataset.processed = 'true';
-                console.log(postContainer);
                 processPost(platformConfig, settings, postContainer);
               }
             });
@@ -51,9 +50,9 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
 };
 
 const setupFBObserver = async (platformConfig: PlatformConfig, settings: Settings) => {
+  //for some odd reason FB loads in the primary main container second so we need to wait for it
   if (currentMainObserver) {
     currentMainObserver.disconnect();
-    console.log('Disconnected previous main observer.');
   }
 
   const waitForNewContainer = async (
@@ -64,9 +63,7 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
     const maxAttempts = 5;
     while (attempts < maxAttempts) {
       const containers = document.querySelectorAll(selectorAttribute);
-      console.log(`Found ${containers.length} potential containers.`, containers);
       let newContainer: Element | null = null;
-      console.log('Current container:', currentContainer);
       for (const container of Array.from(containers)) {
         if (container !== currentContainer) {
           newContainer = container;
@@ -74,10 +71,8 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
         }
       }
       if (newContainer) {
-        console.log('New container found and assigned.', newContainer);
         return newContainer;
       }
-      console.log('No new container found, retrying...');
       await new Promise(res => setTimeout(res, 1000));
       attempts++;
     }
@@ -92,7 +87,9 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
   }
   currentSiteContainer = newSiteContainer;
 
-  waitForNewContainer(currentMainContainer, platformConfig.mainContainer.selector).then(mainContainer => {
+  waitForNewContainer(currentMainContainer, platformConfig.mainContainer.selector).then(async mainContainer => {
+    //wait a bit for posts to load in after the maincontainer
+    await new Promise(res => setTimeout(res, 500));
     if (!mainContainer) {
       console.warn('Main container not found or did not change for this platform.');
       return;
@@ -100,8 +97,10 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
     currentMainContainer = mainContainer;
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
+      console.log(initialPosts);
       initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
     });
+    console.log(mainContainer);
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
@@ -122,6 +121,10 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
 };
 
 const facebookListener = async (settings: any, currentHost: string, currentPath: string) => {
+  //[class="x193iq5w xvue9z xq1tmr x1ceravr"]
+  //[class="x1hc1fzr x1unhpq9 x6o7n8i"]
+  //[class="class="x1xzczws"]
+  //style="display: none;"
   let temp = {
     ...settings['extension'],
     ...settings['quick-settings'],
@@ -131,9 +134,43 @@ const facebookListener = async (settings: any, currentHost: string, currentPath:
   const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
     await setupFBObserver(facebookConfigs, temp);
-    await new Promise(res => setTimeout(res, 200));
+    await new Promise(res => setTimeout(res, 500));
     filterPage(facebookConfigs, temp);
   }
+};
+
+export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+  //YT observer will run on every main container
+  //disconnect previous observer if it exists
+  if (currentMainObserver) {
+    currentMainObserver.disconnect();
+    console.log('Disconnected previous main observer.');
+  }
+  document.querySelectorAll('[id="contents"]').forEach(mainContainer => {
+    // Process initial posts after mainContainer is found
+    platformConfig.postContainer.forEach(containerSelector => {
+      const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
+      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+    });
+    // Observe for new posts
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (node instanceof Element) {
+            platformConfig.postContainer.forEach(containerSelector => {
+              const postContainer = findElement(node, containerSelector);
+              if (postContainer && !postContainer.dataset.processed) {
+                postContainer.dataset.processed = 'true';
+                processPost(platformConfig, settings, postContainer);
+              }
+            });
+          }
+        });
+      });
+    });
+    observer.observe(mainContainer, { childList: true, subtree: true });
+    currentMainObserver = observer;
+  });
 };
 
 const youtubeListener = async (settings: any, currentHost: string, currentPath: string) => {
@@ -147,7 +184,7 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
   console.log(temp);
   if (!exemptPages.includes(currentPath)) {
     await new Promise(res => setTimeout(res, 1500));
-    setupObserver(youtubeConfigs, temp);
+    setupYTObserver(youtubeConfigs, temp);
     filterPage(youtubeConfigs, temp);
   }
 };

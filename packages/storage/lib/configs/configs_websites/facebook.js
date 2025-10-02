@@ -134,7 +134,17 @@ export const facebookConfigs = {
         },
       ],
       'fb-posts-comments-toggle': [
-        { selector: `[role="article"]`, type: 'attribute', parents: 2 },
+        { selector: `[role="article"]`, type: 'attribute', parents: 0 },
+        {
+          selector: `[class="x1i10hfl xjbqb8w xjqpnuy xc5r6h4 xqeqjp1 x1phubyo x13fuv20 x18b5jzi x1q0q8m5 x1t7ytsu x972fbf x10w94by x1qhh985 x14e42zd x9f619 x1ypdohk xdl72j9 x3ct3a4 xdj266r x14z9mp xat24cr x2lwn1j xeuugli xexx8yu x18d9i69 x1c1uobl x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1fmog5m xu25z0z x140muxe xo1y3bh x3nfvp2 x87ps6o x1lku1pv x1a2a7pz x6s0dn4 xi81zsa x1q0g3np x1iyjqo2 xs83m0k x1icxu4v xdzw4kq"]`,
+          type: 'attribute',
+          parents: 3,
+        },
+        {
+          selector: `[class="html-div xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x1q0q8m5 xlxy82 xfo3rzh x1n2bmbs x7pr0uv xfm49vd x1pv694p x1t7ytsu xyumdvf x10l6tqk x1pe450p xvy4d1p x1qx5ct2"]`,
+          type: 'attribute',
+          parents: 0,
+        },
         { selector: `[aria-label="Leave a comment"]`, type: 'attribute', parents: 0 },
       ],
     },

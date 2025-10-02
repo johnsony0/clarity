@@ -21,6 +21,7 @@ export const tagMap = {
   timeout: 4,
   chat: 4,
   filter: 4,
+  description: 5,
   profile: 5,
   grayscale: 5,
   nav: 6,

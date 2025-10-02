@@ -116,10 +116,10 @@ export const youtubeConfigs = {
           type: 'attribute',
           parents: 8,
         },
+        'yt-posts-livechat-toggle': { selector: 'chatframe', type: 'id', parents: 2 },
       },
       hideElements: {
         'yt-posts-livechat-toggle': [
-          { selector: 'chatframe', type: 'id', parents: 2 },
           { selector: 'teaser-carousel', type: 'id', parents: 0 },
           { selector: 'panels-full-bleed-container', type: 'id', parents: 0 },
         ],

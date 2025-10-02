@@ -28,7 +28,13 @@ export const youtubeSettings = {
     },
   ],
   Posts: [
-    { id: 'yt-posts-description-toggle', label: 'Hide Descriptions', type: 'checkbox', default: false, tag: 'info' },
+    {
+      id: 'yt-posts-description-toggle',
+      label: 'Hide Descriptions',
+      type: 'checkbox',
+      default: false,
+      tag: 'description',
+    },
     {
       id: 'yt-posts-suggestions-toggle',
       label: 'Hide Suggestions',

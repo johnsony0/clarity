@@ -212,7 +212,6 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       settings['yt-posts-suggestions-toggle'] &&
       settings['yt-posts-mixes-toggle']
     ) {
-      console.log('gets here');
       deleteElement({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
     }
   }
