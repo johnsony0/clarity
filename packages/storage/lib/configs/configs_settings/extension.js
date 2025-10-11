@@ -2,6 +2,7 @@ export const extensionSettings = {
   //{ id: 'theme-toggle', label: 'Dark Mode', type: 'checkbox', default: false, tag: 'light mode' },
   Platforms: [
     { id: 'facebook-toggle', label: 'Enable Facebook', type: 'checkbox', default: true, tag: 'on/off' },
+    { id: 'twitch-toggle', label: 'Enable Twitch', type: 'checkbox', default: true, tag: 'on/off' },
     { id: 'twitter-toggle', label: 'Enable Twitter', type: 'checkbox', default: true, tag: 'on/off' },
     { id: 'youtube-toggle', label: 'Enable Youtube', type: 'checkbox', default: true, tag: 'on/off' },
   ],

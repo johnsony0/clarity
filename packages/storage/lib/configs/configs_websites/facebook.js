@@ -62,6 +62,7 @@ export const facebookConfigs = {
           parents: 3,
         },
         'fb-nav-notification-toggle': { selector: 'Number of unread notifications', type: 'text', parents: 4 },
+        'fb-reels-toggle': { selector: '[aria-label="Reels"]', type: 'attribute', parents: 3 },
       },
     },
     Home: {

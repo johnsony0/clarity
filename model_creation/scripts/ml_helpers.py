@@ -1,3 +1,6 @@
+import subprocess
+import sys
+import os
 from torch.utils.data import DataLoader, Subset
 from torch.nn.utils.rnn import pad_sequence
 from sklearn.model_selection import train_test_split
@@ -6,6 +9,9 @@ import matplotlib.pyplot as plt
 import torch
 from tqdm import tqdm
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from onnxruntime.quantization import quantize_dynamic, QuantType
+from onnxruntime.quantization.shape_inference import quant_pre_process 
+
 
 # split data 
 def collate_fn(batch):
@@ -96,7 +102,7 @@ def train_test_loop(path,device,train_loader,test_loader,num_epochs,model,optimi
   torch.onnx.export(
     model,
     dummy_input,
-    f"{path}_model_{test_acc*100:.0f}.onnx",
+    f"{path}_model.onnx",
     export_params=True,
     opset_version=11,
     do_constant_folding=True,
@@ -133,4 +139,42 @@ def train_test_loop(path,device,train_loader,test_loader,num_epochs,model,optimi
   plt.title('Confusion Matrix: Predicted vs Actual Labels')
   plt.show()
 
-  return model
+  return test_acc
+
+def optimize_model(path, test_acc):
+  # naming schemas
+  base_name = f"{path}_model"
+  input_onnx = f"{base_name}.onnx"
+  preprocessed_onnx = f"{base_name}_preprocessed.onnx" 
+  quantized_onnx = f"{base_name}_quantized.onnx"
+
+  if not os.path.exists(input_onnx):
+    print(f"Error: Original ONNX file not found at {input_onnx}")
+    return
+
+  quant_pre_process(
+    input_onnx, 
+    preprocessed_onnx, 
+    skip_symbolic_shape=False, 
+    skip_optimization=False
+  )
+
+  quantize_dynamic(
+    model_input=preprocessed_onnx,
+    model_output=quantized_onnx,
+    weight_type=QuantType.QInt8 
+  )
+
+  command = [
+    sys.executable, 
+    '-m', 'onnxruntime.tools.convert_onnx_models_to_ort',
+    f"{path}_model_quantized.onnx",
+  ]
+
+  try:
+    subprocess.run(command, check=True, capture_output=True, text=True)
+  except subprocess.CalledProcessError as e:
+    print(f"Optimization failed: {e.stderr}")
+    sys.exit(1)
+
+  

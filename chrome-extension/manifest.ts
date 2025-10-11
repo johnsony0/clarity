@@ -30,7 +30,12 @@ const manifest = {
   version: packageJson.version,
   description:
     'Remove distractions, promote less scrolling, and enjoy more time away from social media to focus on things that matter more.',
-  host_permissions: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
+  host_permissions: [
+    'https://*.facebook.com/*',
+    'https://*.x.com/*',
+    'https://*.youtube.com/*',
+    'https://*.twitch.tv/*',
+  ],
   permissions: ['storage'],
   options_page: 'options/index.html',
   background: {
@@ -46,15 +51,15 @@ const manifest = {
   },
   content_scripts: [
     {
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
+      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*', 'https://*.twitch.tv/*'],
       js: ['content/index.iife.js'],
     },
     {
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
+      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*', 'https://*.twitch.tv/*'],
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
+      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*', 'https://*.twitch.tv/*'],
       css: ['content.css'],
     },
   ],
@@ -68,11 +73,12 @@ const manifest = {
         'icon-128.png',
         'icon-34.png',
         'bias_model.onnx',
+        'bias_model.ort',
         'topic_model.onnx',
         'ort-wasm-simd-threaded.mjs',
         'ort-wasm-simd-threaded.wasm',
       ],
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*'],
+      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.youtube.com/*', 'https://*.twitch.tv/*'],
     },
   ],
 } satisfies chrome.runtime.ManifestV3;

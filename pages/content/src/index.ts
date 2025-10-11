@@ -1,7 +1,7 @@
 //import { sampleFunction } from '@src/sampleFunction';
 //import { TextExtractor } from '@src/contentScript';
 import { filterPage, processPost } from '@src/content';
-import { facebookConfigs, twitterConfigs, youtubeConfigs } from '@extension/storage';
+import { facebookConfigs, twitterConfigs, youtubeConfigs, twitchConfigs } from '@extension/storage';
 import { initModel, findElement, waitForElm } from '@extension/shared';
 import type { PlatformConfig, Settings } from '@extension/shared';
 
@@ -215,6 +215,19 @@ const handleURLChange = () => {
         }
       } else if (currentHost.includes('youtube.com') && settings['extension']['youtube-toggle']) {
         youtubeListener(settings, currentHost, currentPath);
+      } else if (currentHost.includes('twitch.tv') && settings['extension']['twitch-toggle']) {
+        const temp = {
+          ...settings['extension'],
+          ...settings['quick-settings'],
+          ...settings['toggleStates'],
+          ...settings['twitch'],
+        };
+        console.log(temp);
+        const exemptPages = settings['twitch'][twitchConfigs.others.exempt] || [];
+        if (!exemptPages.includes(currentPath)) {
+          filterPage(twitchConfigs, temp);
+          setupObserver(twitchConfigs, temp);
+        }
       }
     }
   });

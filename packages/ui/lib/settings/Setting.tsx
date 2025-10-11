@@ -6,6 +6,7 @@ import {
   extensionSettings,
   facebookSettings,
   instagramSettings,
+  twitchSettings,
   twitterSettings,
   youtubeSettings,
 } from '@extension/storage';
@@ -89,6 +90,8 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
         return facebookSettings;
       case 'instagram':
         return instagramSettings;
+      case 'twitch':
+        return twitchSettings;
       case 'twitter':
         return twitterSettings;
       case 'youtube':

@@ -15,7 +15,7 @@ let topicModel: ort.InferenceSession;
 export const initModel = async () => {
   ort.env.wasm.wasmPaths = chrome.runtime.getURL('');
 
-  const BIAS_MODEL_PATH = chrome.runtime.getURL('bias_model.onnx');
+  const BIAS_MODEL_PATH = chrome.runtime.getURL('bias_model.ort');
   biasModel = await ort.InferenceSession.create(BIAS_MODEL_PATH);
 
   const TOPIC_MODEL_PATH = chrome.runtime.getURL('topic_model.onnx');
