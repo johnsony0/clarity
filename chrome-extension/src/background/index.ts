@@ -4,6 +4,7 @@ import {
   extensionSettings,
   facebookSettings,
   instagramSettings,
+  twitchSettings,
   twitterSettings,
   youtubeSettings,
   tagMap,
@@ -25,6 +26,7 @@ const allPlatformSettingsConfig: PlatformSettings = {
   extension: extensionSettings,
   facebook: facebookSettings,
   instagram: instagramSettings,
+  twitch: twitchSettings,
   twitter: twitterSettings,
   youtube: youtubeSettings,
 };
@@ -38,7 +40,7 @@ chrome.runtime.onInstalled.addListener(async details => {
     const initSettings = {
       power: true,
       darkMode: false,
-      slider: 4,
+      sliderValue: 4,
       toggleStates: {
         bias: false,
         messages: false,
@@ -49,11 +51,15 @@ chrome.runtime.onInstalled.addListener(async details => {
     console.log('Default initial settings set.');
   }
 
+  await chrome.storage.sync.get(null).then(items => {
+    console.log('Current storage items:', items);
+  });
+
   // --- 2. Load Global State (slider, toggleStates) ---
   // This part runs on both install and update.
   // Use a default object to ensure these keys always exist from storage or use their defaults.
   let globalSettings = await chrome.storage.sync.get({
-    slider: 3, // Default if not found in storage
+    sliderValue: 3, // Default if not found in storage
     toggleStates: {
       // Default if not found in storage
       bias: false,
@@ -63,7 +69,7 @@ chrome.runtime.onInstalled.addListener(async details => {
     darkMode: false, // Include darkMode here too if it's a top-level setting
   });
 
-  const value = globalSettings.slider as number; // `value` refers to slider value
+  const value = globalSettings.sliderValue as number; // `value` refers to slider value
   const toggleStates = globalSettings.toggleStates; // `toggleStates` object
 
   console.log('Global settings loaded (slider, toggleStates):', { value, toggleStates });
@@ -84,12 +90,8 @@ chrome.runtime.onInstalled.addListener(async details => {
         if (typeof currentPlatformSettings[setting.id] === 'undefined') {
           // Check if setting has a tag and apply tag-based logic
           if (setting.tag !== undefined) {
-            // Ensure `toggleStates[setting.tag]` is a boolean, default to false if undefined
-            // This ensures the condition evaluates correctly even if setting.tag or toggleStates is missing
-            const isToggleActive = toggleStates && toggleStates[setting.tag] ? true : false;
-
-            if (!isToggleActive) {
-              // Apply if not specifically toggled off
+            if (!toggleStates[setting.tag]) {
+              // Apply if not specifically toggled
               if (setting.type === 'checkbox') {
                 if (setting.tag in tagMap) {
                   currentPlatformSettings[setting.id] = tagMap[setting.tag as keyof typeof tagMap] <= value;

@@ -1,3 +1,5 @@
+import { type } from 'os';
+
 export const twitchConfigs = {
   mainContainer: { selector: '[aria-label="Home timeline"]', type: 'attribute', parents: 0 },
   postContainer: [
@@ -24,11 +26,34 @@ export const twitchConfigs = {
     },
     Navigation: {
       url: '_',
-      hideElement: {},
+      hideElement: {
+        'tw-nav-following-toggle': { selector: '[aria-label="Following"]', type: 'attribute', parents: 0 },
+        'tw-nav-sidebarsuggestions-toggle': {
+          selector: '[data-test-selector="side-nav"]',
+          type: 'attribute',
+          parents: 0,
+        },
+        'tw-nav-browse-toggle': { selector: '[aria-label="Browse"]', type: 'attribute', parents: 0 },
+        'tw-nav-more-toggle': { selector: '[aria-label="More Options"]', type: 'attribute', parents: 0 },
+        'tw-nav-search-toggle': { selector: '[aria-label="Search"]', type: 'attribute', parents: 0 },
+        'tw-nav-news-toggle': { selector: '[aria-label="Prime offers"]', type: 'attribute', parents: 0 },
+        'tw-nav-notifications-toggle': { selector: '[aria-label="Open Notifications"]', type: 'attribute', parents: 0 },
+        'tw-nav-whispers-toggle': { selector: '[aria-label="Close Threads"]', type: 'attribute', parents: 0 },
+        'tw-nav-getbits-toggle': { selector: '[aria-label="Get Bits"]', type: 'attribute', parents: 0 },
+        'tw-nav-adfree-toggle': { selector: '[aria-label="Go Ad-Free for Free"]', type: 'attribute', parents: 0 },
+        'tw-nav-profile-toggle': { selector: '[alt="User Avatar"]', type: 'attribute', parents: 0 },
+      },
+      hideElements: {},
     },
     Home: {
       url: '_',
-      hideElement: {},
+      hideElement: {
+        'tw-home-feed-toggle': { selector: '[aria-label="Main Content"]', type: 'attribute', parents: 0 },
+        //'tw-home-carousel-toggle': {selector: '[data-a-target="front-page-carousel"]', type: 'attribute', parents: 0}
+      },
+      deleteElement: {
+        'tw-home-carousel-toggle': { selector: '[data-a-target="front-page-carousel"]', type: 'attribute', parents: 0 },
+      },
     },
     Pages: {
       url: '_',

@@ -193,6 +193,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       if (settings[filterKey]) {
         switch (functionName) {
           case 'hideElement':
+            console.log(filterData);
             hideElement(filterData, document);
             break;
           case 'hideElements':

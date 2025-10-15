@@ -225,8 +225,8 @@ const handleURLChange = () => {
         console.log(temp);
         const exemptPages = settings['twitch'][twitchConfigs.others.exempt] || [];
         if (!exemptPages.includes(currentPath)) {
-          filterPage(twitchConfigs, temp);
           setupObserver(twitchConfigs, temp);
+          filterPage(twitchConfigs, temp);
         }
       }
     }

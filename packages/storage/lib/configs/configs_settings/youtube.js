@@ -59,7 +59,7 @@ export const youtubeSettings = {
     { id: 'yt-posts-askai-toggle', label: 'Hide Ask AI Button', type: 'checkbox', default: true, tag: 'post-actions' },
   ],
   Home: [
-    { id: 'yt-home-posts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, tag: 'feed' },
+    { id: 'yt-home-posts-toggle', label: 'Hide Home Feed', type: 'checkbox', default: false, tag: 'feed' },
     { id: 'yt-home-genres-toggle', label: 'Hide Genres', type: 'checkbox', default: true, tag: 'suggestions' },
     {
       id: 'yt-home-featured-toggle',
