@@ -61,7 +61,7 @@ export const twitchSettings = {
   ],
   Pages: [
     { id: 'tw-pages-feed-toggle', label: 'Hide Pages Feed', type: 'checkbox', default: true, tag: 'feed' },
-    { id: 'tw-pages-live-toggle', label: 'Hide Live Player', type: 'checkbox', default: true, tag: 'chat' },
+    { id: 'tw-pages-live-toggle', label: 'Hide Header', type: 'checkbox', default: true, tag: 'chat' },
     { id: 'tw-pages-home-toggle', label: 'Hide Home Tab', type: 'checkbox', default: true, tag: 'feed' },
     { id: 'tw-pages-about-toggle', label: 'Hide About Tab', type: 'checkbox', default: true, tag: 'other-nav' },
     { id: 'tw-pages-schedule-toggle', label: 'Hide Schedule Tab', type: 'checkbox', default: true, tag: 'other-nav' },
