@@ -71,13 +71,16 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
             <Label className="ml-4 text-sm text-heading">{setting.label}</Label>
           </div>
           {
-            //bandaid fix for small text
+            //bandaid fixes for small text
           }
           {setting.label === 'Grayscale' && (
             <h6>
               Known error when using Facebook Messenger overlay with Grayscale. Known error with timeout not showing on
               YouTube with Grayscale on.
             </h6>
+          )}
+          {setting.id === 'tw-nav-sidebarsuggestions-toggle' && (
+            <h6>Known conflict with 7TV extension causing sidebar to reappear.</h6>
           )}
         </Field>
       );

@@ -1,13 +1,8 @@
-import { type } from 'os';
-
 export const twitchConfigs = {
-  mainContainer: { selector: '[aria-label="Home timeline"]', type: 'attribute', parents: 0 },
-  postContainer: [
-    { selector: 'article', type: 'attribute', parents: 0 },
-    { selector: '[class="css-175oi2r r-1adg3ll r-1ny4l3l"]', type: 'attribute', parents: 1 },
-  ],
-  siteContainer: { selector: '[aria-label="Home timeline"]', type: 'attribute', parents: 0 },
-  messageContainer: { selector: '[data-testid="tweetText"]', type: 'attribute', parents: 0 },
+  mainContainer: { selector: '[aria-label="Main Content"]', type: 'attribute', parents: 0 },
+  postContainer: [{ selector: '[data-test-selector="shelf-card-selector"]', type: 'attribute', parents: 0 }],
+  siteContainer: { selector: '[id="root"]', type: 'attribute', parents: 0 },
+  messageContainer: { selector: '[class="CoreText-sc-1txzju1-0 kdDAY"]', type: 'attribute', parents: 0 },
   otherContainers: {},
   others: {
     exempt: 'tw-pages-exempt',
@@ -49,10 +44,9 @@ export const twitchConfigs = {
       url: '_',
       hideElement: {
         'tw-home-feed-toggle': { selector: '[aria-label="Main Content"]', type: 'attribute', parents: 0 },
-        //'tw-home-carousel-toggle': {selector: '[data-a-target="front-page-carousel"]', type: 'attribute', parents: 0}
       },
       deleteElement: {
-        'tw-home-carousel-toggle': { selector: '[data-a-target="front-page-carousel"]', type: 'attribute', parents: 0 },
+        'tw-home-carousel-toggle': { selector: '[data-a-target="video-ref"]', type: 'attribute', parents: 1 },
       },
     },
     Pages: {

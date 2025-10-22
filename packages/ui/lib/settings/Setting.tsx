@@ -147,10 +147,24 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
         }}
         className="h-screen w-screen flex items-center justify-center ">
         <div className="w-[90%] lg:w-1/2 h-[90vh] bg-bg p-8 rounded-lg shadow-lg overflow-y-auto">
-          <div className="flex justify-between items-center mb-6">
-            <PlatformSelector onPlatformChange={setPlatform} mode={mode} />
-            <Field>
-              <div className="flex items-center mb-4">
+          <div className="items-center mb-6">
+            <Field className="flex justify-between items-center w-full mb-4">
+              <div className="flex items-center">
+                <Switch
+                  checked={darkMode}
+                  onChange={setDarkMode}
+                  className={`${
+                    darkMode ? 'bg-secondary' : 'bg-gray-300'
+                  } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+                  <span
+                    className={`${
+                      darkMode ? 'translate-x-6' : 'translate-x-1'
+                    } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                  />
+                </Switch>
+                <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
+              </div>
+              <div className="flex items-center">
                 <Switch
                   checked={powerState}
                   onChange={setPowerState}
@@ -173,22 +187,8 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
                 </svg>
               </div>
-              <div className="flex items-center">
-                <Switch
-                  checked={darkMode}
-                  onChange={setDarkMode}
-                  className={`${
-                    darkMode ? 'bg-secondary' : 'bg-gray-300'
-                  } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
-                  <span
-                    className={`${
-                      darkMode ? 'translate-x-6' : 'translate-x-1'
-                    } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
-                  />
-                </Switch>
-                <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
-              </div>
             </Field>
+            <PlatformSelector onPlatformChange={setPlatform} mode={mode} />
           </div>
           {renderSettings()}
         </div>

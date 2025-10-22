@@ -190,10 +190,13 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   // Hide initial elements
   for (const [functionName, filters] of Object.entries(configs.onPost || {})) {
     for (const [filterKey, filterData] of Object.entries(filters)) {
+      console.log(filterKey);
       if (settings[filterKey]) {
+        if (filterKey == 'tw-home-carousel-toggle') {
+          console.log('Applying twitch home carousel toggle');
+        }
         switch (functionName) {
           case 'hideElement':
-            console.log(filterData);
             hideElement(filterData, document);
             break;
           case 'hideElements':
@@ -257,5 +260,6 @@ export const processPost = (platformConfig: PlatformConfig, settings: Settings, 
   }
   const messageContainer = findElement(postContainer, platformConfig.messageContainer);
   const text = messageContainer ? messageContainer.innerText : '';
+  console.log(text);
   filterPost(platformConfig, settings, postContainer, messageContainer, text);
 };
