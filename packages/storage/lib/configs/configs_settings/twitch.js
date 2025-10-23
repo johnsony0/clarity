@@ -37,11 +37,17 @@ export const twitchSettings = {
   ],
   Posts: [
     { id: 'tw-posts-livechat-toggle', label: 'Hide Live Chat', type: 'checkbox', default: true, tag: 'chat' },
-    { id: 'tw-posts-description-toggle', label: 'Hide Descriptions', type: 'checkbox', default: true, tag: 'info' },
-    { id: 'tw-posts-panels-toggle', label: 'Hide Panels', type: 'checkbox', default: true, tag: 'news' },
+    {
+      id: 'tw-posts-description-toggle',
+      label: 'Hide Descriptions',
+      type: 'checkbox',
+      default: true,
+      tag: 'description',
+    },
+    { id: 'tw-posts-panels-toggle', label: 'Hide Panels', type: 'checkbox', default: true, tag: 'info' },
     {
       id: 'tw-posts-commenting-toggle',
-      label: 'Hide Send a Message Box',
+      label: 'Hide Message Box',
       type: 'checkbox',
       default: true,
       tag: 'messages',

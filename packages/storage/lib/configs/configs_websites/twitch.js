@@ -44,9 +44,10 @@ export const twitchConfigs = {
       url: '_',
       hideElement: {
         'tw-home-feed-toggle': { selector: '[aria-label="Main Content"]', type: 'attribute', parents: 0 },
+        'tw-home-carousel-toggle': { selector: '[data-a-target="front-page-carousel"]', type: 'attribute', parents: 0 },
       },
       deleteElement: {
-        'tw-home-carousel-toggle': { selector: '[data-a-target="video-ref"]', type: 'attribute', parents: 1 },
+        'tw-home-carousel-toggle': { selector: '[data-a-target="front-page-carousel"]', type: 'attribute', parents: 0 },
       },
     },
     Pages: {
@@ -86,7 +87,22 @@ export const twitchConfigs = {
     },
     Extras: {
       url: '',
-      hideElement: {},
+      hideElement: {
+        'tw-posts-livechat-toggle': [
+          { selector: '[aria-label="Stream Chat"]', type: 'attribute', parents: 0 },
+          { selector: '[aria-label="Expand Chat"]', type: 'attribute', parents: 0 },
+          { selector: '[aria-label="Collapse Chat"]', type: 'attribute', parents: 0 },
+        ],
+        'tw-posts-description-toggle': { selector: '[aria-label="About Panel"]', type: 'attribute', parents: 0 },
+        'tw-posts-panels-toggle': {
+          selector: '[data-test-selector="masonry_container_selector"]',
+          type: 'attribute',
+          parents: 0,
+        },
+        'tw-posts-commenting-toggle': { selector: '[aria-label="Send a message"]', type: 'attribute', parents: 12 },
+        'tw-posts-tags-toggle': { selector: '[aria-label="Tags"]', type: 'attribute', parents: 0 },
+        'tw-posts-share-toggle': { selector: '[aria-label="Share"]', type: 'attribute', parents: 0 },
+      },
     },
   },
   onPost: {

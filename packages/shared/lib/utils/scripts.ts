@@ -55,7 +55,7 @@ export const findElement = (node: ParentNode, input: FindElementInput): HTMLElem
 };
 
 // finds multiple elements in a node based on the input criteria
-export const findElements = (node: ParentNode, input: FindElementInput): Promise<HTMLElement[] | null> => {
+export const findElements = async (node: ParentNode, input: FindElementInput): Promise<HTMLElement[] | null> => {
   return waitForElm(node, input)
     .then(() => {
       let elements: HTMLElement[] = [];
@@ -152,9 +152,18 @@ export const deleteElement = (
   node?: ParentNode | Document,
 ): void => {
   const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
+
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
-      if (elm) {
+      if (!elm) {
+        return;
+      }
+      if (input.selector === '[data-a-target="front-page-carousel"]') {
+        (elm as HTMLVideoElement).muted = true;
+        setTimeout(() => {
+          elm.remove();
+        }, 5000);
+      } else {
         elm.remove();
       }
     });
