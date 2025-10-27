@@ -10,7 +10,7 @@ export const tagMap = {
   short: 2,
   'main-nav': 2,
   messages: 3,
-  postings: 3,
+  posting: 3,
   'post-actions': 3,
   comments: 3,
   search: 3,

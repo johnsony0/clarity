@@ -110,6 +110,7 @@ export const youtubeConfigs = {
           { selector: 'chat-messages', type: 'id', parents: 0 },
         ],
         'yt-posts-description-toggle': { selector: 'description-inner', type: 'id', parents: 1 },
+        'yt-posts-summary-toggle': { selector: 'expandable-metadata', type: 'id', parents: 0 },
         'yt-posts-suggestions-toggle': { selector: 'player-ads', type: 'id', parents: 1 },
         'yt-posts-mixes-toggle': {
           selector: '[title="Mixes are playlists YouTube makes for you"]',

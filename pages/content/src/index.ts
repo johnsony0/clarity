@@ -181,7 +181,6 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
     ...settings['youtube'],
   };
   const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
-  console.log(temp);
   if (!exemptPages.includes(currentPath)) {
     await new Promise(res => setTimeout(res, 1500));
     setupYTObserver(youtubeConfigs, temp);

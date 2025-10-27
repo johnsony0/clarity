@@ -9,6 +9,7 @@ import {
   hideElement,
   hideElements,
   deleteElement,
+  deleteElements,
   hideVideosPhotos,
   findElement,
 } from '@extension/shared';
@@ -212,7 +213,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       settings['yt-posts-suggestions-toggle'] &&
       settings['yt-posts-mixes-toggle']
     ) {
-      deleteElement({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
+      deleteElements({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
     }
   }
 

@@ -35,6 +35,7 @@ export const youtubeSettings = {
       default: false,
       tag: 'description',
     },
+    { id: 'yt-posts-summary-toggle', label: 'Hide AI Summary', type: 'checkbox', default: true, tag: 'info' },
     {
       id: 'yt-posts-suggestions-toggle',
       label: 'Hide Suggestions',

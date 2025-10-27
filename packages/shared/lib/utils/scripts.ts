@@ -169,3 +169,21 @@ export const deleteElement = (
     });
   });
 };
+
+// delete an element if we find it in the DOM
+export const deleteElements = (
+  elementInput: FindElementInput | FindElementInput[],
+  node?: ParentNode | Document,
+): void => {
+  const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
+
+  inputs.forEach(input => {
+    findElements(node || document, input).then(elms => {
+      elms?.forEach(elm => {
+        if (elm) {
+          elm.remove();
+        }
+      });
+    });
+  });
+};
