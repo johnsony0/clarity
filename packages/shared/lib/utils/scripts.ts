@@ -23,6 +23,27 @@ export const hideVideosPhotos = (node: ParentNode): void => {
   });
 };
 
+const muteLoop = (selector: string, maxAttempts: number) => {
+  let attempts = 0;
+  const initialPath = window.location.pathname;
+  const intervalId = setInterval(() => {
+    if (window.location.pathname !== initialPath) {
+      clearInterval(intervalId);
+      console.log('Mute loop stopped: Page navigated away.');
+      return;
+    }
+    const videoElement = document.querySelector(selector);
+    if (videoElement instanceof HTMLVideoElement) {
+      videoElement.muted = true;
+    }
+    if (attempts >= maxAttempts) {
+      clearInterval(intervalId);
+      return;
+    }
+    attempts++;
+  }, 100);
+};
+
 // finds a single element in a node based on the input criteria
 export const findElement = (node: ParentNode, input: FindElementInput): HTMLElement | null => {
   let element: Element | null = null;
@@ -123,6 +144,10 @@ export const hideElement = (
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
       if (elm) {
+        if (input.selector === '[data-a-target="front-page-carousel"]' || input.selector === '[class="home"]') {
+          console.log('starts mute loop');
+          muteLoop('video[playsinline]', 50);
+        }
         (elm as HTMLElement).style.display = 'none';
       }
     });
@@ -155,17 +180,7 @@ export const deleteElement = (
 
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
-      if (!elm) {
-        return;
-      }
-      if (input.selector === '[data-a-target="front-page-carousel"]') {
-        (elm as HTMLVideoElement).muted = true;
-        setTimeout(() => {
-          elm.remove();
-        }, 5000);
-      } else {
-        elm.remove();
-      }
+      if (elm) elm.remove();
     });
   });
 };

@@ -257,6 +257,5 @@ export const processPost = (platformConfig: PlatformConfig, settings: Settings, 
   }
   const messageContainer = findElement(postContainer, platformConfig.messageContainer);
   const text = messageContainer ? messageContainer.innerText : '';
-  console.log(text);
   filterPost(platformConfig, settings, postContainer, messageContainer, text);
 };

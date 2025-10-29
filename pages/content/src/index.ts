@@ -23,6 +23,7 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
       console.warn('Main container not found for this platform.');
       return;
     }
+    console.log(mainContainer);
     // Process initial posts after mainContainer is found
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
