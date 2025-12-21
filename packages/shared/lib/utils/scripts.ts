@@ -191,7 +191,6 @@ export const deleteElements = (
   node?: ParentNode | Document,
 ): void => {
   const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
-
   inputs.forEach(input => {
     findElements(node || document, input).then(elms => {
       elms?.forEach(elm => {

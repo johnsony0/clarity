@@ -70,6 +70,8 @@ export const youtubeConfigs = {
       url: '/',
       hideElement: {
         'yt-home-posts-toggle': { selector: 'contents', type: 'id', parents: 0 },
+      },
+      hideElements: {
         'yt-home-genres-toggle': { selector: '[id="chips"]', type: 'attribute', parents: 0 },
       },
     },
@@ -120,10 +122,7 @@ export const youtubeConfigs = {
         'yt-posts-livechat-toggle': { selector: 'chatframe', type: 'id', parents: 2 },
       },
       hideElements: {
-        'yt-posts-livechat-toggle': [
-          { selector: 'teaser-carousel', type: 'id', parents: 0 },
-          { selector: 'panels-full-bleed-container', type: 'id', parents: 0 },
-        ],
+        'yt-posts-livechat-toggle': [{ selector: 'teaser-carousel', type: 'id', parents: 0 }],
         'yt-posts-askai-toggle': {
           selector: '[aria-label="Ask"]',
           type: 'attribute',
@@ -144,6 +143,9 @@ export const youtubeConfigs = {
           parents: 0,
         },
         'yt-posts-saves-toggle': [{ selector: '[aria-label="Save to playlist"]', type: 'attribute', parents: 0 }],
+      },
+      deleteElements: {
+        'yt-posts-livechat-toggle': { selector: '[id=panels-full-bleed-container]', type: 'attribute', parents: 0 },
       },
     },
   },

@@ -61,6 +61,7 @@ export const facebookSettings = {
     { id: 'fb-posts-reacts-toggle', label: 'Hide Reacts', type: 'checkbox', default: true, tag: 'post-actions' },
     { id: 'fb-posts-comments-toggle', label: 'Hide Comments', type: 'checkbox', default: true, tag: 'comments' },
     { id: 'fb-posts-shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, tag: 'post-actions' },
+    { id: 'fb-posts-stats-toggle', label: 'Hide Post Stats', type: 'checkbox', default: true, tag: 'post-actions' },
   ],
   Home: [
     { id: 'fb-home-posts-toggle', label: 'Hide Home Feed', type: 'checkbox', default: false, tag: 'feed' },

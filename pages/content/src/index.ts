@@ -181,11 +181,24 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
     ...settings['toggleStates'],
     ...settings['youtube'],
   };
+
   const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
+
   if (!exemptPages.includes(currentPath)) {
-    await new Promise(res => setTimeout(res, 1500));
-    setupYTObserver(youtubeConfigs, temp);
-    filterPage(youtubeConfigs, temp);
+    setTimeout(() => {
+      setupYTObserver(youtubeConfigs, temp);
+    }, 1500);
+
+    let iterations = 0;
+    const maxIterations = 4;
+    const filterInterval = setInterval(() => {
+      console.log('Filtering page');
+      filterPage(youtubeConfigs, temp);
+      iterations++;
+      if (iterations >= maxIterations) {
+        clearInterval(filterInterval);
+      }
+    }, 500);
   }
 };
 

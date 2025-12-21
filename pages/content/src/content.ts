@@ -194,11 +194,19 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       if (settings[filterKey]) {
         switch (functionName) {
           case 'hideElement':
-            hideElement(filterData, document);
+            hideElement(filterData);
+            break;
+          case 'deleteElement':
+            deleteElement(filterData);
             break;
           case 'hideElements':
-            hideElements(filterData, document);
+            hideElements(filterData);
             break;
+          case 'deleteElements':
+            deleteElements(filterData);
+            break;
+          default:
+            console.warn(`Unknown function: ${functionName}`);
         }
       }
     }
@@ -236,6 +244,9 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
             break;
           case 'hideElements':
             hideElements(filterData);
+            break;
+          case 'deleteElements':
+            deleteElements(filterData);
             break;
           default:
             console.warn(`Unknown function: ${functionName}`);

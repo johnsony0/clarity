@@ -161,6 +161,12 @@ export const facebookConfigs = {
           type: 'attribute',
           parents: 2,
         },
+        {
+          selector:
+            '[class="html-span xdj266r x14z9mp xat24cr x1lziwak xexx8yu xyri2b x18d9i69 x1c1uobl x1hl2dhg x16tdsg8 x1vvkbs x4k7w5x x1h91t0o x1h9r5lt x1jfb8zj xv2umb2 x1beo9mf xaigb6o x12ejxvf x3igimt xarpa2k xedcshv x1lytzrv x1t2pt76 x7ja8zs x1qrby5j"]',
+          type: 'attribute',
+          parents: 0,
+        },
       ],
       'fb-posts-shares-toggle': [
         {
@@ -176,6 +182,11 @@ export const facebookConfigs = {
           parents: 3,
         },
       ],
+      'fb-posts-stats-toggle': {
+        selector: `[class="x9f619 x1ja2u2z x78zum5 x2lah0s x1n2onr6 x1qughib x1qjc9v5 xozqiw3 x1q0g3np xyri2b x1c1uobl x1ws5yxj xw01apr x4cne27 xifccgj x123j3cw xs9asl8"]`,
+        type: 'attribute',
+        parents: 0,
+      },
     },
   },
 };
