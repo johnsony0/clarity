@@ -24,7 +24,7 @@ const PopupStats: React.FC = () => {
   }, [darkMode]);
 
   useEffect(() => {
-    chrome.storage.sync.get(['post_count'], result => {
+    chrome.storage.local.get(['post_count'], result => {
       setPosts(result['post_count']);
     });
   }, []);

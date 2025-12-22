@@ -23,10 +23,10 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
       console.warn('Main container not found for this platform.');
       return;
     }
-    console.log(mainContainer);
     // Process initial posts after mainContainer is found
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
+      console.log(initialPosts);
       initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
     });
     // Observe for new posts
@@ -149,6 +149,7 @@ export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settin
   }
   document.querySelectorAll('[id="contents"]').forEach(mainContainer => {
     // Process initial posts after mainContainer is found
+    console.log(mainContainer);
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
       initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
@@ -190,15 +191,14 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
     }, 1500);
 
     let iterations = 0;
-    const maxIterations = 4;
+    const maxIterations = 15;
     const filterInterval = setInterval(() => {
-      console.log('Filtering page');
       filterPage(youtubeConfigs, temp);
       iterations++;
       if (iterations >= maxIterations) {
         clearInterval(filterInterval);
       }
-    }, 500);
+    }, 100);
   }
 };
 

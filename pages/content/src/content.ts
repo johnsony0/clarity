@@ -45,9 +45,11 @@ const filterPost = async (
   }
 
   // Check post limit
-  chrome.storage.sync.get(['post_count', 'date'], result => {
+  chrome.storage.local.get(['post_count', 'date'], result => {
     const postCount = result.post_count || 0;
-    chrome.storage.sync.set({ post_count: postCount + 1 });
+    console.log(text);
+    console.log(postCount);
+    chrome.storage.local.set({ post_count: postCount + 1 });
     if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
       console.warn('Post limit exceeded!');
       displayLimitReached(postContainer, settings['limit-value']);
@@ -141,7 +143,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   // Limit scroll if enabled
   if (settings['scroll-limit']) {
     // artifical default scroll_limit given
-    const SCROLL_LIMIT = 10000;
+    const SCROLL_LIMIT = 0;
     function preventScrollBeyondLimit() {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       if (scrollTop > SCROLL_LIMIT) {
@@ -150,6 +152,10 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
     }
     // Attach scroll listener
     window.addEventListener('scroll', preventScrollBeyondLimit);
+  }
+  if (settings['scroll-limit']) {
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = '15px';
   }
 
   // Hide images if enabled
@@ -160,14 +166,14 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   }
 
   // Limit posts
-  chrome.storage.sync.get(['post_count', 'date'], result => {
+  chrome.storage.local.get(['post_count', 'date'], result => {
     const today = new Date().toDateString();
     let postCount = result.post_count || 0;
-    console.log(`Count currently at ${postCount}`);
+    //console.log(`Count currently at ${postCount}`);
 
     if (result.date !== today) {
       // Reset post count for a new day
-      chrome.storage.sync.set({ post_count: 0, date: today });
+      chrome.storage.local.set({ post_count: 0, date: today });
       postCount = 0;
       console.log('Post count reset for the new day.');
     }
@@ -268,5 +274,8 @@ export const processPost = (platformConfig: PlatformConfig, settings: Settings, 
   }
   const messageContainer = findElement(postContainer, platformConfig.messageContainer);
   const text = messageContainer ? messageContainer.innerText : '';
-  filterPost(platformConfig, settings, postContainer, messageContainer, text);
+  if (text && text.length > 0) {
+    console.log(text);
+    filterPost(platformConfig, settings, postContainer, messageContainer, text);
+  }
 };

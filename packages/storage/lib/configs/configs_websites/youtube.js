@@ -1,7 +1,7 @@
 export const youtubeConfigs = {
   mainContainer: { selector: `[id="contents"]`, type: 'attribute', parents: 0 },
   postContainer: [
-    { selector: '[class="style-scope ytd-rich-grid-renderer"]', type: 'attribute', parents: 0 },
+    { selector: '[id="content"]', type: 'attribute', parents: 0 },
     {
       selector: '[class="ytGridShelfViewModelHost ytd-item-section-renderer ytGridShelfViewModelHostHasBottomButton"]',
       type: 'attribute',
@@ -9,7 +9,12 @@ export const youtubeConfigs = {
     },
   ],
   siteContainer: { selector: '[id="primary"]', type: 'attribute', parents: 0 },
-  messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
+  messageContainer: {
+    selector:
+      '[class="yt-core-attributed-string__link yt-core-attributed-string__link--call-to-action-color yt-core-attributed-string--link-inherit-color"]',
+    type: 'attribute',
+    parents: 0,
+  },
   otherContainers: {
     'yt-home-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 10 }],
     'yt-shorts-toggle': [
