@@ -22,6 +22,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
       <div className={`${mode ? 'mb-4' : 'mb-1'}`}>
         <h2 className={`text-xl font-semibold text-heading`}>{category}</h2>
         {category === 'Content' && <h6>Exclusive to Facebook and Twitter</h6>}
+        {category === 'Channels' && <h6>Exclusive to Twitch and YouTube</h6>}
         {category === 'Topic' && <h6>[Beta Test] Exclusive to Facebook and Twitter</h6>}
         {category === 'Bias' && <h6>Exclusive to Facebook and Twitter</h6>}
       </div>

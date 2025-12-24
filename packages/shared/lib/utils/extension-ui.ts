@@ -46,49 +46,92 @@ export const createDataBars = (data: Data, targetElement: HTMLElement | null): v
   }
 };
 
-//dropdown button for toggling visibility of a post node
+const getThemeColors = () => {
+  const host = window.location.hostname;
+  if (host.includes('youtube.com')) {
+    return {
+      bg: 'var(--yt-spec-badge-chip-background)',
+      text: 'var(--yt-spec-text-primary)',
+      border: '1px solid var(--yt-spec-10-percent-layer)',
+    };
+  }
+  if (host.includes('twitch.tv')) {
+    return {
+      bg: 'var(--color-background-button-secondary-default)',
+      text: 'var(--color-text-button-secondary)',
+      border: '1px solid var(--color-border-base)',
+    };
+  }
+  if (host.includes('facebook.com')) {
+    return {
+      bg: 'var(--secondary-button-background)',
+      text: 'var(--primary-text)',
+      border: 'none',
+    };
+  }
+  if (host.includes('twitter.com') || host.includes('x.com')) {
+    const bodyStyle = getComputedStyle(document.body);
+    return {
+      bg: bodyStyle.backgroundColor,
+      text: bodyStyle.color,
+      border: bodyStyle.color,
+    };
+  }
+  return {
+    bg: '#f0f0f0',
+    text: '#333',
+    border: '1px solid #ccc',
+  };
+};
+
 export const createDropdown = (text: string, postNode: HTMLElement): void => {
   const toggleButton = document.createElement('button');
   const buttonNode = postNode.parentNode as HTMLElement;
+  const theme = getThemeColors();
+
+  const originalDisplay = window.getComputedStyle(postNode).display;
 
   const buttonTextSpan = document.createElement('span');
   buttonTextSpan.textContent = text;
-
   const iconContainer = document.createElement('span');
+
+  const dropdownIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>`;
+  const dropupIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M7 14l5-5 5 5z"/></svg>`;
+  iconContainer.innerHTML = dropdownIconSVG;
 
   toggleButton.appendChild(iconContainer);
   toggleButton.appendChild(buttonTextSpan);
 
-  toggleButton.style.border = '1px solid #ccc';
-  toggleButton.style.borderRadius = '8px';
-  toggleButton.style.cursor = 'pointer';
-  toggleButton.style.padding = '10px';
-  toggleButton.style.width = '100%';
+  Object.assign(toggleButton.style, {
+    backgroundColor: theme.bg,
+    color: theme.text,
+    border: theme.border,
+    borderRadius: '9999px',
+    cursor: 'pointer',
+    padding: '8px 16px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '14px',
+    fontWeight: '600',
+    marginBottom: '10px',
+  });
 
-  toggleButton.style.display = 'flex';
-  toggleButton.style.justifyContent = 'center';
-  toggleButton.style.alignItems = 'center';
-  toggleButton.style.gap = '8px';
-
-  const bodyStyle = getComputedStyle(document.body);
-  const backgroundColor = bodyStyle.backgroundColor || '#f0f0f0';
-  const textColor = bodyStyle.color || '#808080';
-  toggleButton.style.backgroundColor = backgroundColor;
-
-  const dropdownIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="${textColor}" d="M7 10l5 5 5-5z"/></svg>`;
-  const dropupIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="${textColor}" d="M7 14l5-5 5 5z"/></svg>`;
-  iconContainer.innerHTML = dropdownIconSVG;
-
-  buttonNode.style.display = 'flex';
-  buttonNode.style.flexDirection = 'column';
-  buttonNode.style.alignItems = 'center';
+  if (buttonNode) {
+    buttonNode.style.display = 'flex';
+    buttonNode.style.flexDirection = 'column';
+    buttonNode.style.alignItems = 'stretch';
+  }
 
   let isHidden = true;
   postNode.style.display = 'none';
 
-  toggleButton.onclick = () => {
+  toggleButton.onclick = e => {
+    e.preventDefault();
     if (isHidden) {
-      postNode.style.display = 'block';
+      postNode.style.display = originalDisplay;
       iconContainer.innerHTML = dropupIconSVG;
     } else {
       postNode.style.display = 'none';
@@ -100,7 +143,6 @@ export const createDropdown = (text: string, postNode: HTMLElement): void => {
   buttonNode.insertAdjacentElement('afterbegin', toggleButton);
 };
 
-// Creates a timeout overlay to disable access to site for a set duration
 export const createTimeout = (name: string, duration: number): void => {
   const overlay = document.createElement('div');
   overlay.style.position = 'fixed';
@@ -144,22 +186,31 @@ export const createTimeout = (name: string, duration: number): void => {
 
 // Displays a message when the post limit is reached
 export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: number): void => {
+  if (document.getElementById('limit-reached-overlay')) {
+    return;
+  }
+
   const messageContainer = document.createElement('div');
-  messageContainer.style.position = 'fixed';
-  messageContainer.style.top = '0';
-  messageContainer.style.left = '0';
-  messageContainer.style.width = '100%';
-  messageContainer.style.height = '100%';
-  messageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-  messageContainer.style.display = 'flex';
-  messageContainer.style.flexDirection = 'column';
-  messageContainer.style.justifyContent = 'center';
-  messageContainer.style.alignItems = 'center';
-  messageContainer.style.zIndex = '9999';
-  messageContainer.style.color = 'white';
-  messageContainer.style.fontSize = '1.5rem';
-  messageContainer.style.textAlign = 'center';
-  messageContainer.style.padding = '20px';
+  messageContainer.id = 'limit-reached-overlay';
+  Object.assign(messageContainer.style, {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'rgba(15, 15, 15, 0.85)', // Darker, more cinematic
+    backdropFilter: 'blur(12px)', // Blurs the background content
+    webkitBackdropFilter: 'blur(12px)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: '2147483647', // Maximum possible z-index
+    color: 'white',
+    textAlign: 'center',
+    padding: '40px',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  });
 
   const messageText = document.createElement('p');
   messageText.innerHTML = `You have hit your set post limit of ${postLimit}`;

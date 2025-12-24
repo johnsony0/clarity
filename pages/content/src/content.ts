@@ -47,8 +47,6 @@ const filterPost = async (
   // Check post limit
   chrome.storage.local.get(['post_count', 'date'], result => {
     const postCount = result.post_count || 0;
-    console.log(text);
-    console.log(postCount);
     chrome.storage.local.set({ post_count: postCount + 1 });
     if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
       console.warn('Post limit exceeded!');
@@ -59,7 +57,7 @@ const filterPost = async (
   let dropdownCreated = false;
 
   // Filter words
-  settings['filtered-words'].forEach((word: string) => {
+  settings['filtered-words']?.forEach((word: string) => {
     if (
       new RegExp(`\\b${word}\\b`, 'i').test(text) &&
       (window.location.hostname.includes('x.com') || window.location.hostname.includes('facebook.com'))
@@ -67,6 +65,21 @@ const filterPost = async (
       if (settings['content-filter-visibility'] === 'hide') {
         postContainer.style.display = 'none';
       } else if (settings['content-filter-visibility'] === 'min') {
+        createDropdown(`Found keyword ${word}`, postContainer);
+        dropdownCreated = true;
+      }
+    }
+  });
+
+  // Filter channels
+  settings['filtered-channels']?.forEach((word: string) => {
+    if (
+      new RegExp(`\\b${word}\\b`, 'i').test(text) &&
+      (window.location.hostname.includes('twitch.tv') || window.location.hostname.includes('youtube.com'))
+    ) {
+      if (settings['channel-filter-visibility'] === 'hide') {
+        postContainer.style.display = 'none';
+      } else if (settings['channel-filter-visibility'] === 'min') {
         createDropdown(`Found keyword ${word}`, postContainer);
         dropdownCreated = true;
       }
@@ -155,7 +168,6 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   }
   if (settings['scroll-limit']) {
     document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = '15px';
   }
 
   // Hide images if enabled
@@ -227,6 +239,11 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       settings['yt-posts-suggestions-toggle'] &&
       settings['yt-posts-mixes-toggle']
     ) {
+      const pageManager = document.querySelector<HTMLElement>('ytd-page-manager');
+      if (pageManager) {
+        pageManager.style.overflowX = 'hidden';
+        pageManager.style.setProperty('overflow-x', 'hidden', 'important');
+      }
       deleteElements({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
     }
   }

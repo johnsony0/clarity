@@ -2,7 +2,7 @@ export const twitchConfigs = {
   mainContainer: { selector: '[aria-label="Main Content"]', type: 'attribute', parents: 0 },
   postContainer: [
     { selector: '[data-test-selector="shelf-card-selector"]', type: 'attribute', parents: 0 },
-    { selector: '[data-target="directory-page__card-container"]', type: 'attribute', parents: 0 },
+    { selector: '[class="Layout-sc-1xcs6mc-0 kpalQF"]', type: 'attribute', parents: 0 },
   ],
   siteContainer: { selector: '[id="root"]', type: 'attribute', parents: 0 },
   messageContainer: { selector: '[class="CoreText-sc-1txzju1-0 kdDAY"]', type: 'attribute', parents: 0 },

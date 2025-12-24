@@ -182,7 +182,6 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
     ...settings['toggleStates'],
     ...settings['youtube'],
   };
-
   const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
 
   if (!exemptPages.includes(currentPath)) {
@@ -194,6 +193,31 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
     const maxIterations = 15;
     const filterInterval = setInterval(() => {
       filterPage(youtubeConfigs, temp);
+      iterations++;
+      if (iterations >= maxIterations) {
+        clearInterval(filterInterval);
+      }
+    }, 100);
+  }
+};
+
+const twitchListener = async (settings: any, currentHost: string, currentPath: string) => {
+  const temp = {
+    ...settings['extension'],
+    ...settings['quick-settings'],
+    ...settings['toggleStates'],
+    ...settings['twitch'],
+  };
+  const exemptPages = settings['twitch'][twitchConfigs.others.exempt] || [];
+  if (!exemptPages.includes(currentPath)) {
+    setTimeout(() => {
+      setupObserver(twitchConfigs, temp);
+    }, 1000);
+
+    let iterations = 0;
+    const maxIterations = 15;
+    const filterInterval = setInterval(() => {
+      filterPage(twitchConfigs, temp);
       iterations++;
       if (iterations >= maxIterations) {
         clearInterval(filterInterval);
@@ -229,18 +253,7 @@ const handleURLChange = () => {
       } else if (currentHost.includes('youtube.com') && settings['extension']['youtube-toggle']) {
         youtubeListener(settings, currentHost, currentPath);
       } else if (currentHost.includes('twitch.tv') && settings['extension']['twitch-toggle']) {
-        const temp = {
-          ...settings['extension'],
-          ...settings['quick-settings'],
-          ...settings['toggleStates'],
-          ...settings['twitch'],
-        };
-        console.log(temp);
-        const exemptPages = settings['twitch'][twitchConfigs.others.exempt] || [];
-        if (!exemptPages.includes(currentPath)) {
-          setupObserver(twitchConfigs, temp);
-          filterPage(twitchConfigs, temp);
-        }
+        twitchListener(settings, currentHost, currentPath);
       }
     }
   });

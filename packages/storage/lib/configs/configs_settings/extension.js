@@ -33,6 +33,7 @@ export const extensionSettings = {
       type: 'select',
       default: 'min',
       options: [
+        { value: 'none', text: 'Off' },
         { value: 'min', text: 'Minimize' },
         { value: 'hide', text: 'Hide' },
       ],
@@ -44,6 +45,28 @@ export const extensionSettings = {
       type: 'array',
       default: [],
       placeholder: 'e.g. Breaking Bad',
+      tag: 'content',
+    },
+  ],
+  Channels: [
+    {
+      id: 'channel-filter-visibility',
+      label: 'Channel Filter Visibility',
+      type: 'select',
+      default: 'min',
+      options: [
+        { value: 'none', text: 'Off' },
+        { value: 'min', text: 'Minimize' },
+        { value: 'hide', text: 'Hide' },
+      ],
+      tag: 'content',
+    },
+    {
+      id: 'filtered-channels',
+      label: 'Channel Filter',
+      type: 'array',
+      default: [],
+      placeholder: `e.g. Sam O'Nella Academy`,
       tag: 'content',
     },
   ],
