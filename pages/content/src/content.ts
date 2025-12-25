@@ -80,7 +80,7 @@ const filterPost = async (
       if (settings['channel-filter-visibility'] === 'hide') {
         postContainer.style.display = 'none';
       } else if (settings['channel-filter-visibility'] === 'min') {
-        createDropdown(`Found keyword ${word}`, postContainer);
+        createDropdown(`Found channel ${word}`, postContainer);
         dropdownCreated = true;
       }
     }
@@ -155,7 +155,6 @@ const filterPost = async (
 export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   // Limit scroll if enabled
   if (settings['scroll-limit']) {
-    // artifical default scroll_limit given
     const SCROLL_LIMIT = 0;
     function preventScrollBeyondLimit() {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -168,6 +167,11 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   }
   if (settings['scroll-limit']) {
     document.body.style.overflow = 'hidden';
+    // some twitch specific
+    const el = document.querySelector<HTMLElement>('[data-a-target="root-scroller"]');
+    if (el) {
+      el.style.overflow = 'hidden';
+    }
   }
 
   // Hide images if enabled

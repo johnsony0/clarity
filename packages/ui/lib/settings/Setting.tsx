@@ -29,7 +29,7 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
   const [showToast, setShowToast] = useState<ToastState>(null);
 
   useEffect(() => {
-    chrome.storage.sync.get(['extension'], result => {
+    chrome.storage.local.get(['extension'], result => {
       if (result['extension']['ex-timeout']) {
         createTimeout('settings', result['extension']['ex-timeout']);
       }
@@ -39,17 +39,17 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
   // Load saved settings and dark mode preference on initial load
   useEffect(() => {
     // Load dark mode preference from chrome.storage.sync
-    chrome.storage.sync.get(['darkMode'], result => {
+    chrome.storage.local.get(['darkMode'], result => {
       setDarkMode(result.darkMode ?? false); // Default to false if not set
     });
 
-    chrome.storage.sync.get(['powerState'], result => {
+    chrome.storage.local.get(['powerState'], result => {
       setPowerState(result.powerState ?? true); // Default to true if not set
     });
 
     // Load platform-specific settings (skip for quick-settings)
     if (platform === 'quick-settings') return;
-    chrome.storage.sync.get([platform], result => {
+    chrome.storage.local.get([platform], result => {
       const platformConfig = getSettings(platform);
       const currentSettings = result[platform] || getDefaultSettings(platformConfig);
       setSettings(currentSettings);
@@ -65,8 +65,8 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
       document.documentElement.classList.add('light-theme');
       document.documentElement.classList.remove('dark-theme');
     }
-    // Save dark mode preference to chrome.storage.sync
-    chrome.storage.sync.set({ darkMode }, () => {
+    // Save dark mode preference to chrome.storage.local
+    chrome.storage.local.set({ darkMode }, () => {
       if (chrome.runtime.lastError) {
         setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
       }
@@ -75,7 +75,7 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
 
   useEffect(() => {
     // Save power preference to chrome.storage.sync
-    chrome.storage.sync.set({ powerState }, () => {
+    chrome.storage.local.set({ powerState }, () => {
       if (chrome.runtime.lastError) {
         setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
       }
@@ -107,7 +107,7 @@ export const Setting: React.FC<SettingsProps> = ({ mode }) => {
     setSettings(updatedSettings);
 
     // Save updated settings to chrome.storage.sync
-    chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
+    chrome.storage.local.set({ [platform]: updatedSettings }, () => {
       if (chrome.runtime.lastError) {
         setShowToast({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
       } else {

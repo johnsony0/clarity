@@ -26,7 +26,6 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
     // Process initial posts after mainContainer is found
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
-      console.log(initialPosts);
       initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
     });
     // Observe for new posts
@@ -98,10 +97,8 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
     currentMainContainer = mainContainer;
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
-      console.log(initialPosts);
       initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
     });
-    console.log(mainContainer);
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
@@ -232,7 +229,8 @@ const handleURLChange = () => {
   const currentHost = window.location.hostname;
   const currentPath = currentURL.pathname + currentURL.search;
 
-  chrome.storage.sync.get(null, settings => {
+  chrome.storage.local.get(null, settings => {
+    console.log(settings);
     //if power is on we run
     if (settings['powerState']) {
       // Hide or manage elements based on settings and URL

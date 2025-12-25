@@ -36,33 +36,42 @@ chrome.runtime.onInstalled.addListener(async details => {
   // Made the listener async
 
   // --- 1. Initial Installation Setup ---
+  const createEmptyDay = () => ({
+    total: 0,
+    facebook: 0,
+    twitter: 0,
+    youtube: 0,
+    twitch: 0,
+  });
   if (details.reason === 'install') {
     const initSettings = {
       power: true,
       darkMode: false,
       sliderValue: 4,
       toggleStates: {
-        bias: false,
+        search: false,
         messages: false,
         ai: false,
       },
+      post_count_history: Array.from({ length: 30 }, () => createEmptyDay()),
+      date: new Date().toDateString(),
     };
-    await chrome.storage.sync.set(initSettings);
+    await chrome.storage.local.set(initSettings);
     console.log('Default initial settings set.');
   }
 
-  await chrome.storage.sync.get(null).then(items => {
+  await chrome.storage.local.get(null).then(items => {
     console.log('Current storage items:', items);
   });
 
   // --- 2. Load Global State (slider, toggleStates) ---
   // This part runs on both install and update.
   // Use a default object to ensure these keys always exist from storage or use their defaults.
-  let globalSettings = await chrome.storage.sync.get({
-    sliderValue: 3, // Default if not found in storage
+  let globalSettings = await chrome.storage.local.get({
+    sliderValue: 4, // Default if not found in storage
     toggleStates: {
       // Default if not found in storage
-      bias: false,
+      search: false,
       messages: false,
       ai: false,
     },
@@ -79,7 +88,7 @@ chrome.runtime.onInstalled.addListener(async details => {
     try {
       // Load existing settings for the current platform
       // If 'platform' key doesn't exist in storage, result[platform] will be undefined.
-      const storedPlatformData = await chrome.storage.sync.get(platform);
+      const storedPlatformData = await chrome.storage.local.get(platform);
       let currentPlatformSettings: { [key: string]: any } = storedPlatformData[platform] || {}; // Initialize with existing or empty object
       // Iterate through the categories (e.g., 'General') defined for this platform
       const categories = allPlatformSettingsConfig[platform]; // e.g., extensionSettings.General
@@ -96,6 +105,8 @@ chrome.runtime.onInstalled.addListener(async details => {
                 if (setting.tag in tagMap) {
                   currentPlatformSettings[setting.id] = tagMap[setting.tag as keyof typeof tagMap] <= value;
                 } else console.warn(`Non-existent tag:${setting.tag}`);
+              } else if (setting.type === 'select') {
+                currentPlatformSettings[setting.id] = setting.default;
               } else if (setting.type === 'number') {
                 if (setting.id === 'limit-value') {
                   currentPlatformSettings[setting.id] = setting.default - 100 * value;
@@ -124,7 +135,7 @@ chrome.runtime.onInstalled.addListener(async details => {
         }
       }
       // Save the *updated* settings for this specific platform back to storage
-      await chrome.storage.sync.set({ [platform]: currentPlatformSettings });
+      await chrome.storage.local.set({ [platform]: currentPlatformSettings });
       console.log(`Settings processed and saved for ${platform}:`, currentPlatformSettings);
     } catch (error) {
       console.error(`Error processing settings for platform ${platform}:`, error);

@@ -8,7 +8,7 @@ const PopupStats: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    chrome.storage.sync.get(['darkMode'], result => {
+    chrome.storage.local.get(['darkMode'], result => {
       setDarkMode(result.darkMode ?? false); // Default to false if not set
     });
   }, []);
@@ -43,7 +43,7 @@ export const Popup: React.FC = () => {
 
   //initial load of power state
   useEffect(() => {
-    chrome.storage.sync.get(['power'], result => {
+    chrome.storage.local.get(['power'], result => {
       setPowerState(result.power ?? true); //if unknown we can set to true
     });
   }, []);

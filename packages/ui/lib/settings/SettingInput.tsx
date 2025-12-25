@@ -20,7 +20,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
 
   // Load saved slider value and toggle states on initial load
   useEffect(() => {
-    chrome.storage.sync.get(['toggleStates'], result => {
+    chrome.storage.local.get(['toggleStates'], result => {
       if (result.toggleStates !== undefined) {
         setToggleStates(result.toggleStates);
       }

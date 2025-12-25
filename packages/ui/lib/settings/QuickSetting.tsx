@@ -55,7 +55,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
   });
 
   useEffect(() => {
-    chrome.storage.sync.get(['sliderValue', 'toggleStates'], result => {
+    chrome.storage.local.get(['sliderValue', 'toggleStates'], result => {
       if (result.sliderValue !== undefined) {
         const initialSelection = quickSettingsMessage.find(item => item.value === result.sliderValue);
         if (initialSelection) {
@@ -97,7 +97,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
   const handleSliderChange = (selection: quickSettingSelection) => {
     setSlider(selection);
     updateSettingsBasedOnSlider(selection.value);
-    chrome.storage.sync.set({ sliderValue: selection.value });
+    chrome.storage.local.set({ sliderValue: selection.value });
   };
 
   const updateSettingsBasedOnSlider = (value: number) => {
@@ -105,7 +105,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
 
     // Loop through each platform's settings
     Object.keys(allPlatformSettings).forEach(platform => {
-      chrome.storage.sync.get([platform], result => {
+      chrome.storage.local.get([platform], result => {
         const existingSettings = result[platform] || {};
         const updatedSettings = { ...existingSettings };
 
@@ -141,7 +141,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
           });
         });
         // Save updated settings for the current platform
-        chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
+        chrome.storage.local.set({ [platform]: updatedSettings }, () => {
           if (chrome.runtime.lastError) {
             onSettingsChange({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
           } else {
@@ -165,7 +165,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
     setToggleStates(newToggleStates);
 
     // Save updated toggle states to chrome.storage.sync
-    chrome.storage.sync.set({ toggleStates: newToggleStates }, () => {
+    chrome.storage.local.set({ toggleStates: newToggleStates }, () => {
       console.log(`Toggle state for ${tag} updated:`, newToggleStates[tag]);
     });
 
@@ -173,7 +173,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
 
     // Loop through each platform's settings
     Object.keys(allPlatformSettings).forEach(platform => {
-      chrome.storage.sync.get([platform], result => {
+      chrome.storage.local.get([platform], result => {
         const existingSettings = result[platform] || {}; // Load existing settings
         const updatedSettings = { ...existingSettings }; // Create a copy to modify
 
@@ -187,7 +187,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
         });
 
         // Save updated settings for the current platform
-        chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
+        chrome.storage.local.set({ [platform]: updatedSettings }, () => {
           if (chrome.runtime.lastError) {
             onSettingsChange({ message: `Failed with error: ${chrome.runtime.lastError.message}`, type: 'error' });
           } else {
