@@ -22,6 +22,7 @@ const filterPost = async (
   postContainer: HTMLElement,
   messageContainer: HTMLElement | null,
   text: string,
+  currentHost: string,
 ) => {
   // Hide images if enabled
   if (settings['imagevideo-toggle']) {
@@ -43,11 +44,25 @@ const filterPost = async (
       }
     }
   }
-
+  console.log(currentHost);
   // Check post limit
-  chrome.storage.local.get(['post_count', 'date'], result => {
-    const postCount = result.post_count || 0;
-    chrome.storage.local.set({ post_count: postCount + 1 });
+  chrome.storage.local.get(['post_count_history', 'date'], result => {
+    const postCount = result.post_count_history[0]?.total || 0;
+    let history = result.post_count_history;
+    if (!history || !history[0]) return;
+    history[0].total += 1;
+
+    if (currentHost.includes('facebook.com')) {
+      history[0].facebook += 1;
+    } else if (currentHost.includes('twitch.tv')) {
+      history[0].twitch += 1;
+    } else if (currentHost.includes('x.com')) {
+      history[0].twitter += 1;
+    } else if (currentHost.includes('youtube.com')) {
+      history[0].youtube += 1;
+    }
+
+    chrome.storage.local.set({ post_count_history: history });
     if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
       console.warn('Post limit exceeded!');
       displayLimitReached(postContainer, settings['limit-value']);
@@ -182,16 +197,29 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   }
 
   // Limit posts
-  chrome.storage.local.get(['post_count', 'date'], result => {
+  chrome.storage.local.get(['post_count_history', 'date'], result => {
     const today = new Date().toDateString();
-    let postCount = result.post_count || 0;
+    let postCount = result.post_count_history[0]?.total || 0;
     //console.log(`Count currently at ${postCount}`);
 
     if (result.date !== today) {
       // Reset post count for a new day
-      chrome.storage.local.set({ post_count: 0, date: today });
-      postCount = 0;
       console.log('Post count reset for the new day.');
+      let history = result.post_count_history || [];
+
+      // Calculate gap in days (in case user didn't open browser for 2 days)
+      const lastDate = new Date(result.date);
+      const currentDate = new Date(today);
+      const diffDays = Math.floor((currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
+      for (let i = 0; i < Math.min(diffDays, 30); i++) {
+        history.unshift({ total: 0, facebook: 0, twitter: 0, youtube: 0, twitch: 0 });
+        history.pop();
+      }
+      console.log(history);
+      chrome.storage.local.set({
+        post_count_history: history,
+        date: today,
+      });
     }
 
     if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
@@ -288,7 +316,12 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
 };
 
 // get text and message container
-export const processPost = (platformConfig: PlatformConfig, settings: Settings, postContainer: HTMLElement) => {
+export const processPost = (
+  platformConfig: PlatformConfig,
+  settings: Settings,
+  postContainer: HTMLElement,
+  currentHost: string,
+) => {
   for (const [filterKey, filterData] of Object.entries(platformConfig.otherContainers)) {
     if (!settings[filterKey]) continue;
     hideElement(filterData, postContainer);
@@ -296,7 +329,6 @@ export const processPost = (platformConfig: PlatformConfig, settings: Settings, 
   const messageContainer = findElement(postContainer, platformConfig.messageContainer);
   const text = messageContainer ? messageContainer.innerText : '';
   if (text && text.length > 0) {
-    console.log(text);
-    filterPost(platformConfig, settings, postContainer, messageContainer, text);
+    filterPost(platformConfig, settings, postContainer, messageContainer, text, currentHost);
   }
 };

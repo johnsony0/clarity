@@ -37,15 +37,15 @@ chrome.runtime.onInstalled.addListener(async details => {
 
   // --- 1. Initial Installation Setup ---
   const createEmptyDay = () => ({
-    total: 0,
-    facebook: 0,
-    twitter: 0,
-    youtube: 0,
-    twitch: 0,
+    total: 230,
+    facebook: 30,
+    twitter: 130,
+    youtube: 20,
+    twitch: 50,
   });
   if (details.reason === 'install') {
     const initSettings = {
-      power: true,
+      powerState: true,
       darkMode: false,
       sliderValue: 4,
       toggleStates: {
@@ -53,8 +53,8 @@ chrome.runtime.onInstalled.addListener(async details => {
         messages: false,
         ai: false,
       },
-      post_count_history: Array.from({ length: 30 }, () => createEmptyDay()),
-      date: new Date().toDateString(),
+      post_count_history: Array.from({ length: 90 }, () => createEmptyDay()),
+      date: new Date('2025-12-22').toDateString(),
     };
     await chrome.storage.local.set(initSettings);
     console.log('Default initial settings set.');

@@ -12,7 +12,7 @@ let currentMainObserver: MutationObserver | null = null;
 let currentMainContainer: Element | null = null;
 let currentSiteContainer: Element | null = null;
 
-export const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+export const setupObserver = (platformConfig: PlatformConfig, settings: Settings, currentHost: string) => {
   //works regularly with twitter for now
   //disconnect previous observer if it exists
   if (currentMainObserver) {
@@ -26,7 +26,9 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
     // Process initial posts after mainContainer is found
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
-      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+      initialPosts.forEach(postContainer =>
+        processPost(platformConfig, settings, postContainer as HTMLElement, currentHost),
+      );
     });
     // Observe for new posts
     const observer = new MutationObserver(mutations => {
@@ -37,7 +39,7 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
               const postContainer = findElement(node, containerSelector);
               if (postContainer && !postContainer.dataset.processed) {
                 postContainer.dataset.processed = 'true';
-                processPost(platformConfig, settings, postContainer);
+                processPost(platformConfig, settings, postContainer, currentHost);
               }
             });
           }
@@ -49,7 +51,7 @@ export const setupObserver = (platformConfig: PlatformConfig, settings: Settings
   });
 };
 
-const setupFBObserver = async (platformConfig: PlatformConfig, settings: Settings) => {
+const setupFBObserver = async (platformConfig: PlatformConfig, settings: Settings, currentHost: string) => {
   //for some odd reason FB loads in the primary main container second so we need to wait for it
   if (currentMainObserver) {
     currentMainObserver.disconnect();
@@ -97,7 +99,9 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
     currentMainContainer = mainContainer;
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
-      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+      initialPosts.forEach(postContainer =>
+        processPost(platformConfig, settings, postContainer as HTMLElement, currentHost),
+      );
     });
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
@@ -106,7 +110,7 @@ const setupFBObserver = async (platformConfig: PlatformConfig, settings: Setting
             platformConfig.postContainer.forEach(containerSelector => {
               const postContainer = findElement(node, containerSelector);
               if (postContainer) {
-                processPost(platformConfig, settings, postContainer);
+                processPost(platformConfig, settings, postContainer, currentHost);
               }
             });
           }
@@ -131,13 +135,13 @@ const facebookListener = async (settings: any, currentHost: string, currentPath:
   };
   const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
-    await setupFBObserver(facebookConfigs, temp);
+    await setupFBObserver(facebookConfigs, temp, currentHost);
     await new Promise(res => setTimeout(res, 500));
     filterPage(facebookConfigs, temp);
   }
 };
 
-export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settings) => {
+export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settings, currentHost: string) => {
   //YT observer will run on every main container
   //disconnect previous observer if it exists
   if (currentMainObserver) {
@@ -149,7 +153,9 @@ export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settin
     console.log(mainContainer);
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
-      initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+      initialPosts.forEach(postContainer =>
+        processPost(platformConfig, settings, postContainer as HTMLElement, currentHost),
+      );
     });
     // Observe for new posts
     const observer = new MutationObserver(mutations => {
@@ -160,7 +166,7 @@ export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settin
               const postContainer = findElement(node, containerSelector);
               if (postContainer && !postContainer.dataset.processed) {
                 postContainer.dataset.processed = 'true';
-                processPost(platformConfig, settings, postContainer);
+                processPost(platformConfig, settings, postContainer, currentHost);
               }
             });
           }
@@ -183,7 +189,7 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
 
   if (!exemptPages.includes(currentPath)) {
     setTimeout(() => {
-      setupYTObserver(youtubeConfigs, temp);
+      setupYTObserver(youtubeConfigs, temp, currentHost);
     }, 1500);
 
     let iterations = 0;
@@ -208,7 +214,7 @@ const twitchListener = async (settings: any, currentHost: string, currentPath: s
   const exemptPages = settings['twitch'][twitchConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
     setTimeout(() => {
-      setupObserver(twitchConfigs, temp);
+      setupObserver(twitchConfigs, temp, currentHost);
     }, 1000);
 
     let iterations = 0;
@@ -246,7 +252,7 @@ const handleURLChange = () => {
         const exemptPages = settings['twitter'][twitterConfigs.others.exempt] || [];
         if (!exemptPages.includes(currentPath)) {
           filterPage(twitterConfigs, temp);
-          setupObserver(twitterConfigs, temp);
+          setupObserver(twitterConfigs, temp, currentHost);
         }
       } else if (currentHost.includes('youtube.com') && settings['extension']['youtube-toggle']) {
         youtubeListener(settings, currentHost, currentPath);

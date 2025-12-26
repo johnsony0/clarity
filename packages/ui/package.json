@@ -24,9 +24,12 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@extension/storage": "workspace:*",
     "@extension/shared": "workspace:*",
+    "@extension/storage": "workspace:*",
+    "@uiw/react-heat-map": "^2.3.3",
+    "@uiw/react-tooltip": "^4.22.3",
     "clsx": "^2.1.1",
+    "recharts": "^3.6.0",
     "tailwind-merge": "^2.4.0"
   },
   "devDependencies": {

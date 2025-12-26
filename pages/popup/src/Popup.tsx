@@ -1,41 +1,7 @@
 import type React from 'react';
 import { useState, useEffect } from 'react';
-import { Setting } from '@extension/ui';
+import { Setting, Stats } from '@extension/ui';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels, Switch } from '@headlessui/react';
-
-const PopupStats: React.FC = () => {
-  const [posts, setPosts] = useState(0);
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    chrome.storage.local.get(['darkMode'], result => {
-      setDarkMode(result.darkMode ?? false); // Default to false if not set
-    });
-  }, []);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark-theme');
-      document.documentElement.classList.remove('light-theme');
-    } else {
-      document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
-    }
-  }, [darkMode]);
-
-  useEffect(() => {
-    chrome.storage.local.get(['post_count'], result => {
-      setPosts(result['post_count']);
-    });
-  }, []);
-
-  return (
-    <div className="p-6 pt-10 pb-10 text-center max-w-sm bg-bg">
-      <p className="text-6xl font-extrabold text-font tracking-tight pb-5 pt-5">{posts}</p>
-      <h1 className="text-2xl font-semibold text-font mb-4">Posts Viewed Today</h1>
-    </div>
-  );
-};
 
 export const Popup: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -133,7 +99,7 @@ export const Popup: React.FC = () => {
 
         <TabPanels className="flex-grow overflow-y-auto">
           <TabPanel key="stats">
-            <PopupStats />
+            <Stats mode={1} />
           </TabPanel>
           <TabPanel key="settings">
             <Setting mode={1} />
