@@ -22,6 +22,121 @@ exampleThemeStorage.get().then(theme => {
   console.log('theme', theme);
 });
 
+type ActiveTrack = { tabId: number | null; start: number | null; platform: string | null };
+const active: ActiveTrack = { tabId: null, start: null, platform: null };
+
+const supportedPlatformKey = (url: string | undefined): string | null => {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    const host = u.hostname;
+    if (host.includes('facebook.com')) return 'facebook';
+    if (host.includes('x.com') || host.includes('twitter.com')) return 'twitter';
+    if (host.includes('youtube.com')) return 'youtube';
+    if (host.includes('twitch.tv')) return 'twitch';
+  } catch (e) {
+    return null;
+  }
+  return null;
+};
+
+const persistActiveTime = async (seconds: number, platform: string | null) => {
+  if (seconds <= 0) return;
+  const keys = await chrome.storage.local.get(['time_count_history', 'date']);
+  const today = new Date().toDateString();
+  let history =
+    keys.time_count_history ||
+    Array.from({ length: 365 }, () => ({ total: 0, facebook: 0, twitter: 0, youtube: 0, twitch: 0 }));
+
+  if (keys.date !== today) {
+    const lastDate = keys.date ? new Date(keys.date) : new Date();
+    const currentDate = new Date(today);
+    const diffDays = Math.floor((currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
+    for (let i = 0; i < Math.min(diffDays, 30); i++) {
+      history.unshift({ total: 0, facebook: 0, twitter: 0, youtube: 0, twitch: 0 });
+      history.pop();
+    }
+  }
+
+  history[0].total += seconds;
+  if (platform && platform in history[0]) {
+    history[0][platform] += seconds;
+  }
+
+  await chrome.storage.local.set({ time_count_history: history, date: today });
+};
+
+const stopTrackingAndPersist = async () => {
+  if (!active.start) return;
+  const elapsed = Math.floor((Date.now() - active.start) / 1000);
+  await persistActiveTime(elapsed, active.platform);
+  active.start = null;
+  active.tabId = null;
+  active.platform = null;
+};
+
+// When the active tab changes, persist previous and start a new timer if applicable
+chrome.tabs.onActivated.addListener(async info => {
+  try {
+    // persist previous
+    await stopTrackingAndPersist();
+    const tab = await chrome.tabs.get(info.tabId);
+    const platform = supportedPlatformKey(tab.url || undefined);
+    if (platform) {
+      active.tabId = info.tabId;
+      active.start = Date.now();
+      active.platform = platform;
+    }
+  } catch (e) {
+    console.warn('onActivated track error', e);
+  }
+});
+
+// When window focus changes, stop or start timers
+chrome.windows.onFocusChanged.addListener(async winId => {
+  try {
+    if (winId === chrome.windows.WINDOW_ID_NONE) {
+      await stopTrackingAndPersist();
+      return;
+    }
+    const tabs = await chrome.tabs.query({ active: true, windowId: winId });
+    const tab = tabs && tabs[0];
+    if (tab) {
+      const platform = supportedPlatformKey(tab.url);
+      if (platform && active.tabId !== tab.id) {
+        await stopTrackingAndPersist();
+        active.tabId = tab.id || null;
+        active.start = Date.now();
+        active.platform = platform;
+      }
+    }
+  } catch (e) {
+    console.warn('onFocusChanged track error', e);
+  }
+});
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (!changeInfo.url) return;
+
+  await stopTrackingAndPersist();
+
+  const platform = supportedPlatformKey(changeInfo.url);
+  if (platform && tab.active) {
+    active.tabId = tabId;
+    active.start = Date.now();
+    active.platform = platform;
+  }
+});
+
+self.addEventListener('unload', () => {
+  if (active.start) {
+    const elapsed = Math.floor((Date.now() - (active.start || Date.now())) / 1000);
+    chrome.storage.local.get(['time_count_history', 'date']).then(async keys => {
+      await persistActiveTime(elapsed, active.platform);
+    });
+  }
+});
+
 const allPlatformSettingsConfig: PlatformSettings = {
   extension: extensionSettings,
   facebook: facebookSettings,

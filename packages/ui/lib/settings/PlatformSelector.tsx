@@ -141,25 +141,53 @@ export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformCh
       <Listbox value={selectedPlatform} onChange={handleListboxChange}>
         <ListboxButton
           id="platform-listbox"
-          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary sm:text-sm rounded-md shadow-sm bg-bg text-font text-left cursor-default relative">
+          className="flex justify-between mt-1 block w-full px-3 py-2 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary sm:text-sm rounded-md shadow-sm bg-bg text-font text-left cursor-default relative">
           <div className="flex items-center space-x-2">
             {currentSelectedOption.icon}
             <span className="block truncate">{currentSelectedOption.label}</span>
           </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
         </ListboxButton>
-        <ListboxOptions className="z-10 w-full bg-white shadow-lg max-h-70 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+        <ListboxOptions className="z-10 w-full bg-bg shadow-lg max-h-70 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
           {platformOptions.map(option => (
             <ListboxOption
               key={option.value}
               value={option.value}
               className={({ active }) =>
-                `${active ? 'text-white bg-secondary' : 'text-gray-900'}
-                cursor-default select-none relative py-2 pl-3 pr-9`
+                `${active ? 'text-white bg-secondary' : 'text-font'}
+                cursor-default select-none relative py-2 px-3`
               }>
-              {({ selected, active }) => (
-                <div className="flex items-center space-x-2">
-                  {option.icon}
-                  <span className={`${selected ? 'font-semibold' : 'font-normal'} block truncate`}>{option.label}</span>
+              {({ selected }) => (
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center space-x-2 truncate">
+                    {option.icon}
+                    <span className={`${selected ? 'font-semibold' : 'font-normal'} block truncate`}>
+                      {option.label}
+                    </span>
+                  </div>
+                  {selected && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-6">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                      />
+                    </svg>
+                  )}
                 </div>
               )}
             </ListboxOption>

@@ -1,18 +1,10 @@
 import type React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Setting, Stats } from '@extension/ui';
-import { Tab, TabGroup, TabList, TabPanel, TabPanels, Switch } from '@headlessui/react';
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
 export const Popup: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [powerState, setPowerState] = useState(true);
-
-  //initial load of power state
-  useEffect(() => {
-    chrome.storage.local.get(['power'], result => {
-      setPowerState(result.power ?? true); //if unknown we can set to true
-    });
-  }, []);
 
   return (
     <div className="flex flex-col max-h-screen">
@@ -97,7 +89,7 @@ export const Popup: React.FC = () => {
           </TabList>
         </div>
 
-        <TabPanels className="flex-grow overflow-y-auto">
+        <TabPanels className="flex-grow overflow-y-auto bg-bg">
           <TabPanel key="stats">
             <Stats mode={1} />
           </TabPanel>

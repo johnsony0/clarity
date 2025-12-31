@@ -77,7 +77,7 @@ export const twitchSettings = {
   ],
   Search: [
     { id: 'tw-search-feed-toggle', label: 'Hide Browse Feed', type: 'checkbox', default: true, tag: 'feed' },
-    { id: 'tw-search-genre-toggle', label: 'Hide Browse Genres', type: 'checkbox', default: true, tag: 'filter' },
-    { id: 'tw-search-filters-toggle', label: 'Hide Browse Filters', type: 'checkbox', default: true, tag: 'filter' },
+    { id: 'tw-search-genre-toggle', label: 'Hide Browse Genres', type: 'checkbox', default: true, tag: 'search' },
+    { id: 'tw-search-filters-toggle', label: 'Hide Browse Filters', type: 'checkbox', default: true, tag: 'search' },
   ],
 };
