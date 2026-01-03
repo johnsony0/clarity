@@ -4,7 +4,7 @@ import { Setting, Stats } from '@extension/ui';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
 export const Popup: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   return (
     <div className="flex flex-col max-h-screen">

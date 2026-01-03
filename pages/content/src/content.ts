@@ -200,24 +200,27 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   chrome.storage.local.get(['post_count_history', 'date'], result => {
     const today = new Date().toDateString();
     let postCount = result.post_count_history[0]?.total || 0;
-    //console.log(`Count currently at ${postCount}`);
 
     if (result.date !== today) {
       // Reset post count for a new day
       console.log('Post count reset for the new day.');
-      let history = result.post_count_history || [];
+      let post_history = result.post_count_history || [];
+      let time_history = result.time_count_history || [];
 
       // Calculate gap in days (in case user didn't open browser for 2 days)
       const lastDate = new Date(result.date);
       const currentDate = new Date(today);
       const diffDays = Math.floor((currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
       for (let i = 0; i < Math.min(diffDays, 30); i++) {
-        history.unshift({ total: 0, facebook: 0, twitter: 0, youtube: 0, twitch: 0 });
-        history.pop();
+        post_history.unshift({ total: 0, facebook: 0, twitter: 0, youtube: 0, twitch: 0 });
+        post_history.pop();
+        time_history.unshift({ total: 0, facebook: 0, twitter: 0, youtube: 0, twitch: 0 });
+        time_history.pop();
       }
-      console.log(history);
+      console.log({ post_history, time_history });
       chrome.storage.local.set({
-        post_count_history: history,
+        post_count_history: post_history,
+        time_count_history: time_history,
         date: today,
       });
     }

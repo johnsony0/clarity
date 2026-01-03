@@ -4,6 +4,7 @@ import { filterPage, processPost } from '@src/content';
 import { facebookConfigs, twitterConfigs, youtubeConfigs, twitchConfigs } from '@extension/storage';
 import { initModel, findElement, waitForElm } from '@extension/shared';
 import type { PlatformConfig, Settings } from '@extension/shared';
+import { start } from 'node:repl';
 
 console.log('content script loaded');
 
@@ -229,6 +230,28 @@ const twitchListener = async (settings: any, currentHost: string, currentPath: s
   }
 };
 
+let heartbeatInterval: any;
+const startHeartbeat = (platform: string) => {
+  const seconds = 30;
+  if (heartbeatInterval) clearInterval(heartbeatInterval);
+
+  const sendPing = () => {
+    console.log('Sending heartbeat ping for', platform);
+    chrome.runtime.sendMessage(
+      {
+        type: 'TRACK_TIME',
+        platform: platform,
+        seconds: seconds,
+      },
+      function (response) {
+        console.log('Heartbeat response:', response);
+      },
+    );
+  };
+
+  heartbeatInterval = setInterval(sendPing, seconds * 1000);
+};
+
 // handles URL changes and applies settings
 const handleURLChange = () => {
   const currentURL = new URL(window.location.href);
@@ -242,6 +265,7 @@ const handleURLChange = () => {
       // Hide or manage elements based on settings and URL
       if (currentHost.includes('facebook.com') && settings['extension']['facebook-toggle']) {
         facebookListener(settings, currentHost, currentPath);
+        startHeartbeat('facebook');
       } else if (currentHost.includes('x.com') && settings['extension']['twitter-toggle']) {
         const temp = {
           ...settings['extension'],
@@ -254,10 +278,13 @@ const handleURLChange = () => {
           filterPage(twitterConfigs, temp);
           setupObserver(twitterConfigs, temp, currentHost);
         }
+        startHeartbeat('twitter');
       } else if (currentHost.includes('youtube.com') && settings['extension']['youtube-toggle']) {
         youtubeListener(settings, currentHost, currentPath);
+        startHeartbeat('youtube');
       } else if (currentHost.includes('twitch.tv') && settings['extension']['twitch-toggle']) {
         twitchListener(settings, currentHost, currentPath);
+        startHeartbeat('twitch');
       }
     }
   });
