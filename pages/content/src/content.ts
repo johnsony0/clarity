@@ -197,7 +197,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   }
 
   // Limit posts
-  chrome.storage.local.get(['post_count_history', 'date'], result => {
+  chrome.storage.local.get(['post_count_history', 'time_count_history', 'date'], result => {
     const today = new Date().toDateString();
     let postCount = result.post_count_history[0]?.total || 0;
 

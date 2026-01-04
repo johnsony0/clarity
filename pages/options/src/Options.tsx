@@ -60,7 +60,7 @@ export const Options: React.FC = () => {
           <aside
             className={`
             ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
-            md:translate-x-0 fixed md:relative z-40 w-64 h-full border-r border-white/2 p-6 transition-transform duration-300 ease-in-out flex flex-col justify-between
+            bg-bg md:translate-x-0 fixed md:relative z-40 w-64 h-full border-r border-white/2 p-6 transition-transform duration-300 ease-in-out flex flex-col justify-between
           `}>
             <div>
               <div className="flex items-center justify-between mb-8">

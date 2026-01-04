@@ -37,7 +37,7 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
   const isDashboard = mode === 0 && isMd;
 
   useEffect(() => {
-    chrome.storage.local.get(['post_count_history', 'date'], result => {
+    chrome.storage.local.get(['post_count_history', 'time_count_history', 'date'], result => {
       const today = new Date().toDateString();
       if (result.date !== today) {
         // Reset post count for a new day
@@ -77,6 +77,7 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
       setDarkMode(result.darkMode ?? false);
       setPostHistory(result.post_count_history || []);
       setTimeHistory(result.time_count_history || []);
+      console.log({ post_count_history: result.post_count_history, time_count_history: result.time_count_history });
     });
   }, []);
 
@@ -261,7 +262,9 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
           </div>
         </div>
         <div className={CARD_STYLE} style={{ width: '100%', height: 250 }}>
-          <h2 className="text-[10px] font-bold uppercase tracking-widest text-font">Platform Split</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-widest text-font">
+            Platform Split {viewMode.id === 0 ? '(minutes)' : ''}
+          </h2>
           <ResponsiveContainer>
             <PieChart>
               <Pie
@@ -296,7 +299,7 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
 
         <div className={CARD_STYLE}>
           <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">
-            {isDashboard ? '14-Day Trend' : '7-Day Trend'}
+            {isDashboard ? '14-Day Trend' : '7-Day Trend'} {viewMode.id === 0 ? '(minutes)' : ''}
           </h2>
           <ComposedChart
             style={{ width: '100%', height: 200 }}
@@ -337,7 +340,9 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
         </div>
 
         <div className={CARD_STYLE}>
-          <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">12-Month Avg Trend</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">
+            12-Month Avg Trend {viewMode.id === 0 ? '(minutes)' : ''}
+          </h2>
 
           <div style={{ width: '100%', height: 200 }}>
             <ResponsiveContainer>
@@ -373,7 +378,9 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
         </div>
 
         <div className={`${CARD_STYLE} sm:col-span-2`}>
-          <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">Recent Activity</h2>
+          <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">
+            Recent Activity {viewMode.id === 0 ? '(minutes)' : ''}
+          </h2>
           <div className="flex justify-center w-full">
             <HeatMap
               value={heatmapData}

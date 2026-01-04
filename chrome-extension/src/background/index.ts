@@ -22,22 +22,22 @@ exampleThemeStorage.get().then(theme => {
   console.log('theme', theme);
 });
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'TRACK_TIME') {
-    const platform = message.platform;
-
-    chrome.storage.local.get(['timeHistory'], data => {
-      let history = data.timeHistory || [];
-      let today = history[0];
-
-      today[platform] = (today[platform] || 0) + message.seconds;
-      today.total = (today.total || 0) + message.seconds;
-
-      chrome.storage.local.set({ timeHistory: history });
-    });
+    handleTimeTracking(message);
     sendResponse({ status: 'success' });
   }
 });
+
+async function handleTimeTracking(message: { platform: string; seconds: number }) {
+  const data = await chrome.storage.local.get(['time_count_history']);
+  let history = data.time_count_history || [];
+
+  history[0][message.platform] = (history[0][message.platform] || 0) + message.seconds;
+  history[0].total = (history[0].total || 0) + message.seconds;
+
+  await chrome.storage.local.set({ time_count_history: history });
+}
 
 function dailyResetCheck() {
   chrome.storage.local.get(['post_count_history', 'time_count_history', 'date'], result => {
