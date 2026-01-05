@@ -5,7 +5,6 @@ export const tagMap = {
   content: 1,
   ai: 1,
   bias: 1,
-  topic: 7, //7 until improvements
   exemptions: 1,
   short: 2,
   'main-nav': 2,

@@ -154,8 +154,10 @@ chrome.runtime.onInstalled.addListener(async details => {
               } else if (setting.type === 'select') {
                 currentPlatformSettings[setting.id] = setting.default;
               } else if (setting.type === 'number') {
-                if (setting.id === 'limit-value') {
+                if (setting.id === 'limit-posts-value') {
                   currentPlatformSettings[setting.id] = setting.default - 100 * value;
+                } else if (setting.id == 'limit-time-value') {
+                  currentPlatformSettings[setting.id] = setting.default - 60 * value;
                 } else if (setting.tag === 'timeout') {
                   if (value === 5) {
                     currentPlatformSettings[setting.id] = 5;

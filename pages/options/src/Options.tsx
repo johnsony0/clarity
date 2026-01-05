@@ -3,6 +3,60 @@ import { useState } from 'react';
 import { Setting, Stats } from '@extension/ui';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 
+const Credits: React.FC = () => {
+  const sources = [
+    {
+      name: 'Claude Monet',
+      piece: 'The Magpie',
+      url: 'https://commons.wikimedia.org/wiki/File:Claude_Monet_-_The_Magpie_-_Google_Art_Project.jpg',
+      description: 'Used for the dashboard background.',
+    },
+  ];
+
+  return (
+    <div className="max-w-3xl mx-auto p-8">
+      <header className="mb-10">
+        <h2 className="text-3xl font-serif font-bold text-font">Credits & Attribution</h2>
+        <p className="text-sm text-font mt-2">
+          This project is made possible by the following open-source assets and public domain works.
+        </p>
+      </header>
+
+      <div className="grid gap-6">
+        {sources.map((source, index) => (
+          <div
+            key={index}
+            className="group relative p-5 rounded-2xl bg-primary border border-slate-100 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 shadow-sm hover:shadow-md">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-font leading-tight">{source.piece}</h3>
+                <p className="text-sm italic text-slate-500 mb-2">by {source.name}</p>
+                <p className="text-sm leading-relaxed text-font max-w-prose">{source.description}</p>
+              </div>
+
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center self-start px-4 py-2 rounded-full bg-bg text-xs font-semibold text-font hover:bg-blue-500 hover:text-white transition-colors">
+                License/Source
+                <svg className="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export const Options: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -45,12 +99,30 @@ export const Options: React.FC = () => {
         </svg>
       ),
     },
+    {
+      name: 'Credits',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          className="size-5">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33"
+          />
+        </svg>
+      ),
+    },
   ];
 
   return (
     <div
       style={{
-        backgroundImage: `url(${chrome.runtime.getURL('optionsbackground.png')})`,
+        backgroundImage: `url(${chrome.runtime.getURL('optionsbackground.jpg')})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -60,7 +132,7 @@ export const Options: React.FC = () => {
           <aside
             className={`
             ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
-            bg-bg md:translate-x-0 fixed md:relative z-40 w-64 h-full border-r border-white/2 p-6 transition-transform duration-300 ease-in-out flex flex-col justify-between
+            bg-secondary md:translate-x-0 fixed md:relative z-40 w-64 h-full border-r border-white/2 p-6 transition-transform duration-300 ease-in-out flex flex-col justify-between
           `}>
             <div>
               <div className="flex items-center justify-between mb-8">
@@ -84,12 +156,32 @@ export const Options: React.FC = () => {
                     key={item.name}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={({ selected }) => `
-                      flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-font transition-all focus:outline focus:outline-secondary duration-200
+                      flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-font transition-all focus:outline focus:outline-bg duration-200
                       ${selected ? 'bg-primary' : 'hover:bg-primary'}
                     `}>
                     {item.icon} {item.name}
                   </Tab>
                 ))}
+                <a
+                  href={'https://johnsony0.github.io/clarity/faq'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-font transition-all focus:outline focus:outline-bg hover:bg-primary transition-all duration-200">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="size-5">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                    />
+                  </svg>
+                  <span>Help</span>
+                </a>
               </TabList>
             </div>
           </aside>
@@ -126,6 +218,9 @@ export const Options: React.FC = () => {
               </TabPanel>
               <TabPanel className="outline-none focus:outline-none">
                 <Setting mode={0} />
+              </TabPanel>
+              <TabPanel className="outline-none focus:outline-none">
+                <Credits />
               </TabPanel>
             </TabPanels>
           </main>

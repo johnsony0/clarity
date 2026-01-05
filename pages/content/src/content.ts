@@ -63,9 +63,8 @@ const filterPost = async (
     }
 
     chrome.storage.local.set({ post_count_history: history });
-    if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
-      console.warn('Post limit exceeded!');
-      displayLimitReached(postContainer, settings['limit-value']);
+    if (settings['limit-posts-toggle'] && postCount >= settings['limit-posts-value']) {
+      displayLimitReached(postContainer, settings['limit-posts-value']);
     }
   });
 
@@ -100,42 +99,6 @@ const filterPost = async (
       }
     }
   });
-
-  //only run the ML if there isn't already a dropdown, we can find the message, the setting for the model is on and the website is x or facebook
-  if (
-    !dropdownCreated &&
-    messageContainer &&
-    settings['enable-topic'] &&
-    (window.location.hostname.includes('x.com') || window.location.hostname.includes('facebook.com'))
-  ) {
-    // ML pipeline for topic classification
-    const topic_prediction = await runTopicModel(text);
-    const topic_data = {
-      tech: Math.round(topic_prediction[0] * 100),
-      sports: Math.round(topic_prediction[1] * 100),
-      politics: Math.round(topic_prediction[2] * 100),
-      gaming: Math.round(topic_prediction[3] * 100),
-      food: Math.round(topic_prediction[4] * 100),
-      business: Math.round(topic_prediction[5] * 100),
-    };
-    const bias = Object.keys(topic_data).reduce((a, b) =>
-      topic_data[a as keyof typeof topic_data] > topic_data[b as keyof typeof topic_data] ? a : b,
-    );
-
-    const topicThresholdExceeded =
-      (bias === 'tech' && settings['enable-tech'] && topic_data['tech'] > settings['topic-threshold']) ||
-      (bias === 'sports' && settings['enable-sports'] && topic_data['sports'] > settings['topic-threshold']) ||
-      (bias === 'politics' && settings['enable-politics'] && topic_data['politics'] > settings['topic-threshold']) ||
-      (bias === 'gaming' && settings['enable-gaming'] && topic_data['gaming'] > settings['topic-threshold']) ||
-      (bias === 'food' && settings['enable-food'] && topic_data['food'] > settings['topic-threshold']) ||
-      (bias === 'business' && settings['enable-business'] && topic_data['business'] > settings['topic-threshold']);
-    if (settings['topic-filter-visibility'] === 'hide' && topicThresholdExceeded) {
-      postContainer.style.display = 'none';
-    } else if (settings['topic-filter-visibility'] === 'min' && topicThresholdExceeded) {
-      createDropdown(`Biased towards ${bias} at ${topic_data[bias]}%`, postContainer);
-      dropdownCreated = true;
-    }
-  }
 
   const error = checkText(text);
   // ML pipeline for bias detection
@@ -200,7 +163,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
   chrome.storage.local.get(['post_count_history', 'time_count_history', 'date'], result => {
     const today = new Date().toDateString();
     let postCount = result.post_count_history[0]?.total || 0;
-
+    let timeCount = result.time_count_history[0]?.total / 60 || 0;
     if (result.date !== today) {
       // Reset post count for a new day
       console.log('Post count reset for the new day.');
@@ -225,9 +188,11 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       });
     }
 
-    if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
-      console.warn('Post limit exceeded!');
-      displayLimitReached(document.body, settings['limit-value']);
+    if (settings['limit-posts-toggle'] && postCount >= settings['limit-posts-value']) {
+      displayLimitReached(document.body, `You have hit your set post limit of ${settings['limit-posts-value']}`);
+    }
+    if (settings['limit-time-toggle'] && timeCount >= settings['limit-time-value']) {
+      displayLimitReached(document.body, `You have hit your set time limit of ${settings['limit-time-value']} minutes`);
     }
   });
 

@@ -185,10 +185,18 @@ export const createTimeout = (name: string, duration: number): void => {
 };
 
 // Displays a message when the post limit is reached
-export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: number): void => {
+export const displayLimitReached = (adjacentElement: HTMLElement, text: string): void => {
   if (document.getElementById('limit-reached-overlay')) {
     return;
   }
+  document.querySelectorAll('video, audio').forEach((media: any) => {
+    media.pause();
+    media.src = '';
+    media.load();
+    media.remove();
+  });
+  document.body.innerHTML = '';
+  document.body.style.overflow = 'hidden';
 
   const messageContainer = document.createElement('div');
   messageContainer.id = 'limit-reached-overlay';
@@ -198,14 +206,14 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
     left: '0',
     width: '100vw',
     height: '100vh',
-    backgroundColor: 'rgba(15, 15, 15, 0.85)', // Darker, more cinematic
-    backdropFilter: 'blur(12px)', // Blurs the background content
+    backgroundColor: 'rgba(15, 15, 15, 0.85)',
+    backdropFilter: 'blur(12px)',
     webkitBackdropFilter: 'blur(12px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: '2147483647', // Maximum possible z-index
+    zIndex: '2147483647',
     color: 'white',
     textAlign: 'center',
     padding: '40px',
@@ -213,7 +221,7 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
   });
 
   const messageText = document.createElement('p');
-  messageText.innerHTML = `You have hit your set post limit of ${postLimit}`;
+  messageText.innerHTML = text;
   messageText.style.marginBottom = '50px';
   messageContainer.appendChild(messageText);
 

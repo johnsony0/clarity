@@ -21,9 +21,29 @@ export const extensionSettings = {
     { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, tag: 'nav' },
     { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, tag: 'image/video' },
   ],
+  Time: [
+    { id: 'limit-time-toggle', label: 'Limit Time', type: 'checkbox', default: true, tag: 'limit' },
+    {
+      id: 'limit-time-value',
+      label: 'Limit Time Amount (Minutes)',
+      type: 'number',
+      default: 540,
+      min: 0,
+      max: 1440,
+      tag: 'limit',
+    },
+  ],
   Posts: [
-    { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, tag: 'limit' },
-    { id: 'limit-value', label: 'Limit Posts Amount', type: 'number', default: 1100, min: 0, max: 1000, tag: 'limit' },
+    { id: 'limit-posts-toggle', label: 'Limit Posts', type: 'checkbox', default: true, tag: 'limit' },
+    {
+      id: 'limit-posts-value',
+      label: 'Limit Posts Amount',
+      type: 'number',
+      default: 1100,
+      min: 0,
+      max: 10000,
+      tag: 'limit',
+    },
     { id: 'postings-toggle', label: 'Hide Post Creation Menu', type: 'checkbox', default: true, tag: 'posting' },
   ],
   Content: [
@@ -84,32 +104,5 @@ export const extensionSettings = {
       ],
     },
     { id: 'bias-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95, tag: 'bias' },
-  ],
-  Topic: [
-    {
-      id: 'enable-topic',
-      label: 'Enable Topic Classification',
-      type: 'checkbox',
-      default: false,
-      tag: 'topic', //rename to ai once fixed
-    },
-    {
-      id: 'topic-filter-visibility',
-      label: 'Topic Filter Visibility',
-      type: 'select',
-      default: 'min',
-      options: [
-        { value: 'min', text: 'Minimize' },
-        { value: 'hide', text: 'Hide' },
-      ],
-      tag: 'topic',
-    },
-    { id: 'enable-tech', label: 'Hide Tech', type: 'checkbox', default: true, tag: 'ai' },
-    { id: 'enable-sports', label: 'Hide Sports', type: 'checkbox', default: true, tag: 'ai' },
-    { id: 'enable-politics', label: 'Hide Politics', type: 'checkbox', default: true, tag: 'ai' },
-    { id: 'enable-gaming', label: 'Hide Gaming', type: 'checkbox', default: true, tag: 'ai' },
-    { id: 'enable-food', label: 'Hide Food', type: 'checkbox', default: true, tag: 'ai' },
-    { id: 'enable-business', label: 'Hide Business', type: 'checkbox', default: true, tag: 'ai' },
-    { id: 'topic-threshold', label: 'Hide Threshold', type: 'number', default: 50, min: 5, max: 95, tag: 'topic' },
   ],
 };

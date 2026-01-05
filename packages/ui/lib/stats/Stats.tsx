@@ -180,13 +180,18 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
       };
     });
   }, [viewMode, postHistory, timeHistory]);
-
   const todayTotal = viewMode.id === 0 ? `${formatToMinutes(timeHistory[0]?.total)}m` : postHistory[0]?.total || 0;
   const todayDifference =
     viewMode.id === 0
       ? ((timeHistory[0]?.total || 0) - (timeHistory[1]?.total || 0)) / (timeHistory[1]?.total || 1)
       : ((postHistory[0]?.total || 0) - (postHistory[1]?.total || 0)) / (postHistory[1]?.total || 1);
   const todayPercentage = Math.abs(todayDifference * 100).toFixed(1);
+  const snapToNextSunday = (daysAgo: number) => {
+    const date = new Date(Date.now() - daysAgo * 864e5);
+    const day = date.getDay();
+    if (day !== 0) date.setDate(date.getDate() + (7 - day));
+    return date;
+  };
   const CARD_STYLE = isDashboard
     ? 'flex flex-col items-center justify-center bg-primary rounded-3xl shadow-xl text-center transition-all hover:shadow-2xl p-3'
     : 'flex flex-col items-center justify-center text-center';
@@ -301,42 +306,44 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
           <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">
             {isDashboard ? '14-Day Trend' : '7-Day Trend'} {viewMode.id === 0 ? '(minutes)' : ''}
           </h2>
-          <ComposedChart
-            style={{ width: '100%', height: 200 }}
-            data={lastXDaysData}
-            margin={{ top: 5, right: 5, left: -30, bottom: 5 }}>
-            <XAxis dataKey="label" fontSize={10} axisLine={false} tickLine={false} interval={isDashboard ? 1 : 0} />
-            <YAxis fontSize={10} axisLine={false} tickLine={false} tickMargin={5} />
-            <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.2} />
+          <div style={{ width: '100%', height: 200 }}>
+            <ResponsiveContainer>
+              <ComposedChart data={lastXDaysData} margin={{ top: 5, right: 5, left: -30, bottom: 5 }}>
+                <XAxis dataKey="label" fontSize={10} axisLine={false} tickLine={false} interval={isDashboard ? 1 : 0} />
+                <YAxis fontSize={10} axisLine={false} tickLine={false} tickMargin={5} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.2} />
 
-            <Tooltip
-              contentStyle={{
-                backgroundColor: darkMode ? '#18181b' : '#fff',
-                border: 'none',
-                color: darkMode ? '#fff' : '#000',
-                borderRadius: '8px',
-                fontSize: '11px',
-                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.5)',
-              }}
-            />
-            <CartesianGrid strokeDasharray="1 4" />
-            <Legend
-              iconSize={8}
-              align="center"
-              verticalAlign="bottom"
-              wrapperStyle={{
-                fontSize: '8px',
-                paddingTop: '10px',
-                left: 5,
-                width: '100%',
-              }}
-            />
-            <Line type="monotone" dataKey="Total" stroke={COLORS.total} strokeWidth={2} dot={{ r: 2 }} />
-            <Bar dataKey="facebook" stackId="a" fill={COLORS.facebook} />
-            <Bar dataKey="twitter" stackId="a" fill={COLORS.twitter} />
-            <Bar dataKey="youtube" stackId="a" fill={COLORS.youtube} />
-            <Bar dataKey="twitch" stackId="a" fill={COLORS.twitch} />
-          </ComposedChart>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: darkMode ? '#18181b' : '#fff',
+                    border: 'none',
+                    color: darkMode ? '#fff' : '#000',
+                    borderRadius: '8px',
+                    fontSize: '10px',
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.5)',
+                  }}
+                />
+                <CartesianGrid strokeDasharray="1 4" />
+                <Legend
+                  iconSize={8}
+                  align="center"
+                  verticalAlign="bottom"
+                  wrapperStyle={{
+                    fontSize: '8px',
+                    paddingTop: '10px',
+                    width: '100%',
+                    left: 0,
+                    textAlign: 'center',
+                  }}
+                />
+                <Line type="monotone" dataKey="Total" stroke={COLORS.total} strokeWidth={2} dot={{ r: 2 }} />
+                <Bar dataKey="facebook" stackId="a" fill={COLORS.facebook} />
+                <Bar dataKey="twitter" stackId="a" fill={COLORS.twitter} />
+                <Bar dataKey="youtube" stackId="a" fill={COLORS.youtube} />
+                <Bar dataKey="twitch" stackId="a" fill={COLORS.twitch} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         <div className={CARD_STYLE}>
@@ -385,18 +392,23 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
             <HeatMap
               value={heatmapData}
               width={isDashboard ? '100%' : 230}
-              startDate={
-                isDashboard
-                  ? new Date(new Date().setDate(new Date().getDate() - 360))
-                  : new Date(new Date().setDate(new Date().getDate() - 60))
-              }
+              startDate={snapToNextSunday(isDashboard ? 360 : 60)}
               endDate={new Date()}
               rectSize={12}
               space={3}
               legendCellSize={0}
               rectRender={(props, data) => {
+                if (!data.date) return <rect {...props} />;
+                const formattedDate = new Date(data.date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                });
                 return (
-                  <UIWTooltip key={props.key} placement="top" content={`count: ${data.count || 0}, date: ${data.date}`}>
+                  <UIWTooltip
+                    key={props.key}
+                    placement="top"
+                    content={`${data.count || 0} ${viewMode.id === 0 ? 'mins' : 'posts'} on ${formattedDate}`}>
                     <rect {...props} />
                   </UIWTooltip>
                 );

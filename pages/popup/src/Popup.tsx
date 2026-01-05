@@ -15,9 +15,9 @@ export const Popup: React.FC = () => {
               key="stats"
               className={({ selected }) => `
                 rounded-full px-3 py-1 text-sm/6 font-semibold text-font
-                focus:outline focus:outline-secondary hover:bg-primary
+                focus:outline focus:outline-primary hover:bg-secondary
                 transition-all duration-200
-                ${selected ? 'bg-primary' : ''}
+                ${selected ? 'bg-secondary' : ''}
               `}>
               <span className="flex items-center justify-center">
                 <svg
@@ -41,9 +41,9 @@ export const Popup: React.FC = () => {
               key="settings"
               className={({ selected }) => `
                 rounded-full px-3 py-1 text-sm/6 font-semibold text-font
-                focus:outline focus:outline-secondary hover:bg-primary
+                focus:outline focus:outline-primary hover:bg-secondary
                 transition-all duration-200
-                ${selected ? 'bg-primary' : ''}
+                ${selected ? 'bg-secondary' : ''}
               `}>
               <span className="flex items-center justify-center">
                 <svg
@@ -63,12 +63,11 @@ export const Popup: React.FC = () => {
                 <span>Settings</span>
               </span>
             </Tab>
-
             <a
-              href={'https://johnsony0.github.io/clarity'}
+              href={'https://johnsony0.github.io/clarity/faq'}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full px-3 py-1 text-sm/6 font-semibold text-font focus:outline focus:outline-secondary hover:bg-primary transition-all duration-200">
+              className="rounded-full px-3 py-1 text-sm/6 font-semibold text-font focus:outline focus:outline-primary hover:bg-secondary transition-all duration-200">
               <span className="flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

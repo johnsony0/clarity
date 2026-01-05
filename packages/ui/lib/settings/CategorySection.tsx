@@ -25,6 +25,9 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
         {category === 'Channels' && <h6>Exclusive to Twitch and YouTube</h6>}
         {category === 'Topic' && <h6>[Beta Test] Exclusive to Facebook and Twitter</h6>}
         {category === 'Bias' && <h6>Exclusive to Facebook and Twitter</h6>}
+        {category === 'Time' && (
+          <h6>Minutes accrues based on a tab being active, so multiple tabs will count multiple times</h6>
+        )}
       </div>
       <div className={`${mode ? 'space-y-4' : 'space-y-1'}`}>
         {settings.map(setting => (
