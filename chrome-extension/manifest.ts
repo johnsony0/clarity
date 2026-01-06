@@ -36,7 +36,7 @@ const manifest = {
     'https://*.youtube.com/*',
     'https://*.twitch.tv/*',
   ],
-  permissions: ['storage', 'tabs', 'idle'],
+  permissions: ['storage'],
   options_page: 'options/index.html',
   background: {
     service_worker: 'background.js',

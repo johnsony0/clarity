@@ -33,7 +33,10 @@ export const twitchConfigs = {
         },
         'tw-nav-browse-toggle': { selector: '[aria-label="Browse"]', type: 'attribute', parents: 0 },
         'tw-nav-more-toggle': { selector: '[aria-label="More Options"]', type: 'attribute', parents: 0 },
-        'tw-nav-search-toggle': { selector: '[aria-label="Search"]', type: 'attribute', parents: 0 },
+        'tw-nav-search-toggle': [
+          { selector: '[aria-label="Search"]', type: 'attribute', parents: 0 },
+          { selector: '[aria-label="Search Input"]', type: 'attribute', parents: 6 },
+        ],
         'tw-nav-news-toggle': { selector: '[aria-label="Prime offers"]', type: 'attribute', parents: 6 },
         'tw-nav-notifications-toggle': { selector: '[aria-label="Open Notifications"]', type: 'attribute', parents: 6 },
         'tw-nav-whispers-toggle': { selector: '[aria-label="Close Threads"]', type: 'attribute', parents: 0 },

@@ -11,6 +11,12 @@ const Credits: React.FC = () => {
       url: 'https://commons.wikimedia.org/wiki/File:Claude_Monet_-_The_Magpie_-_Google_Art_Project.jpg',
       description: 'Used for the dashboard background.',
     },
+    {
+      name: 'Freepik',
+      piece: 'Stock Images',
+      url: 'https://www.freepik.com/photos',
+      description: 'Image used for chrome web store graphics.',
+    },
   ];
 
   return (
