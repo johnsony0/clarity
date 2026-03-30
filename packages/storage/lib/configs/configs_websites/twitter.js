@@ -65,8 +65,13 @@ export const twitterConfigs = {
           { selector: '[aria-label="Search and explore"]', type: 'attribute', parents: 0 },
           { selector: '[role="search"]', type: 'attribute', parents: 0 },
         ],
-        'x-nav-messages-toggle': { selector: '[aria-label="Direct Messages"]', type: 'attribute', parents: 0 },
+        'x-nav-messages-toggle': [
+          { selector: '[aria-label="Direct Messages"]', type: 'attribute', parents: 0 },
+          { selector: '[data-testid="chat-drawer-main"]', type: 'attribute', parents: 0 },
+        ],
         'x-nav-notification-toggle': { selector: '[aria-label="Notifications"]', type: 'attribute', parents: 0 },
+        'x-nav-follows-toggle': { selector: '[aria-label="Follow"]', type: 'attribute', parents: 0 },
+        'x-nav-studio-toggle': { selector: '[aria-label="Creator Studio"]', type: 'attribute', parents: 0 },
         'x-nav-grok-toggle': [
           { selector: '[aria-label="Grok"]', type: 'attribute', parents: 0 },
           {
@@ -80,6 +85,7 @@ export const twitterConfigs = {
         'x-nav-premium-toggle': [
           { selector: '[data-testid="super-upsell-UpsellCardRenderProperties"]', type: 'attribute', parents: 1 },
           { selector: '[aria-label="Premium"]', type: 'attribute', parents: 0 },
+          { selector: '[aria-label="Subscribe to Premium"]', type: 'attribute', parents: 0 },
         ],
         'x-nav-business-toggle': { selector: '[aria-label="Business"]', type: 'attribute', parents: 0 },
         'x-nav-profile-toggle': { selector: '[aria-label="Profile"]', type: 'attribute', parents: 0 },

@@ -34,6 +34,13 @@ export const twitterSettings = {
       tag: 'main-nav',
     },
     {
+      id: 'x-nav-follows-toggle',
+      label: 'Hide Follows Button',
+      type: 'checkbox',
+      default: true,
+      tag: 'suggestions',
+    },
+    {
       id: 'x-nav-messages-toggle',
       label: 'Hide Messages Button',
       type: 'checkbox',
@@ -43,7 +50,7 @@ export const twitterSettings = {
     { id: 'x-nav-grok-toggle', label: 'Hide Grok Button', type: 'checkbox', default: true, tag: 'main-nav' },
     { id: 'x-nav-list-toggle', label: 'Hide List Button', type: 'checkbox', default: true, tag: 'main-nav' },
     { id: 'x-nav-bookmark-toggle', label: 'Hide Bookmark Button', type: 'checkbox', default: true, tag: 'main-nav' },
-    { id: 'x-nav-jobs-toggle', label: 'Hide Jobs Button', type: 'checkbox', default: true, tag: 'main-nav' },
+    { id: 'x-nav-studio-toggle', label: 'Hide Creator Studio Button', type: 'checkbox', default: true, tag: 'posting' },
     {
       id: 'x-nav-communities-toggle',
       label: 'Hide Communities Button',

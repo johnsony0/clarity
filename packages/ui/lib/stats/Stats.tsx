@@ -23,6 +23,24 @@ import { views, COLORS } from '../../lib';
 type StatsProps = {
   mode: number;
 };
+type Metric = { sum: number; count: number };
+type StatData = {
+  Total: Metric;
+  facebook: Metric;
+  twitter: Metric;
+  youtube: Metric;
+  twitch: Metric;
+  [key: string]: Metric;
+};
+interface AnalyticsEntry {
+  total: number;
+  facebook?: number;
+  twitter?: number;
+  youtube?: number;
+  twitch?: number;
+  [key: string]: number | undefined;
+}
+
 const formatToMinutes = (s: number) => {
   const mins = Math.round(s / 60);
   return mins;
@@ -118,6 +136,63 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
     ].filter(item => item.value > 0);
   }, [viewMode, postHistory, timeHistory]);
 
+  const handleExport = () => {
+    chrome.storage.local.get(['post_count_history', 'time_count_history'], data => {
+      const postHistory: AnalyticsEntry[] = data.post_count_history || [];
+      const timeHistory: AnalyticsEntry[] = data.time_count_history || [];
+
+      // 1. Identify ALL unique platforms across BOTH history arrays
+      const platforms = new Set<string>();
+      [...postHistory, ...timeHistory].forEach((item: AnalyticsEntry) => {
+        Object.keys(item).forEach(key => {
+          if (key !== 'total') platforms.add(key);
+        });
+      });
+      const platformList = Array.from(platforms);
+
+      // 2. Create Header
+      // Columns: Index, TotalPosts, TotalTime, Posts_PlatformA, Time_PlatformA, etc.
+      let csvContent = '\uFEFF';
+      const headers = ['Index', 'TotalPosts', 'TotalTime'];
+      platformList.forEach(p => {
+        headers.push(`Posts_${p}`, `Time_${p}`);
+      });
+      csvContent += headers.join(',') + '\n';
+
+      // 3. Iterate and build rows
+      const maxLength = Math.max(postHistory.length, timeHistory.length);
+
+      for (let i = 0; i < maxLength; i++) {
+        const posts: AnalyticsEntry = postHistory[i] || { total: 0 };
+        const times: AnalyticsEntry = timeHistory[i] || { total: 0 };
+
+        const rowValues: (string | number)[] = [i, posts.total || 0, times.total || 0];
+
+        // Add pairs for each platform: [PostCount, TimeSpent]
+        platformList.forEach(p => {
+          rowValues.push(posts[p] || 0);
+          rowValues.push(times[p] || 0);
+        });
+
+        csvContent += rowValues.join(',') + '\n';
+      }
+
+      // 4. Download Logic
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `analytics_export_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url); // Clean up memory
+    });
+  };
+  const handleImport = () => {
+    console.log('Import function triggered');
+  };
+
   const lastXDaysData = useMemo(() => {
     const source = viewMode.id === 0 ? timeHistory : postHistory;
     const days = isDashboard ? 14 : 7;
@@ -140,31 +215,49 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
 
   const last12MonthsData = useMemo(() => {
     const source = viewMode.id === 0 ? timeHistory : postHistory;
-    const monthsMap: { [key: string]: { sum: number; count: number } } = {};
+    const platforms = ['facebook', 'twitter', 'youtube', 'twitch'];
     const now = new Date();
+    const monthsMap: { [key: string]: StatData } = {};
 
     for (let i = 11; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
-      monthsMap[key] = { sum: 0, count: 0 };
+      const key = d.toLocaleDateString('en-US', { month: 'short' });
+      monthsMap[key] = {
+        Total: { sum: 0, count: 0 },
+        facebook: { sum: 0, count: 0 },
+        twitter: { sum: 0, count: 0 },
+        youtube: { sum: 0, count: 0 },
+        twitch: { sum: 0, count: 0 },
+      };
     }
-
+    const getValue = (val: any) => (viewMode.id === 0 ? formatToMinutes(val || 0) : val || 0);
     source.forEach((day, index) => {
       const d = new Date();
       d.setDate(d.getDate() - index);
-      const key = d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      const key = d.toLocaleDateString('en-US', { month: 'short' });
 
       if (monthsMap[key]) {
-        monthsMap[key].sum += viewMode.id === 0 ? formatToMinutes(day.total || 0) : day.total || 0;
-        monthsMap[key].count += 1;
+        // Accumulate Total
+        monthsMap[key].Total.sum += getValue(day.total);
+        monthsMap[key].Total.count += 1;
+
+        platforms.forEach(p => {
+          monthsMap[key][p].sum += getValue(day[p]);
+          monthsMap[key][p].count += 1;
+        });
       }
     });
 
     return Object.keys(monthsMap).map(key => {
-      const { sum, count } = monthsMap[key];
+      const data = monthsMap[key];
+      const calcAvg = (p: any) => (data[p].count > 0 ? Math.round(data[p].sum / data[p].count) : 0);
       return {
         label: key,
-        average: count > 0 ? Math.round(sum / count) : 0,
+        Total: calcAvg('Total'),
+        facebook: calcAvg('facebook'),
+        twitter: calcAvg('twitter'),
+        youtube: calcAvg('youtube'),
+        twitch: calcAvg('twitch'),
       };
     });
   }, [viewMode, postHistory, timeHistory]);
@@ -197,9 +290,23 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
     : 'flex flex-col items-center justify-center text-center';
   return (
     <div className={`p-1 mx-auto min-h-screen`}>
-      <label htmlFor="view-listbox" className="block text-lg font-bold text-font">
-        Select View Mode
-      </label>
+      <div className="flex items-center justify-between w-full mb-4">
+        <label htmlFor="view-listbox" className="text-lg font-bold text-font">
+          Select View Mode
+        </label>
+        {isDashboard && (
+          <div className="flex gap-2">
+            <button
+              onClick={handleExport}
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors">
+              Export CSV
+            </button>
+            <label className="px-4 py-2 text-sm font-medium text-white rounded cursor-pointer">
+              <input type="file" accept=".csv" className="hidden" onChange={handleImport} />
+            </label>
+          </div>
+        )}
+      </div>
       <Listbox value={viewMode} onChange={setViewMode}>
         <ListboxButton
           id="view-listbox"
@@ -350,36 +457,42 @@ export const Stats: React.FC<StatsProps> = ({ mode }) => {
           <h2 className="text-[10px] font-bold uppercase tracking-widest text-font mb-3">
             12-Month Avg Trend {viewMode.id === 0 ? '(minutes)' : ''}
           </h2>
-
           <div style={{ width: '100%', height: 200 }}>
             <ResponsiveContainer>
-              <LineChart
-                width={250}
-                height={180}
-                data={last12MonthsData}
-                margin={{ top: 5, right: 10, left: -30, bottom: 0 }}>
-                <XAxis dataKey="label" fontSize={8} axisLine={false} tickLine={false} interval={2} />
-                <YAxis fontSize={9} axisLine={false} tickLine={false} />
-                <CartesianGrid strokeDasharray="1 4" />
+              <ComposedChart data={last12MonthsData} margin={{ top: 5, right: 5, left: -30, bottom: 5 }}>
+                <XAxis dataKey="label" fontSize={10} axisLine={false} tickLine={false} interval={isDashboard ? 1 : 0} />
+                <YAxis fontSize={10} axisLine={false} tickLine={false} tickMargin={5} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.2} />
+
                 <Tooltip
                   contentStyle={{
-                    color: darkMode ? '#fff' : '#000',
                     backgroundColor: darkMode ? '#18181b' : '#fff',
                     border: 'none',
+                    color: darkMode ? '#fff' : '#000',
                     borderRadius: '8px',
                     fontSize: '10px',
-                    boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.5)',
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.5)',
                   }}
                 />
-                <Line
-                  type="monotone"
-                  dataKey="average"
-                  stroke={COLORS.total}
-                  strokeWidth={3}
-                  dot={{ r: 3, fill: COLORS.total, strokeWidth: 2 }}
-                  activeDot={{ r: 5, strokeWidth: 0 }}
+                <CartesianGrid strokeDasharray="1 4" />
+                <Legend
+                  iconSize={8}
+                  align="center"
+                  verticalAlign="bottom"
+                  wrapperStyle={{
+                    fontSize: '8px',
+                    paddingTop: '10px',
+                    width: '100%',
+                    left: 0,
+                    textAlign: 'center',
+                  }}
                 />
-              </LineChart>
+                <Line type="monotone" dataKey="Total" stroke={COLORS.total} strokeWidth={2} dot={{ r: 2 }} />
+                <Bar dataKey="facebook" stackId="a" fill={COLORS.facebook} />
+                <Bar dataKey="twitter" stackId="a" fill={COLORS.twitter} />
+                <Bar dataKey="youtube" stackId="a" fill={COLORS.youtube} />
+                <Bar dataKey="twitch" stackId="a" fill={COLORS.twitch} />
+              </ComposedChart>
             </ResponsiveContainer>
           </div>
         </div>

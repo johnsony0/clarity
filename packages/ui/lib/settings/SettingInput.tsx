@@ -79,9 +79,6 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, m
               YouTube with Grayscale on.
             </h6>
           )}
-          {setting.id === 'tw-nav-sidebarsuggestions-toggle' && (
-            <h6>Known conflict with 7TV extension causing sidebar to reappear.</h6>
-          )}
         </Field>
       );
     case 'number':

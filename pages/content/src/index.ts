@@ -137,8 +137,15 @@ const facebookListener = async (settings: any, currentHost: string, currentPath:
   const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
   if (!exemptPages.includes(currentPath)) {
     await setupFBObserver(facebookConfigs, temp, currentHost);
-    await new Promise(res => setTimeout(res, 500));
-    filterPage(facebookConfigs, temp);
+    let iterations = 0;
+    const maxIterations = 15;
+    const filterInterval = setInterval(() => {
+      filterPage(facebookConfigs, temp);
+      iterations++;
+      if (iterations >= maxIterations) {
+        clearInterval(filterInterval);
+      }
+    }, 100);
   }
 };
 
@@ -149,9 +156,8 @@ export const setupYTObserver = (platformConfig: PlatformConfig, settings: Settin
     currentMainObserver.disconnect();
     console.log('Disconnected previous main observer.');
   }
-  document.querySelectorAll('[id="contents"]').forEach(mainContainer => {
+  document.querySelectorAll(platformConfig.mainContainer.selector).forEach(mainContainer => {
     // Process initial posts after mainContainer is found
-    console.log(mainContainer);
     platformConfig.postContainer.forEach(containerSelector => {
       const initialPosts = mainContainer.querySelectorAll(containerSelector.selector);
       initialPosts.forEach(postContainer =>
@@ -194,7 +200,7 @@ const youtubeListener = async (settings: any, currentHost: string, currentPath: 
     }, 1500);
 
     let iterations = 0;
-    const maxIterations = 15;
+    const maxIterations = 50;
     const filterInterval = setInterval(() => {
       filterPage(youtubeConfigs, temp);
       iterations++;
@@ -231,24 +237,34 @@ const twitchListener = async (settings: any, currentHost: string, currentPath: s
 };
 
 let heartbeatInterval: any;
+
 const startHeartbeat = (platform: string) => {
   const seconds = 30;
   if (heartbeatInterval) clearInterval(heartbeatInterval);
-
   const sendPing = () => {
-    console.log('Sending heartbeat ping for', platform);
-    chrome.runtime.sendMessage(
-      {
-        type: 'TRACK_TIME',
-        platform: platform,
-        seconds: seconds,
-      },
-      function (response) {
-        console.log('Heartbeat response:', response);
-      },
+    const isWindowFocused = document.hasFocus();
+    const isTabActive = !document.hidden;
+    const isVideoPlaying = Array.from(document.querySelectorAll('video')).some(
+      video => !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2),
     );
+    console.log(
+      `Heartbeat active for ${platform}. (Active: ${isTabActive}, Video: ${isVideoPlaying}, Window: ${isWindowFocused})`,
+    );
+    if ((isWindowFocused && isTabActive) || isVideoPlaying) {
+      chrome.runtime.sendMessage(
+        {
+          type: 'TRACK_TIME',
+          platform: platform,
+          seconds: seconds,
+        },
+        function (response) {
+          if (chrome.runtime.lastError) {
+            console.warn('Heartbeat error:', chrome.runtime.lastError.message);
+          }
+        },
+      );
+    }
   };
-
   heartbeatInterval = setInterval(sendPing, seconds * 1000);
 };
 
@@ -275,8 +291,16 @@ const handleURLChange = () => {
         };
         const exemptPages = settings['twitter'][twitterConfigs.others.exempt] || [];
         if (!exemptPages.includes(currentPath)) {
-          filterPage(twitterConfigs, temp);
           setupObserver(twitterConfigs, temp, currentHost);
+          let iterations = 0;
+          const maxIterations = 15;
+          const filterInterval = setInterval(() => {
+            filterPage(twitterConfigs, temp);
+            iterations++;
+            if (iterations >= maxIterations) {
+              clearInterval(filterInterval);
+            }
+          }, 100);
         }
         startHeartbeat('twitter');
       } else if (currentHost.includes('youtube.com') && settings['extension']['youtube-toggle']) {

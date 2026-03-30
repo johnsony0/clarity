@@ -44,7 +44,7 @@ const filterPost = async (
       }
     }
   }
-  console.log(currentHost);
+
   // Check post limit
   chrome.storage.local.get(['post_count_history', 'date'], result => {
     const postCount = result.post_count_history[0]?.total || 0;
@@ -246,6 +246,7 @@ export const filterPage = (configs: PlatformConfig, settings: Settings) => {
       }
       deleteElements({ selector: '[id=secondary]', type: 'attribute', parents: 0 });
     }
+    deleteElement({ selector: '[role="region"]', type: 'attribute', parents: 0 });
   }
 
   const currentPath = window.location.pathname;

@@ -119,8 +119,10 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
                     updatedSettings[setting.id] = tagMap[setting.tag as keyof typeof tagMap] <= value;
                   } else console.warn(`Non-existent tag:${setting.tag}`);
                 } else if (setting.type === 'number') {
-                  if (setting.id === 'limit-value') {
+                  if (setting.id === 'limit-posts-value') {
                     updatedSettings[setting.id] = setting.default - 100 * value;
+                  } else if (setting.id == 'limit-time-value') {
+                    updatedSettings[setting.id] = setting.default - 60 * value;
                   } else if (setting.tag === 'timeout') {
                     if (value === 5) {
                       updatedSettings[setting.id] = 5;
